@@ -8,7 +8,7 @@ function Layout() {
     <div className="h-screen flex flex-col ">
       <Header />
       
-      <main className="flex-grow overflow-scroll">
+      <main className="flex-grow overflow-scroll pb-16">
         <Outlet />
       </main>
       

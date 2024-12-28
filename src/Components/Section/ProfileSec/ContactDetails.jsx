@@ -15,7 +15,7 @@ export default function ContactDetails({
         </h2>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 mt-5">
         <div className="space-y-4">
           <DetailSection
             title="Present Location"
@@ -32,7 +32,7 @@ export default function ContactDetails({
           />
         </div>
 
-        <div className="space-y-6 bg-gray-50 rounded-lg border p-6 shadow-sm">
+        <div className="space-y-6 bg-gray50 rounded-lg border p-6 shadow-sm">
           <div className="flex items-center gap-3 bg-button p-5 rounded-3xl text-white">
             <FaUsers className="h-6 w-6 " />
             <span className="text-sm ">
@@ -75,14 +75,14 @@ export default function ContactDetails({
 const DetailSection = ({ title, value, isAdd = false }) => {
   return (
     <div>
-      <h3 className="text-sm font-medium text-gray-600">{title}</h3>
+      <h3 className="text-sm font-medium text-black ">{title}</h3>
       <button
         className={`flex items-center justify-between w-full text-left ${
           isAdd ? "text-blue-500" : "text-gray-800"
-        } font-normal hover:text-blue-600 hover:underline`}
+        } font-normal hover:text-red hover:underline`}
       >
         <span>{value}</span>
-        <MdChevronRight className="h-5 w-5 text-gray-400" />
+        <MdChevronRight className="h-5 w-5" />
       </button>
     </div>
   );

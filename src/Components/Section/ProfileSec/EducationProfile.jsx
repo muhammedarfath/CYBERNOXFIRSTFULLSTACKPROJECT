@@ -25,8 +25,8 @@ export default function EducationProfile() {
       onClick={() => handleEdit(field)}
     >
       <div>
-        <p className="text-sm text-gray-500">{label}</p>
-        <p className={`font-medium ${!value ? 'text-green-600' : ''}`}>
+        <p className="text-sm">{label}</p>
+        <p className={`font-medium ${!value ? 'text-primary2' : ''}`}>
           {value || `Add ${label}`}
         </p>
       </div>

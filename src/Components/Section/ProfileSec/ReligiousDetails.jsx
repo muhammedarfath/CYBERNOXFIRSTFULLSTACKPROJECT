@@ -30,7 +30,7 @@ function ReligiousDetails() {
           >
             <span className="text-gray-700 text-base">{item.label}</span>
             <div className="flex items-center gap-2">
-              <span className={item.isAction ? "text-green-600" : "text-gray-900"}>
+              <span className={item.isAction ? "text-primary2" : "text-gray-900"}>
                 {item.value}
               </span>
               <TbChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600" />

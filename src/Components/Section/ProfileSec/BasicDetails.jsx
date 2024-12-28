@@ -11,10 +11,10 @@ function BasicDetails({details}) {
             key={index}
             className="flex items-center justify-between p-4 hover:bg-gray-50 cursor-pointer"
           >
-            <div className="text-gray-900">{detail.label}</div>
+            <div className="text-black">{detail.label}</div>
             <div className="flex items-center gap-2">
               <span
-                className={detail.action ? "text-green-600" : "text-gray-600"}
+                className={detail.action ? "text-primary2" : "text-black"}
               >
                 {detail.value}
               </span>
