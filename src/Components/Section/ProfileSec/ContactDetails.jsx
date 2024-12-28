@@ -1,5 +1,6 @@
 import { MdChevronRight } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
+import { TbUserEdit } from "react-icons/tb";
 
 export default function ContactDetails({
   presentLocation = "Cheruvannur, Kozhikode, Kerala, India",
@@ -13,6 +14,8 @@ export default function ContactDetails({
         <h2 className="text-xl font-semibold text-gray-800">
           Location & Contact Details
         </h2>
+        <TbUserEdit className="text-2xl bg-button rounded-xl text-white p-1 cursor-pointer text-gray-400" />
+
       </div>
 
       <div className="space-y-6 mt-5">

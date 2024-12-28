@@ -1,10 +1,14 @@
 import React from "react";
 import { TbChevronRight } from "react-icons/tb";
+import { TbUserEdit } from "react-icons/tb";
 
-function BasicDetails({details}) {
+function BasicDetails({ details }) {
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-6">Basic Details</h1>
+      <div className="flex items-center justify-between m-3">
+        <h1 className="text-2xl font-semibold">Basic Details</h1>
+        <TbUserEdit className="text-2xl bg-button rounded-xl text-white p-1 cursor-pointer text-gray-400" />
+      </div>
       <div className="bg-white rounded-lg shadow-sm divide-y">
         {details.map((detail, index) => (
           <div
@@ -13,12 +17,9 @@ function BasicDetails({details}) {
           >
             <div className="text-black">{detail.label}</div>
             <div className="flex items-center gap-2">
-              <span
-                className={detail.action ? "text-primary2" : "text-black"}
-              >
+              <span className={detail.action ? "text-primary2" : "text-black"}>
                 {detail.value}
               </span>
-              <TbChevronRight className="h-5 w-5 text-gray-400" />
             </div>
           </div>
         ))}
