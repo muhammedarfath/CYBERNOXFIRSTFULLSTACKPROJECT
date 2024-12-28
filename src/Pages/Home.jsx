@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import ProfileCards from "../Components/Section/HomeSec/ProfileCards";
 import { MobileProfileCards } from "../Components/Section/HomeSec/MobileProfileCards";
-import slide_img_1 from "../assets/Screenshot 2024-12-16 at 11.22.18 AM.png";
-import slide_img_2 from "../assets/Screenshot 2024-12-16 at 11.22.35 AM.png";
-import slide_img_3 from "../assets/Screenshot 2024-12-16 at 11.22.53 AM.png";
-import slide_img_4 from "../assets/Screenshot 2024-12-16 at 11.23.07 AM.png";
-import slide_img_5 from "../assets/Screenshot 2024-12-16 at 11.23.31 AM.png";
+import slide_img_1 from "../assets/Screenshot 2024-12-27 at 11.53.55 AM.png";
+import slide_img_2 from "../assets/Screenshot 2024-12-27 at 11.46.41 AM.png";
+import slide_img_3 from "../assets/Screenshot 2024-12-27 at 11.48.47 AM.png";
+import slide_img_4 from "../assets/Screenshot 2024-12-27 at 11.49.50 AM.png";
+import slide_img_5 from "../assets/Screenshot 2024-12-27 at 11.50.31 AM.png";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -56,7 +56,6 @@ function Home() {
       university: "LMN University 2020",
     },
   ];
-
   return (
     <>
       <div className="hidden md:block">
