@@ -9,7 +9,7 @@ function RegisterNav() {
   return (
     <>
       <nav
-       className="flex w-full "
+       className="flex w-full justify-between"
         aria-label="Global"
       >
         <div class="flex lg:flex-1">
@@ -22,21 +22,8 @@ function RegisterNav() {
             />
           </a>
         </div>
-        <div class="hidden lg:flex lg:gap-x-12">
-          <Link
-            to="/register"
-            className="text-sm/6 font-semibold text-gray-900"
-          >
-            Home
-          </Link>
-          <Link to="/about" className="text-sm/6 font-semibold text-gray-900">
-            About
-          </Link>
-          <Link to="/contact" className="text-sm/6 font-semibold text-gray-900">
-            Contact
-          </Link>
-        </div>
-        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+
+        <div class="flex lg:flex-1 lg:justify-end">
           <button
             className="border-none mr-4 rounded-lg px-5 py-2 bg-button text-white"
             onClick={onOpen}

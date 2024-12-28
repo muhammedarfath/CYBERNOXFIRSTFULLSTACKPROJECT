@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProfileCards from "../Components/Section/HomeSec/ProfileCards";
 import { MobileProfileCards } from "../Components/Section/HomeSec/MobileProfileCards";
 import slide_img_1 from "../assets/Screenshot 2024-12-16 at 11.22.18 AM.png";
@@ -6,8 +6,19 @@ import slide_img_2 from "../assets/Screenshot 2024-12-16 at 11.22.35 AM.png";
 import slide_img_3 from "../assets/Screenshot 2024-12-16 at 11.22.53 AM.png";
 import slide_img_4 from "../assets/Screenshot 2024-12-16 at 11.23.07 AM.png";
 import slide_img_5 from "../assets/Screenshot 2024-12-16 at 11.23.31 AM.png";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/register");
+    }
+  }, [isLoggedIn]);
+
   const slideData = [
     {
       imgsrc: slide_img_1,
@@ -47,7 +58,7 @@ function Home() {
   ];
 
   return (
-    <>    
+    <>
       <div className="hidden md:block">
         <ProfileCards />
       </div>
