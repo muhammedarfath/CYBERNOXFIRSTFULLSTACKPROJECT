@@ -6,6 +6,7 @@ import {
   loginSuccess,
   loginFailure,
 } from "../../../Redux/slices/authSlice";
+import { motion } from "framer-motion";
 
 function OtpField({
   otpSent,
@@ -19,7 +20,7 @@ function OtpField({
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault(); 
 
     dispatch(startLoading());
 
@@ -29,22 +30,31 @@ function OtpField({
         dispatch(loginSuccess({ username: response.username })); 
         navigate("/pricing"); 
       } else {
-        // Dispatch login failure
         dispatch(loginFailure());
         alert("Invalid OTP. Please try again.");
       }
     } catch (error) {
-      // Handle any errors during API call
       dispatch(loginFailure());
       console.error("Error verifying OTP:", error);
       alert("An error occurred. Please try again later.");
     }
   };
 
+  // Define animation variants for entry and exit
+  const variants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
+
   return (
     <>
       {otpSent && (
-        <div className="flex flex-wrap -mx-3 mb-6">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={variants}
+          className="flex flex-wrap -mx-3 mb-6"
+        >
           <div className="w-full px-3">
             <label
               className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -61,26 +71,32 @@ function OtpField({
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             />
           </div>
-        </div>
+        </motion.div>
       )}
 
       <div className="flex justify-center flex-col">
         {!otpSent ? (
-          <button
+          <motion.button
             type="button"
             className="bg-button text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
             onClick={handleSendOtp}
+            initial="hidden"
+            animate="visible"
+            variants={variants}
           >
             Send OTP
-          </button>
+          </motion.button>
         ) : (
-          <button
+          <motion.button
             type="submit"
             className="bg-button text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
             onClick={handleSubmit}
+            initial="hidden"
+            animate="visible"
+            variants={variants}
           >
             Submit
-          </button>
+          </motion.button>
         )}
       </div>
     </>
