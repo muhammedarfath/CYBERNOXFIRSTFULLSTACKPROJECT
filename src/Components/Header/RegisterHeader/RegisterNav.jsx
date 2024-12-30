@@ -8,19 +8,15 @@ function RegisterNav() {
 
   return (
     <>
-      <nav
-       className="flex w-full justify-between"
-        aria-label="Global"
-      >
-        <div class="flex lg:flex-1">
-          <a href="#" class="-m-1.5 p-1.5">
-            <span class="sr-only">Your Company</span>
+      <nav className="flex w-full justify-between">
+        <div className="flex lg:flex-1 items-center">
+          <Link to="/">
             <img
-              className="w-auto md:max-h-9 max-h-6 object-contain"
+              className="w-auto md:max-h-16 max-h-6 object-contain"
               src="https://assets.aceternity.com/logo-dark.png"
               alt="Company Logo"
             />
-          </a>
+          </Link>
         </div>
 
         <div class="flex lg:flex-1 lg:justify-end">

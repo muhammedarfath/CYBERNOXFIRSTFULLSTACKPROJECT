@@ -10,7 +10,7 @@ function RegisterHead() {
 
   return (
     <header className="bg-white">
-      <div className="flex w-full justify-between p-6">
+      <div className="flex w-full justify-between p-3">
         <RegisterNav />
       </div>
     </header>

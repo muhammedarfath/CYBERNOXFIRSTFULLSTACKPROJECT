@@ -53,46 +53,49 @@ function BestMatchesSec() {
     <div className="w-full overflow-hidden">
       <div className="h-[auto] w-full flex flex-col gap-3 overflow-hidden container mx-auto p-4 mt-3">
         <div className="flex flex-col">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between gap-3">
             <h1 className="font-semibold text-4xl">
               {filter === "Partner Expectation" ? "Best Match" : "Location"}
             </h1>
-            <MdFilterList
-              className="text-3xl cursor-pointer"
-              onClick={() => setShowFilterOptions(!showFilterOptions)}
-            />
+            <div className="relative flex gap-5">
+              <MdFilterList
+                className="text-3xl cursor-pointer"
+                onClick={() => setShowFilterOptions(!showFilterOptions)}
+              />
+              {showFilterOptions && (
+                <div className="absolute right-0 mt-9 w-64 z-50 bg-white rounded-md shadow-lg">
+                  <ul className="flex flex-col">
+                    <li
+                      className={`px-4 py-2 cursor-pointer hover:bg-button ${
+                        filter === "received"
+                          ? "font-semibold text-primary"
+                          : ""
+                      }`}
+                      onClick={() => {
+                        setFilter("Partner Expectation");
+                        setShowFilterOptions(false);
+                      }}
+                    >
+                      Partner Expectation
+                    </li>
+                    <li
+                      className={`px-4 py-2 cursor-pointer hover:bg-button ${
+                        filter === "sent" ? "font-semibold text-primary" : ""
+                      }`}
+                      onClick={() => {
+                        setFilter("Location");
+                        setShowFilterOptions(false);
+                      }}
+                    >
+                      Location
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-        {showFilterOptions && (
-          <div className="absolute right-0 mt-9 w-64 bg-white border border-gray-300 rounded-md shadow-lg">
-            <ul className="flex flex-col">
-              <li
-                className={`px-4 py-2 cursor-pointer hover:bg-gray-100 ${
-                  filter === "Partner Expectation"
-                    ? "font-semibold text-button"
-                    : ""
-                }`}
-                onClick={() => {
-                  setFilter("Partner Expectation");
-                  setShowFilterOptions(false);
-                }}
-              >
-                Partner Expectation
-              </li>
-              <li
-                className={`px-4 py-2 cursor-pointer hover:bg-gray-100 ${
-                  filter === "Location" ? "font-semibold text-button" : ""
-                }`}
-                onClick={() => {
-                  setFilter("Location");
-                  setShowFilterOptions(false);
-                }}
-              >
-                Location
-              </li>
-            </ul>
-          </div>
-        )}
+
         <hr />
         <Link to="/profiledetails">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">

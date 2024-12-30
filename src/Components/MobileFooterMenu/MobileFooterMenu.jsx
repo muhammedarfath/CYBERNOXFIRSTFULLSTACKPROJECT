@@ -15,7 +15,7 @@ function MobileFooterMenu() {
   };
 
   return (
-    <div className="fixed bottom-0 md:hidden w-full bg-white rounded-tr-2xl rounded-tl-2xl p-2 shadow-3xl border-t-gray shadow-black z-50">
+    <div className="fixed bottom-0 md:hidden w-full bg-white rounded-tr-2xl rounded-tl-2xl p-1 shadow-3xl border-t-gray shadow-black z-50">
       <div className="flex justify-between items-center px-4 py-2">
         <div className="flex flex-1 justify-around items-center">
           <div className="text-center" onClick={() => handleClick("profile")}>
