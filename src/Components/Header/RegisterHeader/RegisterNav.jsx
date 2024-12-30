@@ -8,11 +8,11 @@ function RegisterNav() {
 
   return (
     <>
-      <nav className="flex w-full justify-between">
-        <div className="flex lg:flex-1 items-center">
+      <nav className="flex w-full justify-between" aria-label="Global">
+        <div class="flex lg:flex-1">
           <Link to="/">
             <img
-              className="w-auto md:max-h-16 max-h-6 object-contain"
+              className="w-auto md:max-h-6 max-h-6 object-contain"
               src="https://assets.aceternity.com/logo-dark.png"
               alt="Company Logo"
             />

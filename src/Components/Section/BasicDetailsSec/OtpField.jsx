@@ -1,7 +1,46 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  startLoading,
+  loginSuccess,
+  loginFailure,
+} from "../../../Redux/slices/authSlice";
 
-function OtpField({otpSent,handleSendOtp,handleOtpChange,otp,mobileNumber}) {
+function OtpField({
+  otpSent,
+  handleSendOtp,
+  handleOtpChange,
+  otp,
+  mobileNumber,
+}) {
+  const dispatch = useDispatch();
+  const authState = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent page reload
+
+    dispatch(startLoading());
+
+    try {
+      const response = await fakeVerifyOtpApi({ otp, mobileNumber }); 
+      if (response.success) {
+        dispatch(loginSuccess({ username: response.username })); 
+        navigate("/pricing"); 
+      } else {
+        // Dispatch login failure
+        dispatch(loginFailure());
+        alert("Invalid OTP. Please try again.");
+      }
+    } catch (error) {
+      // Handle any errors during API call
+      dispatch(loginFailure());
+      console.error("Error verifying OTP:", error);
+      alert("An error occurred. Please try again later.");
+    }
+  };
+
   return (
     <>
       {otpSent && (
@@ -19,7 +58,7 @@ function OtpField({otpSent,handleSendOtp,handleOtpChange,otp,mobileNumber}) {
               placeholder="Enter OTP"
               value={otp}
               onChange={handleOtpChange}
-              className="appearance-none block w-full bg-gray-200 text-gary200 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             />
           </div>
         </div>
@@ -35,14 +74,13 @@ function OtpField({otpSent,handleSendOtp,handleOtpChange,otp,mobileNumber}) {
             Send OTP
           </button>
         ) : (
-          <Link to="/priceing">
-            <button
-              type="submit"
-              className="bg-button text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
-            >
-              Submit
-            </button>
-          </Link>
+          <button
+            type="submit"
+            className="bg-button text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
+            onClick={handleSubmit}
+          >
+            Submit
+          </button>
         )}
       </div>
     </>
@@ -50,3 +88,15 @@ function OtpField({otpSent,handleSendOtp,handleOtpChange,otp,mobileNumber}) {
 }
 
 export default OtpField;
+
+const fakeVerifyOtpApi = async ({ otp, mobileNumber }) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      if (otp === "123456") {
+        resolve({ success: true, username: "testuser" });
+      } else {
+        resolve({ success: false });
+      }
+    }, 1000);
+  });
+};

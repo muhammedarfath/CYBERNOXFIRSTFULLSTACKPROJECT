@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import ProofFile from "../Components/Section/BasicDetailsSec/ProofFile";
 import OtpField from "../Components/Section/BasicDetailsSec/OtpField";
 
+
 function AadharOtp() {
+
   const [aadharNumber, setAadharNumber] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
