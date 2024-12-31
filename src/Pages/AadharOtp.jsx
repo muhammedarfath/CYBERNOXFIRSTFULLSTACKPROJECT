@@ -52,7 +52,7 @@ function AadharOtp() {
   return (
     <div>
       <form
-        className="w-full max-w-2xl bg-white  rounded-lg p-6 shadow-2xl"
+        className="w-full md:max-w-2xl bg-white  rounded-lg p-6 shadow-2xl"
         onSubmit={handleSubmit}
       >
         <div className="mb-4">

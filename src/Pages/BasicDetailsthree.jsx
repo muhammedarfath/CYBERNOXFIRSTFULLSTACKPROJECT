@@ -6,11 +6,10 @@ function BasicDetailsthree() {
   const [submit, setSubmit] = useState(false);
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-4">
+    <div className="flex justify-center w-full md:p-4">
       <AnimatePresence mode="wait">
         {!submit ? (
-          <motion.form className="w-full max-w-2xl bg-white rounded-lg p-6 shadow-2xl mx-auto">
-            {" "}
+          <motion.form className="w-full md:max-w-2xl bg-white rounded-lg p-6 shadow-2xl mx-auto">
             <div className="flex flex-wrap mb-6">
               <div className="w-full px-3">
                 <label
@@ -29,7 +28,6 @@ function BasicDetailsthree() {
                 </select>
               </div>
             </div>
-            {/* Family Status */}
             <div className="flex flex-wrap mb-6">
               <div className="w-full px-3">
                 <label
@@ -49,7 +47,6 @@ function BasicDetailsthree() {
                 </select>
               </div>
             </div>
-            {/* Father's Name */}
             <div className="flex flex-wrap mb-6">
               <div className="w-full px-3">
                 <label
@@ -66,8 +63,7 @@ function BasicDetailsthree() {
                 />
               </div>
             </div>
-            {/* Father's Occupation and Mother's Occupation */}
-            <div className="flex flex-wrap mb-6 space-x-3">
+            <div className="flex flex-wrap mb-6">
               <div className="w-full sm:w-1/2 px-3">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -106,8 +102,7 @@ function BasicDetailsthree() {
                 </select>
               </div>
             </div>
-            {/* Brothers and Sisters */}
-            <div className="flex flex-wrap mb-6 space-x-3">
+            <div className="flex flex-wrap mb-6 ">
               <div className="w-full sm:w-1/2 px-3">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -138,7 +133,37 @@ function BasicDetailsthree() {
                 />
               </div>
             </div>
-            {/* About Family */}
+            <div className="flex flex-wrap mb-6 ">
+              <div className="w-full sm:w-1/2 px-3">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="married-brothers"
+                >
+                  Number of Married Brothers
+                </label>
+                <input
+                  type="number"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="married-brothers"
+                  placeholder="Enter number of married brothers"
+                />
+              </div>
+
+              <div className="w-full sm:w-1/2 px-3">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="married-sisters"
+                >
+                  Number of Married Sisters
+                </label>
+                <input
+                  type="number"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="married-sisters"
+                  placeholder="Enter number of married sisters"
+                />
+              </div>
+            </div>
             <div className="flex flex-wrap mb-6">
               <div className="w-full px-3">
                 <label

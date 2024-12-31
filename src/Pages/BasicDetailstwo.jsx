@@ -8,18 +8,15 @@ function BasicDetailstwo() {
 
   const handleEducationChange = (event) => {
     const selectedValue = event.target.value;
-    if (selectedValue) {
-      setShowCollegeField(true);
-    } else {
-      setShowCollegeField(false);
-    }
+    setShowCollegeField(selectedValue && selectedValue !== "Choose Education");
   };
 
   return (
     <div>
       <AnimatePresence mode="wait">
         {!submit ? (
-          <motion.form className="w-full max-w-2xl bg-white rounded-lg p-6 shadow-2xl mx-auto">
+          <motion.form className="w-full md:max-w-2xl bg-white rounded-lg p-6 shadow-2xl mx-auto">
+            {/* Groom's Country and State */}
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3">
                 <label
@@ -29,7 +26,7 @@ function BasicDetailstwo() {
                   Where does the groom live? (Country)
                 </label>
                 <select
-                  className="appearance-none block w-full bg-gray-200 text-gary200 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="groom-country"
                 >
                   <option>Choose Country</option>
@@ -50,7 +47,7 @@ function BasicDetailstwo() {
                   Where does the groom live? (State)
                 </label>
                 <select
-                  className="appearance-none block w-full bg-gray-200 text-gary200 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="groom-state"
                 >
                   <option>Choose State</option>
@@ -68,7 +65,7 @@ function BasicDetailstwo() {
                   Where does the groom live? (City)
                 </label>
                 <select
-                  className="appearance-none block w-full bg-gray-200 text-gary200 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="groom-city"
                 >
                   <option>Choose City</option>
@@ -80,19 +77,32 @@ function BasicDetailstwo() {
               </div>
             </div>
 
+            {/* Family and Income Fields */}
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Does family live with groom?
                 </label>
-                <input
-                  className="mr-2 leading-tight"
-                  type="checkbox"
-                  id="family-live"
-                />
-                <label className="text-gray-700" htmlFor="family-live">
-                  Yes
-                </label>
+                <div className="flex items-center space-x-4">
+                  <label>
+                    <input
+                      className="mr-2 leading-tight"
+                      type="radio"
+                      name="family-live"
+                      value="yes"
+                    />
+                    Yes
+                  </label>
+                  <label>
+                    <input
+                      className="mr-2 leading-tight"
+                      type="radio"
+                      name="family-live"
+                      value="no"
+                    />
+                    No
+                  </label>
+                </div>
               </div>
             </div>
 
@@ -105,7 +115,7 @@ function BasicDetailstwo() {
                   Highest Education
                 </label>
                 <select
-                  className="appearance-none block w-full bg-gray-200 text-gary200 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="highest-education"
                   onChange={handleEducationChange}
                 >
@@ -117,25 +127,6 @@ function BasicDetailstwo() {
                 </select>
               </div>
 
-              {showCollegeField && (
-                <div className="flex flex-wrap -mx-3 mb-6">
-                  <div className="w-full px-3">
-                    <label
-                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                      htmlFor="college-name"
-                    >
-                      Institute or College Name
-                    </label>
-                    <input
-                      type="text"
-                      className="appearance-none block w-full bg-gray-200 text-gary200 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="college-name"
-                      placeholder="Enter Institute or College Name"
-                    />
-                  </div>
-                </div>
-              )}
-
               <div className="w-full md:w-1/2 px-3">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -144,7 +135,7 @@ function BasicDetailstwo() {
                   Employed In
                 </label>
                 <select
-                  className="appearance-none block w-full bg-gray-200 text-gary200 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="employed-in"
                 >
                   <option>Choose Employment</option>
@@ -156,6 +147,26 @@ function BasicDetailstwo() {
               </div>
             </div>
 
+            {showCollegeField && (
+              <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full px-3">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="college-name"
+                  >
+                    Institute or College Name
+                  </label>
+                  <input
+                    type="text"
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="college-name"
+                    placeholder="Enter Institute or College Name"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Occupation */}
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3">
                 <label
@@ -165,7 +176,7 @@ function BasicDetailstwo() {
                   Occupation
                 </label>
                 <select
-                  className="appearance-none block w-full bg-gray-200 text-gary200 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="occupation"
                 >
                   <option>Choose Occupation</option>
@@ -176,7 +187,28 @@ function BasicDetailstwo() {
                 </select>
               </div>
             </div>
-
+            <div className="flex flex-wrap -mx-3 mb-6">
+              <div className="w-full px-3">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="annual-income"
+                >
+                  Annual Income
+                </label>
+                <select
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="annual-income"
+                >
+                  <option>Choose Annual Income</option>
+                  <option>Below ₹3 Lakhs</option>
+                  <option>₹3-5 Lakhs</option>
+                  <option>₹5-10 Lakhs</option>
+                  <option>₹10-20 Lakhs</option>
+                  <option>₹20-50 Lakhs</option>
+                  <option>Above ₹50 Lakhs</option>
+                </select>
+              </div>
+            </div>
             <div className="flex justify-center flex-col">
               <button
                 className="bg-button text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
@@ -196,7 +228,6 @@ function BasicDetailstwo() {
             transition={{ duration: 0.5 }}
             className="w-full"
           >
-            
             <BasicDetailsthree />
           </motion.div>
         )}
