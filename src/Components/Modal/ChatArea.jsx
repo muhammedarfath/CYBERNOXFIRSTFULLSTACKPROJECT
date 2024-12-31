@@ -14,9 +14,9 @@ export default function ChatArea({ onOpenChange, isOpen }) {
     <>
       <Modal
         isOpen={isOpen}
-        size="5xl"
+        size="full"
         onOpenChange={onOpenChange}
-        className="bg-white shadow-2xl rounded-2xl"
+        className="bg-white shadow-2xl rounded-2xl overflow-scroll h-full"
       >
         <ModalContent>
           {(onClose) => (
