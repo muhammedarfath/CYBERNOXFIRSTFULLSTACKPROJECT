@@ -17,12 +17,13 @@ import slide_img_4 from "../../../assets/Screenshot 2024-12-27 at 11.49.50 AM.
 import slide_img_5 from "../../../assets/Screenshot 2024-12-27 at 11.50.31 AM.png";
 import { FloatingDockDemo } from "../../Layout/FloatingDockDemo";
 import SwiperSlideContent from "./SwiperSlideContent";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function ProfileCards() {
   const [isLoading, setIsLoading] = useState(true);
   const swiperRef = useRef(null);
   const navigate = useNavigate(); 
+
   const slideData = [
     {
       imgsrc: slide_img_1,

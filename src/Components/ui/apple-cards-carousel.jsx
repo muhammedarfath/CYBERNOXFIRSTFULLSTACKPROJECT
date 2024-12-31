@@ -15,7 +15,8 @@ import { cn } from "../../lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "../hooks/use-outside-click";
 import { IconSend } from "@tabler/icons-react";
-
+import { useDisclosure } from "@nextui-org/react";
+import ChatArea from "../Modal/ChatArea";
 export const CarouselContext = createContext({
   onCardClose: () => {},
   currentIndex: 0,
@@ -90,7 +91,6 @@ export const Carousel = ({ items, initialScroll = 0 }) => {
           <div
             className={cn(
               "flex flex-row justify-start gap-4 pl-4",
-              // remove max-w-4xl if you want the carousel to span the full width of its container
               "max-w-7xl mx-auto"
             )}
           >
@@ -140,94 +140,87 @@ export const Carousel = ({ items, initialScroll = 0 }) => {
 };
 
 export const Card = ({ card, index, layout = false }) => {
-    const [open, setOpen] = useState(false);
-    const [showMessages, setShowMessages] = useState(false); // For hover effect
-    const [inputMessage, setInputMessage] = useState(""); // Input message
-    const [messages, setMessages] = useState([
-      { type: "received", text: "Hello, how are you?" },
-      { type: "sent", text: "I'm good, thank you!" },
-    ]);
-  
-    const handleHover = () => setShowMessages(true);
-    const handleLeave = () => setShowMessages(false);
-  
-    const handleSendMessage = () => {
-      if (inputMessage.trim()) {
-        setMessages([...messages, { type: "sent", text: inputMessage }]);
-        setInputMessage(""); // Clear the input
-      }
-    };
-  
-    return (
-      <>
-        <motion.div
-          onMouseEnter={handleHover}
-          onMouseLeave={handleLeave}
-          layoutId={layout ? `card-${card.title}` : undefined}
-          className="relative rounded-3xl bg-gray-100 dark:bg-neutral-900 h-80 w-56 md:h-[30rem] md:w-96 overflow-hidden flex flex-col items-start justify-start"
-        >
-          <div className="absolute h-full top-0 inset-x-0 bg-gradient-to-b from-black/50 via-transparent to-transparent z-30 pointer-events-none" />
-          <div className="relative z-40 p-8">
-            {/* <motion.p
-              layoutId={layout ? `category-${card.category}` : undefined}
-              className="text-white text-sm md:text-base font-medium font-sans text-left"
-            >
-              {card.category}
-            </motion.p> */}
-            <motion.p
-              layoutId={layout ? `title-${card.title}` : undefined}
-              className="text-white text-xl md:text-3xl font-semibold max-w-xs text-left [text-wrap:balance] font-sans mt-2"
-            >
-              {card.title}
-            </motion.p>
-          </div>
-          <img
-            src={card.src}
-            alt={card.title}
-            className="object-cover absolute z-10 inset-0 h-full w-full"
-          />
-  
-          {/* Messaging UI on hover */}
-          {showMessages && (
-            <div className="absolute inset-0 z-50 bg-black/70 flex flex-col justify-between p-4">
-              {/* Messages */}
-              <div className="flex flex-col gap-2 overflow-y-auto">
-                {messages.map((message, i) => (
-                  <div
-                    key={i}
-                    className={`p-2 rounded-lg text-sm max-w-[70%] ${
-                      message.type === "sent"
-                        ? "self-end bg-[#FFB9C3] text-white"
-                        : "self-start bg-gray-200 text-black"
-                    }`}
-                  >
-                    {message.text}
-                  </div>
-                ))}
-              </div>
-  
-              {/* Input and Send Button */}
-              <div className="flex gap-2 items-center mt-2">
-                <input
-                  type="text"
-                  value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
-                  placeholder="Type a message..."
-                  className="flex-1 p-2 rounded-lg border border-gray-300"
-                />
-                <button
-                  onClick={handleSendMessage}
-                  className="p-2 bg-[#5e5e61] text-white rounded-lg hover:bg-[#FFB9C3]"
-                >
-                  <IconSend className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-          )}
-        </motion.div>
-      </>
-    );
+  const [open, setOpen] = useState(false);
+  const [showMessages, setShowMessages] = useState(false); // For hover effect
+  const [inputMessage, setInputMessage] = useState("");
+  const [messages, setMessages] = useState([
+    { type: "received", text: "Hello, how are you?" },
+    { type: "sent", text: "I'm good, thank you!" },
+  ]);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const handleHover = () => setShowMessages(true);
+  const handleLeave = () => setShowMessages(false);
+
+  const handleSendMessage = () => {
+    if (inputMessage.trim()) {
+      setMessages([...messages, { type: "sent", text: inputMessage }]);
+      setInputMessage("");
+    }
   };
+
+  return (
+    <>
+      <motion.div
+        onMouseEnter={handleHover}
+        onMouseLeave={handleLeave}
+        layoutId={layout ? `card-${card.title}` : undefined}
+        className="relative rounded-3xl bg-gray-100 dark:bg-neutral-900 h-80 w-56 md:h-[30rem] md:w-96 overflow-hidden flex flex-col items-start justify-start"
+        onClick={onOpen}
+      >
+        <div className="absolute h-full top-0 inset-x-0 bg-gradient-to-b from-black/50 via-transparent to-transparent z-30 pointer-events-none" />
+        <div className="relative z-40 p-8">
+          <motion.p
+            layoutId={layout ? `title-${card.title}` : undefined}
+            className="text-white text-xl md:text-3xl font-semibold max-w-xs text-left [text-wrap:balance] font-sans mt-2"
+          >
+            {card.title}
+          </motion.p>
+        </div>
+        <img
+          src={card.src}
+          alt={card.title}
+          className="object-cover absolute z-10 inset-0 h-full w-full"
+        />
+
+        {showMessages && (
+          <div className="absolute inset-0 z-50 bg-black/30 flex flex-col justify-between p-4">
+            <div className="flex flex-col gap-2 overflow-y-auto">
+              {messages.map((message, i) => (
+                <div
+                  key={i}
+                  className={`p-2 rounded-lg text-sm max-w-[70%] ${
+                    message.type === "sent"
+                      ? "self-end bg-[#f15d5d] text-white"
+                      : "self-start bg-gray text-black"
+                  }`}
+                >
+                  {message.text}
+                </div>
+              ))}
+            </div>
+
+            <div className="flex gap-2 items-center mt-2">
+              <input
+                type="text"
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                placeholder="Type a message..."
+                className="flex-1 p-2 rounded-lg border border-gray-300"
+              />
+              <button
+                onClick={handleSendMessage}
+                className="p-2 bg-[#5e5e61] text-white rounded-lg hover:bg-[#FFB9C3]"
+              >
+                <IconSend className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+        )}
+      </motion.div>
+      <ChatArea isOpen={isOpen} onOpenChange={onOpenChange} />
+    </>
+  );
+};
 
 export const BlurImage = ({ height, width, src, className, alt, ...rest }) => {
   const [isLoading, setLoading] = useState(true);

@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { Carousel, Card } from "../../../Components/ui/apple-cards-carousel"; // Importing Carousel and Card from your UI components
-import { FaPaperPlane } from "react-icons/fa"; // Using React Icons for the send button
-import { Link } from "react-router-dom";
-import slide_img_1 from "../../../assets/Screenshot 2024-12-16 at 11.22.18 AM.png";
-import slide_img_2 from "../../../assets/Screenshot 2024-12-16 at 11.22.35 AM.png";
-import slide_img_3 from "../../../assets/Screenshot 2024-12-16 at 11.22.53 AM.png";
-import slide_img_4 from "../../../assets/Screenshot 2024-12-16 at 11.23.07 AM.png";
-import slide_img_5 from "../../../assets/Screenshot 2024-12-16 at 11.23.31 AM.png";
+import slide_img_1 from "../../../assets/Screenshot 2024-12-27 at 11.53.55 AM.png";
+import slide_img_2 from "../../../assets/Screenshot 2024-12-27 at 11.46.41 AM.png";
+import slide_img_3 from "../../../assets/Screenshot 2024-12-27 at 11.48.47 AM.png";
+import slide_img_4 from "../../../assets/Screenshot 2024-12-27 at 11.49.50 AM.png";
+import slide_img_5 from "../../../assets/Screenshot 2024-12-27 at 11.50.31 AM.png";
 import { FloatingDockDemo } from "../../Layout/FloatingDockDemo";
 
 export function MessageSec() {
@@ -15,7 +13,7 @@ export function MessageSec() {
   ));
 
   return (
-    <div className="w-full h-screen py-20 ">
+    <div className="w-full h-screen">
       <div className=" flex flex-col gap-4 w-full n container mx-auto p-4 mt-5">
         <div className="flex flex-col gap-3">
           <h1 className="font-semibold text-4xl">Messages</h1>

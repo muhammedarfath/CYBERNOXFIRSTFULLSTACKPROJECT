@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { BsArrowLeftCircleFill } from "react-icons/bs";
-import { BsArrowRightCircleFill } from "react-icons/bs";
+import { FaHeart } from "react-icons/fa";
+import { CgClose } from "react-icons/cg";
 
-export function MobileProfileCards({ slides }) {
+export function MobileProfileCards({ slides, swiperRef }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = () => {
@@ -27,22 +27,28 @@ export function MobileProfileCards({ slides }) {
           />
         </Link>
 
-        <div className="absolute top-1/2 left-0 right-0 flex justify-between px-4">
+        <div className="absolute inset-x-0  bottom-28 flex justify-between px-4">
           <button
-            onClick={prevSlide}
-            className="text-white animate-zoom-in-out"
+            onClick={(e) => {
+              nextSlide()
+              e.stopPropagation();
+            }}
+            className="bg-[#1A1A1A] text-white font-bold p-4 rounded-full flex items-center text-xs md:text-sm lg:text-base transition duration-200 transform hover:scale-110"
           >
-            <BsArrowLeftCircleFill className="text-4xl" />
+            <CgClose className="text-2xl" />
           </button>
           <button
-            onClick={nextSlide}
-            className="text-white animate-zoom-in-out"
+            onClick={(e) => {
+              nextSlide()
+              e.stopPropagation();
+            }}
+            className="bg-button text-white font-bold p-4 rounded-full flex items-center text-xs md:text-sm lg:text-base transition duration-200 transform hover:scale-110"
           >
-            <BsArrowRightCircleFill className="text-4xl" />
+            <FaHeart className="text-2xl" />
           </button>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-4 text-center text-white">
+        <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-25 p-4 text-center text-black">
           <h2 className="text-xl font-bold">{slides[currentIndex].name}</h2>
           <p>{slides[currentIndex].status}</p>
           <p className="text-sm">{slides[currentIndex].university}</p>

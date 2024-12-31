@@ -26,7 +26,7 @@ function ProfileDetailsHobbies() {
       </h2>
       <div className="space-y-4 mb-6">
         <div className="flex items-center justify-between p-4 bg-gray50 shadow-md rounded-lg">
-          <div className="flex items-center gap-2">
+          <div className="flex  items-center gap-2">
             <FaSmokingBan className="text-gray-600" />
             <span>Smoking Habits</span>
           </div>

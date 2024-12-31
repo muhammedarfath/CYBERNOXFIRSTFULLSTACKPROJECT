@@ -50,7 +50,6 @@ function InterestRecievedSec() {
             {filter === "received" ? "Interest Received" : "Interest Sent"}
           </h1>
           <div className="relative flex gap-5">
-            <IoIosSearch className="text-3xl cursor-pointer" />
             <MdFilterList
               className="text-3xl cursor-pointer"
               onClick={() => setShowFilterOptions(!showFilterOptions)}

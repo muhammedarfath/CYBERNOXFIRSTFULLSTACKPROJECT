@@ -192,20 +192,3 @@ body {
 
 
 
-/* Define zoom-in-out animation */
-@keyframes zoomInOut {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2); /* Zoom in */
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* Apply the animation to the buttons */
-.animate-zoom-in-out {
-  animation: zoomInOut 1.5s infinite;
-}

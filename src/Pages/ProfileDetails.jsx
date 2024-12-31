@@ -1,6 +1,6 @@
 import React from "react";
 import { CiPhone } from "react-icons/ci";
-import slide_img_5 from "../assets/Screenshot 2024-12-27 at 11.50.31 AM.png";
+import slide_img_5 from "../assets/Screenshot 2024-12-27 at 11.48.47 AM.png";
 import ProfileDetailImg from "../Components/Section/ProfileDetailsSec/ProfileDetailImg";
 import ProfileDetailsHobbies from "../Components/Section/ProfileDetailsSec/ProfileDetailsHobbies";
 import ProfileDetailOther from "../Components/Section/ProfileDetailsSec/ProfileDetailOther";
@@ -35,7 +35,7 @@ function ProfileDetails() {
                 voluptatem doloremque sunt ipsam, nam pariatur corrupti?
               </p>
 
-              <div className="w-full h-auto mt-6 text-white bg-gray-50 flex flex-col justify-center items-center p-3 gap-5 rounded-2xl">
+              <div className="w-full h-auto mt-6 text-white bg-[#f15d5d] bg-opacity-10 flex flex-col justify-center items-center p-3 gap-5 rounded-2xl">
                 <h1 className="text-black text-sm md:text-lg">
                   Contact Number: +97*******5
                 </h1>
