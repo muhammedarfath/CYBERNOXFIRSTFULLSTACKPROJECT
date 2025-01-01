@@ -112,7 +112,7 @@ export default function Login({ onOpenChange, isOpen }) {
 
                   <button
                     type="submit"
-                    className="w-full text-white bg-[#4CAF50] hover:bg-[#45a049] font-medium rounded-lg text-sm px-5 py-3 text-center transition-colors"
+                    className="w-full text-white bg-button  font-medium rounded-lg text-sm px-5 py-3 text-center transition-colors"
                   >
                     Login
                   </button>
