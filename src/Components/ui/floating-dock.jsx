@@ -86,22 +86,21 @@ function IconContainer({ mouseX, title, icon, href, active, onClick }) {
         style={{
           width: active ? 80 : width,
           height: active ? 80 : height,
-          scale: active ? 1.1 : 1, 
-          backgroundColor: active ? '#CC2B52' : 'white', 
+          scale: active ? 1.1 : 1,
+          backgroundColor: active ? "#CC2B52" : "white", 
         }}
         className={cn(
-          "aspect-square rounded-full flex items-center hover:text-white bg-gray-200 text-gary200 border border-gray justify-center relative",
+          "aspect-square rounded-full flex items-center hover:text-white bg-gray-200 text-gray-200 border border-gray justify-center relative",
           active ? "bg-primary" : "bg-white"
         )}
         whileHover={{
           backgroundColor: "#CC2B52", 
-          
         }}
         transition={{ duration: 0.3 }}
       >
         <motion.div
           style={{ width: widthIcon, height: heightIcon }}
-          className="flex items-center justify-center"
+          className={`flex items-center justify-center ${active ? 'text-white' : 'text-black'}`}
         >
           {icon}
         </motion.div>
@@ -121,3 +120,4 @@ function IconContainer({ mouseX, title, icon, href, active, onClick }) {
     </Link>
   );
 }
+

@@ -8,6 +8,7 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
+import slide_img_4 from "../../assets/Screenshot 2024-12-27 at 11.49.50 AM.png";
 
 export default function ChatArea({ onOpenChange, isOpen }) {
   return (
@@ -52,9 +53,9 @@ export default function ChatArea({ onOpenChange, isOpen }) {
                       <div className="flex flex-col text-white items-center bg-primary mt-4 w-full py-6 px-4 rounded-lg">
                         <div className="h-20 w-20 rounded-full overflow-hidden">
                           <img
-                            src="https://avatars3.githubusercontent.com/u/2763884?s=128"
+                            src={slide_img_4}
                             alt="Avatar"
-                            className="h-full w-full"
+                            className="h-full w-full object-cover"
                           />
                         </div>
                         <div className="text-sm font-semibold mt-2">

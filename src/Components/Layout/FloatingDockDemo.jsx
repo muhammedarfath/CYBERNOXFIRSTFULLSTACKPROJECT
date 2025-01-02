@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { FloatingDock } from "../ui/floating-dock";
-import { CiMedal } from "react-icons/ci";
-import { CiUser } from "react-icons/ci";
-import { CiHeart } from "react-icons/ci";
-import { CiChat1 } from "react-icons/ci";
+import { CiMedal, CiUser, CiHeart, CiChat1 } from "react-icons/ci";
 
 export function FloatingDockDemo() {
-  const [activeItem, setActiveItem] = useState(null); 
+  const [activeItem, setActiveItem] = useState("MATRYMONY"); // Default active item
 
   const handleClick = (item) => {
     setActiveItem(item);
@@ -15,12 +12,12 @@ export function FloatingDockDemo() {
   const links = [
     {
       title: "Profile",
-      icon: <CiUser className="h-full w-full text-black" />,
+      icon: <CiUser className="h-full w-full" />,
       href: "/profile",
     },
     {
       title: "Best Matches",
-      icon: <CiMedal className="h-full w-full text-black " />,
+      icon: <CiMedal className="h-full w-full" />,
       href: "/bestmatch",
     },
     {
@@ -37,12 +34,12 @@ export function FloatingDockDemo() {
     },
     {
       title: "Like",
-      icon: <CiHeart className="h-full w-full text-black" />,
+      icon: <CiHeart className="h-full w-full" />,
       href: "/interest",
     },
     {
       title: "Message",
-      icon: <CiChat1 className="h-full w-full text-black" />,
+      icon: <CiChat1 className="h-full w-full" />,
       href: "/message",
     },
   ];
@@ -52,9 +49,10 @@ export function FloatingDockDemo() {
       <FloatingDock
         mobileClassName="translate-y-20"
         items={links}
-        activeItem={activeItem} 
-        setActiveItem={handleClick} 
+        activeItem={activeItem}
+        setActiveItem={handleClick}
       />
     </div>
   );
 }
+

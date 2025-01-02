@@ -59,7 +59,7 @@ function InterestRecievedSec() {
               <div className="absolute right-0 mt-9 w-64 z-50 bg-white rounded-md shadow-lg">
                 <ul className="flex flex-col">
                   <li
-                    className={`px-4 py-2 cursor-pointer hover:bg-button ${
+                    className={`px-4 py-2 cursor-pointer hover:bg-button hover:text-white ${
                       filter === "received" ? "font-semibold text-black" : ""
                     }`}
                     onClick={() => {
@@ -70,8 +70,8 @@ function InterestRecievedSec() {
                     Interest Received
                   </li>
                   <li
-                    className={`px-4 py-2 cursor-pointer hover:bg-button ${
-                      filter === "sent" ? "font-semibold text-black" : ""
+                    className={`px-4 py-2 cursor-pointer hover:bg-button hover:text-white ${
+                      filter === "sent" ? "font-semibold text-primary" : ""
                     }`}
                     onClick={() => {
                       setFilter("sent");

@@ -4,7 +4,7 @@ import BasicDetailstwo from "../../../Pages/BasicDetailstwo";
 
 function BasicDetailSec() {
   const [submit, setSubmit] = useState(false);
-  const [physicalChallenges, setPhysicalChallenges] = useState("No");
+  const [physicalChallenges, setPhysicalChallenges] = useState("");
 
   return (
     <div className="flex lg:w-1/2 justify-center w-full md:p-4">

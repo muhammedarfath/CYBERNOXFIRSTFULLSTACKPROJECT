@@ -66,7 +66,7 @@ function BestMatchesSec() {
                 <div className="absolute right-0 mt-9 w-64 z-50 bg-white rounded-md shadow-lg">
                   <ul className="flex flex-col">
                     <li
-                      className={`px-4 py-2 cursor-pointer hover:bg-button ${
+                      className={`px-4 py-2 cursor-pointer hover:bg-button hover:text-white ${
                         filter === "received"
                           ? "font-semibold text-primary"
                           : ""
@@ -79,7 +79,7 @@ function BestMatchesSec() {
                       Partner Expectation
                     </li>
                     <li
-                      className={`px-4 py-2 cursor-pointer hover:bg-button ${
+                      className={`px-4 py-2 cursor-pointer hover:bg-button hover:text-white ${
                         filter === "sent" ? "font-semibold text-primary" : ""
                       }`}
                       onClick={() => {

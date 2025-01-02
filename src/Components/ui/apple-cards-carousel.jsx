@@ -209,7 +209,7 @@ export const Card = ({ card, index, layout = false }) => {
               />
               <button
                 onClick={handleSendMessage}
-                className="p-2 bg-[#5e5e61] text-white rounded-lg hover:bg-[#FFB9C3]"
+                className="p-2 bg-button text-white rounded-lg"
               >
                 <IconSend className="h-5 w-5" />
               </button>
