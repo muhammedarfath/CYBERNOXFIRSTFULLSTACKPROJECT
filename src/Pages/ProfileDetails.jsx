@@ -11,7 +11,7 @@ function ProfileDetails() {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <Link to="/">
+        <Link to="/" className="hidden md:block">
           <button className="bg-button flex items-center gap-3 p-2 px-5 mb-4 rounded-xl text-white text-sm md:text-base hover:bg-button-hover transition">
             <FaLeftLong />
             Back
