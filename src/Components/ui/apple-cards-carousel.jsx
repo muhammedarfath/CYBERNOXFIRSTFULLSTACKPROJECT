@@ -141,7 +141,7 @@ export const Carousel = ({ items, initialScroll = 0 }) => {
 
 export const Card = ({ card, index, layout = false }) => {
   const [open, setOpen] = useState(false);
-  const [showMessages, setShowMessages] = useState(false); // For hover effect
+  const [showMessages, setShowMessages] = useState(false);
   const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState([
     { type: "received", text: "Hello, how are you?" },
@@ -199,19 +199,19 @@ export const Card = ({ card, index, layout = false }) => {
               ))}
             </div>
 
-            <div className="flex gap-2 items-center mt-2">
+            <div className="flex gap-2 items-center mt-2 w-full">
               <input
                 type="text"
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 placeholder="Type a message..."
-                className="flex-1 p-2 rounded-lg border border-gray-300"
+                className="flex-1 p-2 rounded-lg border border-gray-300 text-sm sm:text-base sm:p-3 md:p-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               />
               <button
                 onClick={handleSendMessage}
-                className="p-2 bg-button text-white rounded-lg"
+                className="p-2 sm:p-3 md:p-4 bg-button text-white rounded-lg flex-shrink-0 hover:bg-button-hover active:bg-button-active transition-all duration-200"
               >
-                <IconSend className="h-5 w-5" />
+                <IconSend className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
               </button>
             </div>
           </div>
