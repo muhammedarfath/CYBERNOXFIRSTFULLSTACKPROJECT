@@ -112,6 +112,7 @@ function InterestRecievedSec() {
             ))}
           </div>
         </Link>
+        
       </div>
 
       <div className="slider-controler">

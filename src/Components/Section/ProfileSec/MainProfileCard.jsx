@@ -6,9 +6,7 @@ import indian from "../../../assets/Indian Flag Icon.png";
 function MainProfileCard() {
   return (
     <div className="flex flex-col lg:flex-row items-start justify-between p-6 bg-gray-50 rounded-lg gap-6">
-      {/* Left Section */}
       <div className="flex flex-col lg:flex-row gap-6 w-full lg:w-auto">
-        {/* Profile Picture Section */}
         <div className="flex flex-col items-center gap-3">
           <div className="relative">
             <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-gray rounded-full flex items-center justify-center">

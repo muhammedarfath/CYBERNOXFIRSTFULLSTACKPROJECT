@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 html,
 body {
   margin: 0;
@@ -13,18 +12,41 @@ body {
 }
 
 .swiper_container {
-  padding: 2rem 4;
+  padding: 2rem;
   position: relative;
   margin-top: 5rem;
 }
 
 .swiper-slide {
-  width: 37rem;
-  height: 42rem;
+  width: clamp(20rem, 50vw, 37rem); /* Dynamically adjusts width */
+  height: clamp(25rem, 60vh, 42rem); /* Dynamically adjusts height */
+  border-radius: 2rem;
+  object-fit: cover;
   position: relative;
 }
 
 @media (max-width: 1280px) {
+  .swiper_container {
+    margin-top: 4rem; /* Adjust for MD-LG gap */
+  }
+  .swiper-slide {
+    width: 30rem;
+    height: 38rem;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .swiper_container {
+    padding: 2rem 3rem;
+    margin-top: 4.5rem;
+  }
+  .swiper-slide {
+    width: 28rem;
+    height: 36rem;
+  }
+}
+
+@media (max-width: 990px) {
   .swiper_container {
     height: 50rem;
     margin-top: 6rem;
@@ -34,16 +56,22 @@ body {
     width: 26.26rem !important;
     height: 35rem !important;
   }
+}
 
-  .swiper-slide img {
-    width: 26.26rem !important;
-    height: 35rem !important;
+@media (max-width: 450px) {
+  .swiper_container {
+    padding: 1rem;
+    margin-top: 5rem;
+  }
+  .swiper-slide {
+    width: 90%; /* Makes it fluid for small devices */
+    height: auto; /* Allows height to adjust with aspect ratio */
   }
 }
 
 .swiper-slide img {
-  width: 37rem;
-  height: 42rem;
+  width: 100%; /* Makes the image fluid */
+  height: 100%; /* Matches the parent container */
   border-radius: 2rem;
   object-fit: cover;
 }
@@ -127,10 +155,6 @@ body {
   background: var(--primary);
 }
 
-
-
-
-
 /* Slide transition */
 .transition-enter {
   transform: translate(0, -10px);
@@ -154,17 +178,15 @@ body {
   transition: all 300ms ease-in;
 }
 
-
-
 .custom-range {
-  -webkit-appearance: none; 
+  -webkit-appearance: none;
   appearance: none;
-  width: 100%; 
-  height: 3px; 
-  background:#CC2B52; 
-  outline: none; 
+  width: 100%;
+  height: 3px;
+  background: #CC2B52;
+  outline: none;
   opacity: 0.7;
-  transition: opacity .2s; 
+  transition: opacity .2s;
 }
 
 .custom-range:hover {
@@ -172,23 +194,19 @@ body {
 }
 
 .custom-range::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
+  -webkit-appearance: none;
   appearance: none;
-  width: 15px; /* Thumb width */
-  height: 15px; /* Thumb height */
-  background: black; /* Black thumb color */
-  cursor: pointer; /* Cursor on hover */
-  border-radius: 50%; /* Circular thumb */
+  width: 15px;
+  height: 15px;
+  background: black;
+  cursor: pointer;
+  border-radius: 50%;
 }
 
 .custom-range::-moz-range-thumb {
-  width: 20px; /* Thumb width */
-  height: 20px; /* Thumb height */
-  background: black; /* Black thumb color */
-  cursor: pointer; /* Cursor on hover */
-  border-radius: 50%; /* Circular thumb */
+  width: 20px;
+  height: 20px;
+  background: black;
+  cursor: pointer;
+  border-radius: 50%;
 }
-
-
-
-

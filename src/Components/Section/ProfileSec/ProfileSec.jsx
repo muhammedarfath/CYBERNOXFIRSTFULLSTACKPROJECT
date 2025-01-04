@@ -16,7 +16,7 @@ function ProfileSec() {
 
 
   return (
-    <div className="w-full overflow-hidden min-h-screen">
+    <div className="w-full overflow-scroll h-full">
       <div className="flex md:flex-row flex-col w-full p-4">
         <div className="flex flex-col md:w-3/5 w-full flex-wrap gap-4 md:p-4">
           <div className="w-full flex items-center justify-between bg-white rounded-lg shadow-md p-5">

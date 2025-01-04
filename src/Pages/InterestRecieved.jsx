@@ -3,7 +3,7 @@ import InterestRecievedSec from '../Components/Section/InterestRecievedSec/Inter
 
 function InterestRecieved() {
   return (
-    <div>
+    <div className='w-full overflow-scroll h-full'>
       <InterestRecievedSec/>
     </div>
   )

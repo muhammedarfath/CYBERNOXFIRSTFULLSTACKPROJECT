@@ -18,7 +18,7 @@ function SearchSec() {
 
   return (
 
-    <div className="relative min-h-screen bg-gray-100">
+    <div className="relative h-full overflow-scroll bg-gray-100">
       <div className="m-5 hidden md:block">
         <Link to="/">
           <button className="bg-button flex items-center gap-3 p-2 px-5 mb-4 rounded-xl text-white">

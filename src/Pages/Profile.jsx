@@ -3,7 +3,7 @@ import ProfileSec from '../Components/Section/ProfileSec/ProfileSec'
 
 function Profile() {
   return (
-    <div>
+    <div className='w-full overflow-scroll h-full'>
         <ProfileSec/>
     </div>
   )

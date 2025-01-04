@@ -83,7 +83,7 @@ function ProfileCards() {
           <div className="loader">Loading...</div>
         </div>
       ) : (
-          <div className="container mx-auto md:px-[2.15rem] " onClick={() => handleProfileClick()}>
+          <div className="container mx-auto md:px-[2.15rem]" onClick={() => handleProfileClick()}>
             <Swiper
               ref={swiperRef}
               effect={"coverflow"}
@@ -118,7 +118,7 @@ function ProfileCards() {
             </Swiper>
           </div>
       )}
-      <div className="slider-controler">
+      <div className="slider-controler ">
         <FloatingDockDemo />
       </div>
     </div>
