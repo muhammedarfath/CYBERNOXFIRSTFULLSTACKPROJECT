@@ -7,7 +7,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { Link } from "react-router-dom";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export const FloatingDock = ({ items, activeItem, setActiveItem }) => {
   return (
@@ -44,7 +44,11 @@ const FloatingDockDesktop = ({ items, activeItem, setActiveItem }) => {
 };
 
 function IconContainer({ mouseX, title, icon, href, active, onClick }) {
-  let ref = useRef(null);
+  const ref = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseLeave = () => setIsHovered(false);
 
   let distance = useTransform(mouseX, (val) => {
     let bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
@@ -54,26 +58,12 @@ function IconContainer({ mouseX, title, icon, href, active, onClick }) {
   let widthTransform = useTransform(distance, [-150, 0, 150], [60, 100, 60]);
   let heightTransform = useTransform(distance, [-150, 0, 150], [60, 100, 60]);
 
-  let widthTransformIcon = useTransform(distance, [-150, 0, 150], [20, 30, 20]);
-  let heightTransformIcon = useTransform(distance, [-150, 0, 150], [20, 30, 20]);
-
-  let width = useSpring(widthTransform, {
+  let widthIcon = useSpring(widthTransform, {
     mass: 0.1,
     stiffness: 150,
     damping: 12,
   });
-  let height = useSpring(heightTransform, {
-    mass: 0.1,
-    stiffness: 150,
-    damping: 12,
-  });
-
-  let widthIcon = useSpring(widthTransformIcon, {
-    mass: 0.1,
-    stiffness: 150,
-    damping: 12,
-  });
-  let heightIcon = useSpring(heightTransformIcon, {
+  let heightIcon = useSpring(heightTransform, {
     mass: 0.1,
     stiffness: 150,
     damping: 12,
@@ -84,33 +74,31 @@ function IconContainer({ mouseX, title, icon, href, active, onClick }) {
       <motion.div
         ref={ref}
         style={{
-          width: active ? 80 : width,
-          height: active ? 80 : height,
+          width: active ? 80 : widthIcon,
+          height: active ? 80 : heightIcon,
           scale: active ? 1.1 : 1,
-          backgroundColor: active ? "#CC2B52" : "white", 
+          backgroundColor: active ? "#CC2B52" : "white",
         }}
         className={cn(
-          "aspect-square rounded-full flex items-center hover:text-white bg-gray-200 text-gray-200 border border-gray justify-center relative",
+          "aspect-square rounded-full flex items-center justify-center bg-gray-200 border border-gray relative",
           active ? "bg-primary" : "bg-white"
         )}
-        whileHover={{
-          backgroundColor: "#CC2B52", 
-        }}
-        transition={{ duration: 0.3 }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <motion.div
-          style={{ width: widthIcon, height: heightIcon }}
-          className={`flex items-center justify-center ${active ? 'text-white' : 'text-black'}`}
+          className={`flex items-center justify-center ${active ? "text-white" : "text-black"}`}
+          style={{ width: active ? 30 : 20, height: active ? 30 : 20 }}
         >
           {icon}
         </motion.div>
         <AnimatePresence>
-          {active && (
+          {isHovered && (
             <motion.div
               initial={{ opacity: 0, y: 10, x: "-50%" }}
               animate={{ opacity: 1, y: 0, x: "-50%" }}
               exit={{ opacity: 0, y: 2, x: "-50%" }}
-              className="absolute left-1/2 -translate-x-1/2 -top-7 w-fit text-xs px-2 py-0.5 rounded-md bg-primary border text-white border-gray-200"
+              className="absolute left-1/2 -translate-x-1/2 -top-7 w-fit text-xs px-2 py-0.5 rounded-md bg-primary text-white border-gray-200"
             >
               {title}
             </motion.div>
@@ -120,4 +108,5 @@ function IconContainer({ mouseX, title, icon, href, active, onClick }) {
     </Link>
   );
 }
+
 

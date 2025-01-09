@@ -7,6 +7,8 @@ import FindUs from "../Components/Section/RegisterSec/FindUs";
 import OurServices from "../Components/Section/RegisterSec/OurServices";
 import TeamInfo from "../Components/Section/RegisterSec/TeamInfo";
 import WhyChoose from "../Components/Section/RegisterSec/WhyChoose";
+import Testimonials from "../Components/Section/RegisterSec/Testimonials";
+import BasicFilter from "../Components/Section/RegisterSec/BasicFilter";
 
 export function Register() {
   const testimonials = [
@@ -54,10 +56,12 @@ export function Register() {
           </div>
         </div>
       </div>
+      <BasicFilter/>
       <FindUs />
       <OurServices />
       <TeamInfo />
       <WhyChoose />
+      <Testimonials/>
       <RegisterFooter />
     </div>
   );

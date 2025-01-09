@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import BasicDetailstwo from "../../../Pages/BasicDetailstwo";
+import { FaChevronDown } from "react-icons/fa";
 
 function BasicDetailSec() {
   const [submit, setSubmit] = useState(false);
@@ -24,7 +25,7 @@ function BasicDetailSec() {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="groom-name"
                 >
-                  Groom Name
+                  Groom / Bride Name
                 </label>
                 <input
                   className="appearance-none block w-full text-gray-700 bg-gray-200 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -36,57 +37,66 @@ function BasicDetailSec() {
             </div>
 
             <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full sm:w-1/3 px-3 mb-3 sm:mb-0">
+              <div className="w-full sm:w-1/3 px-3 mb-3 sm:mb-0 relative">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Day
                 </label>
-                <select className="block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                  <option>Day</option>
-                  {[...Array(31)].map((_, i) => (
-                    <option key={i} value={i + 1}>
-                      {i + 1}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select className="block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 pr-10 appearance-none">
+                    <option>Day</option>
+                    {[...Array(31)].map((_, i) => (
+                      <option key={i} value={i + 1}>
+                        {i + 1}
+                      </option>
+                    ))}
+                  </select>
+                  <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none" />
+                </div>
               </div>
-              <div className="w-full sm:w-1/3 px-3 mb-3 sm:mb-0">
+              <div className="w-full sm:w-1/3 px-3 mb-3 sm:mb-0 relative">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Month
                 </label>
-                <select className="block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                  <option>Month</option>
-                  {[
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July",
-                    "August",
-                    "September",
-                    "October",
-                    "November",
-                    "December",
-                  ].map((month, index) => (
-                    <option key={index} value={month}>
-                      {month}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select className="block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 pr-10 appearance-none">
+                    <option>Month</option>
+                    {[
+                      "January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July",
+                      "August",
+                      "September",
+                      "October",
+                      "November",
+                      "December",
+                    ].map((month, index) => (
+                      <option key={index} value={month}>
+                        {month}
+                      </option>
+                    ))}
+                  </select>
+                  <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none" />
+                </div>
               </div>
-              <div className="w-full sm:w-1/3 px-3">
+              <div className="w-full sm:w-1/3 px-3 relative">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Year
                 </label>
-                <select className="block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                  <option>Year</option>
-                  {[...Array(100)].map((_, i) => (
-                    <option key={i} value={2024 - i}>
-                      {2024 - i}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select className="block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 pr-10 appearance-none">
+                    <option>Year</option>
+                    {[...Array(100)].map((_, i) => (
+                      <option key={i} value={2024 - i}>
+                        {2024 - i}
+                      </option>
+                    ))}
+                  </select>
+                  <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none" />
+                </div>
               </div>
             </div>
 
@@ -152,16 +162,14 @@ function BasicDetailSec() {
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Height
                 </label>
-                <select className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                  <option>Choose Height</option>
-                  <option>5'0"</option>
-                  <option>5'5"</option>
-                  <option>6'0"</option>
-                </select>
+                <input
+                  type="number"
+                  className="appearance-none block w-full text-gray-700 bg-gray-200 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  placeholder="Enter Height"
+                />
               </div>
             </div>
 
-            {/* Additional Fields: Weight and Body Type */}
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full sm:w-1/2 px-3 mb-3 sm:mb-0">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
@@ -238,7 +246,6 @@ function BasicDetailSec() {
               </div>
             )}
 
-            {/* Submit Button */}
             <div className="flex justify-center flex-col">
               <button
                 className="bg-button text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"

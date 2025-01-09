@@ -34,7 +34,7 @@ function BasicDetailsthree() {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="family-status"
                 >
-                  Family Status
+                  Family Financial Status
                 </label>
                 <select
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"

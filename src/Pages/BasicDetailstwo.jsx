@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 function BasicDetailstwo() {
   const [showCollegeField, setShowCollegeField] = useState(false);
   const [submit, setSubmit] = useState(false);
+  const [other, setOther] = useState(false);
 
   const handleEducationChange = (event) => {
     const selectedValue = event.target.value;
@@ -23,7 +24,7 @@ function BasicDetailstwo() {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="groom-country"
                 >
-                  Where does the groom live? (Country)
+                  Where does the groom / bride live? (Country)
                 </label>
                 <select
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -44,7 +45,7 @@ function BasicDetailstwo() {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="groom-state"
                 >
-                  Where does the groom live? (State)
+                  Where does the groom / bride live? (State)
                 </label>
                 <select
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -62,7 +63,7 @@ function BasicDetailstwo() {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="groom-city"
                 >
-                  Where does the groom live? (City)
+                  Where does the groom / bride live? (City)
                 </label>
                 <select
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -81,7 +82,7 @@ function BasicDetailstwo() {
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                  Does family live with groom?
+                  Does family live with groom / bride?
                 </label>
                 <div className="flex items-center space-x-4">
                   <label>
@@ -166,9 +167,8 @@ function BasicDetailstwo() {
               </div>
             )}
 
-            {/* Occupation */}
             <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full px-3">
+              <div className="w-full px-3 mb-4">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="occupation"
@@ -178,15 +178,34 @@ function BasicDetailstwo() {
                 <select
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="occupation"
+                  onChange={(e) => setOther(e.target.value === "Other")}
                 >
                   <option>Choose Occupation</option>
                   <option>Engineer</option>
                   <option>Doctor</option>
                   <option>Teacher</option>
-                  <option>Other</option>
+                  <option value="Other">Other</option>
                 </select>
               </div>
+
+              {other && (
+                <div className="w-full px-3">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    htmlFor="other-occupation"
+                  >
+                    Other Occupation
+                  </label>
+                  <input
+                    type="text"
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="other-occupation"
+                    placeholder="Enter Occupation"
+                  />
+                </div>
+              )}
             </div>
+
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3">
                 <label

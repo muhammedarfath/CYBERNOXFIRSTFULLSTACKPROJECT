@@ -11,6 +11,8 @@ import Message from "./Pages/Message";
 import Layout from "./Components/Layout/Layout";
 import ProfileDetails from "./Pages/ProfileDetails";
 import SearchSec from "./Components/Search/SearchSec";
+import AboutUs from "./Pages/AboutUs";
+import Contact from "./Pages/Contact";
 
 function App() {
   return (
@@ -29,6 +31,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/basic-details" element={<BasicDetails />} />
         <Route path="/pricing" element={<PriceingPlan />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/contact" element={<Contact />} />
+
       </Routes>
     </Router>
   );
