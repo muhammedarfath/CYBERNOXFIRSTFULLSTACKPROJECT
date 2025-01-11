@@ -13,6 +13,7 @@ import ProfileDetails from "./Pages/ProfileDetails";
 import SearchSec from "./Components/Search/SearchSec";
 import AboutUs from "./Pages/AboutUs";
 import Contact from "./Pages/Contact";
+import ChatArea from "./Components/Section/MessageSec/ChatArea";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/interest" element={<InterestRecieved />} />
           <Route path="/message" element={<Message />} />
           <Route path="/search" element={<SearchSec />} />
+          <Route path="/chatarea" element={<ChatArea />} />
         </Route>
 
         <Route path="/register" element={<Register />} />

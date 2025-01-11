@@ -6,6 +6,7 @@ import slide_img_3 from "../../../assets/Screenshot 2024-12-27 at 11.48.47 AM.
 import slide_img_4 from "../../../assets/Screenshot 2024-12-27 at 11.49.50 AM.png";
 import slide_img_5 from "../../../assets/Screenshot 2024-12-27 at 11.50.31 AM.png";
 import { FaHeart } from "react-icons/fa";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { MdFilterList } from "react-icons/md";
 
@@ -13,116 +14,115 @@ function BestMatchesSec() {
   const [showFilterOptions, setShowFilterOptions] = useState(false);
   const [filter, setFilter] = useState("Partner Expectation");
 
-  const bestmatches = [
-    { imgsrc: slide_img_1, name: "raku, 19" },
+  const Expectation = [
+    { imgsrc: slide_img_1, name: "Sreya, 19" },
     { imgsrc: slide_img_2, name: "John, 25" },
     { imgsrc: slide_img_3, name: "Asha, 22" },
-    { imgsrc: slide_img_4, name: "Arjun, 27" },
-    { imgsrc: slide_img_5, name: "Maya, 23" },
-  ];
-
-  const Expectation = [
-    {
-      imgsrc: slide_img_1,
-      name: "Sreya, 19",
-    },
-    {
-      imgsrc: slide_img_2,
-      name: "John, 25",
-    },
-    {
-      imgsrc: slide_img_3,
-      name: "Asha, 22",
-    },
   ];
 
   const Location = [
-    {
-      imgsrc: slide_img_4,
-      name: "Arjun, 27",
-    },
-    {
-      imgsrc: slide_img_5,
-      name: "Maya, 23",
-    },
+    { imgsrc: slide_img_4, name: "Arjun, 27" },
+    { imgsrc: slide_img_5, name: "Maya, 23" },
   ];
 
   const bestmatch = filter === "Partner Expectation" ? Expectation : Location;
 
   return (
-    <div className="w-full overflow-hidden">
-      <div className="h-[auto] w-full flex flex-col gap-3 overflow-hidden container mx-auto p-4 mt-3">
-        <div className="flex flex-col">
-          <div className="flex justify-between gap-3">
-            <h1 className="font-semibold text-4xl">
-              {filter === "Partner Expectation" ? "Best Match" : "Location"}
+    <div className="w-full h-full py-6">
+      <div className="container mx-auto p-4">
+        {/* Header Section */}
+        <div className="flex justify-between items-center gap-3 bg-white p-6 rounded-lg shadow-lg">
+          <div className="">
+            <h1 className="text-4xl font-bold text-purple-800">
+              {filter === "Partner Expectation"
+                ? "Best Matches"
+                : "Nearby Matches"}
             </h1>
-            <div className="relative flex gap-5">
-              <MdFilterList
-                className="text-3xl cursor-pointer"
-                onClick={() => setShowFilterOptions(!showFilterOptions)}
-              />
-              {showFilterOptions && (
-                <div className="absolute right-0 mt-9 w-64 z-50 bg-white rounded-md shadow-lg">
-                  <ul className="flex flex-col">
-                    <li
-                      className={`px-4 py-2 cursor-pointer hover:bg-button hover:text-white ${
-                        filter === "received"
-                          ? "font-semibold text-primary"
-                          : ""
+            <p className="text-gray-600 text-sm">
+              View and manage all your likes and interests.
+            </p>
+          </div>
+          <div className="relative">
+            <button
+              onClick={() => setShowFilterOptions(!showFilterOptions)}
+              className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md shadow-lg hover:bg-primary-dark"
+            >
+              <MdFilterList className="text-2xl" />
+              Filter
+            </button>
+
+            {showFilterOptions && (
+              <div className="absolute right-0 mt-3 w-56 bg-white shadow-md rounded-md p-2 z-50 animate-fade-in">
+                <ul className="flex flex-col">
+                  <li
+                    className={`flex items-center gap-2 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-100 ${
+                      filter === "Partner Expectation"
+                        ? "bg-gray-200 font-bold"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      setFilter("Partner Expectation");
+                      setShowFilterOptions(false);
+                    }}
+                  >
+                    <IoIosCheckmarkCircleOutline
+                      className={`text-xl ${
+                        filter === "Partner Expectation"
+                          ? "text-green-500"
+                          : "text-gray-400"
                       }`}
-                      onClick={() => {
-                        setFilter("Partner Expectation");
-                        setShowFilterOptions(false);
-                      }}
-                    >
-                      Partner Expectation
-                    </li>
-                    <li
-                      className={`px-4 py-2 cursor-pointer hover:bg-button hover:text-white ${
-                        filter === "sent" ? "font-semibold text-primary" : ""
+                    />
+                    Partner Expectation
+                  </li>
+                  <li
+                    className={`flex items-center gap-2 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-100 ${
+                      filter === "Location" ? "bg-gray-200 font-bold" : ""
+                    }`}
+                    onClick={() => {
+                      setFilter("Location");
+                      setShowFilterOptions(false);
+                    }}
+                  >
+                    <IoIosCheckmarkCircleOutline
+                      className={`text-xl ${
+                        filter === "Location"
+                          ? "text-green-500"
+                          : "text-gray-400"
                       }`}
-                      onClick={() => {
-                        setFilter("Location");
-                        setShowFilterOptions(false);
-                      }}
-                    >
-                      Location
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
+                    />
+                    Location
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
 
-        <hr />
-        <Link to="/profiledetails">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {bestmatch.map((match, index) => (
+        {/* Best Matches List */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
+          {bestmatch.map((user, index) => (
+            <Link to="/profiledetails">
               <div
                 key={index}
-                className="relative group overflow-hidden rounded-lg cursor-pointer"
+                className="relative bg-gradient-to-b from-primary rounded-lg shadow-lg p-4 flex flex-col items-center hover:scale-105 transition-all"
               >
-                <p className="absolute top-2 left-2 bg-black bg-opacity-60 text-white px-2 py-1 rounded-lg text-sm font-semibold z-10">
-                  {match.name}
-                </p>
                 <img
-                  className="h-[30rem] w-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-110"
-                  src={match.imgsrc}
-                  alt={match.name}
+                  src={user.imgsrc}
+                  alt={user.name}
+                  className="w-32 h-32 rounded-full object-cover mb-4"
                 />
-                <div className="absolute inset-x-0 bottom-4 flex justify-end px-9">
-                  <button className="bg-button text-white font-bold p-4 rounded-full flex items-center text-xs md:text-sm lg:text-base transition duration-200 transform hover:scale-110">
-                    <FaHeart className="text-2xl" />
-                  </button>
-                </div>
+                <h3 className="text-xl font-semibold text-white mb-2 flex items-center">
+                  {user.name}
+                  <IoIosCheckmarkCircleOutline className="ml-2 text-green-500 text-xl" />
+                </h3>
+                <button className="text-white p-3 rounded-md bg-button mb-4">
+                  Click to connect
+                </button>
               </div>
-            ))}
-          </div>
-        </Link>
+            </Link>
+          ))}
+        </div>
       </div>
-
       <div className="slider-controler">
         <FloatingDockDemo />
       </div>

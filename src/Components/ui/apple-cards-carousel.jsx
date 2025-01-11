@@ -17,6 +17,7 @@ import { useOutsideClick } from "../hooks/use-outside-click";
 import { IconSend } from "@tabler/icons-react";
 import { useDisclosure } from "@nextui-org/react";
 import ChatArea from "../Modal/ChatArea";
+import { Link } from "react-router-dom";
 export const CarouselContext = createContext({
   onCardClose: () => {},
   currentIndex: 0,
@@ -147,7 +148,6 @@ export const Card = ({ card, index, layout = false }) => {
     { type: "received", text: "Hello, how are you?" },
     { type: "sent", text: "I'm good, thank you!" },
   ]);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const handleHover = () => setShowMessages(true);
   const handleLeave = () => setShowMessages(false);
 
@@ -160,64 +160,64 @@ export const Card = ({ card, index, layout = false }) => {
 
   return (
     <>
-      <motion.div
-        onMouseEnter={handleHover}
-        onMouseLeave={handleLeave}
-        layoutId={layout ? `card-${card.title}` : undefined}
-        className="relative rounded-3xl bg-gray-100 dark:bg-neutral-900 h-80 w-56 md:h-[30rem] md:w-96 overflow-hidden flex flex-col items-start justify-start"
-        onClick={onOpen}
-      >
-        <div className="absolute h-full top-0 inset-x-0 bg-gradient-to-b from-black/50 via-transparent to-transparent z-30 pointer-events-none" />
-        <div className="relative z-40 p-8">
-          <motion.p
-            layoutId={layout ? `title-${card.title}` : undefined}
-            className="text-white text-xl md:text-3xl font-semibold max-w-xs text-left [text-wrap:balance] font-sans mt-2"
-          >
-            {card.title}
-          </motion.p>
-        </div>
-        <img
-          src={card.src}
-          alt={card.title}
-          className="object-cover absolute z-10 inset-0 h-full w-full"
-        />
-
-        {showMessages && (
-          <div className="absolute inset-0 z-50 bg-black/30 flex flex-col justify-between p-4">
-            <div className="flex flex-col gap-2 overflow-y-auto">
-              {messages.map((message, i) => (
-                <div
-                  key={i}
-                  className={`p-2 rounded-lg text-sm max-w-[70%] ${
-                    message.type === "sent"
-                      ? "self-end bg-[#f15d5d] text-white"
-                      : "self-start bg-gray text-black"
-                  }`}
-                >
-                  {message.text}
-                </div>
-              ))}
-            </div>
-
-            <div className="flex gap-2 items-center mt-2 w-full">
-              <input
-                type="text"
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                placeholder="Type a message..."
-                className="flex-1 p-2 rounded-lg border border-gray-300 text-sm sm:text-base sm:p-3 md:p-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              />
-              <button
-                onClick={handleSendMessage}
-                className="p-2 sm:p-3 md:p-4 bg-button text-white rounded-lg flex-shrink-0 hover:bg-button-hover active:bg-button-active transition-all duration-200"
-              >
-                <IconSend className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
-              </button>
-            </div>
+      <Link to='/chatarea'>
+        <motion.div
+          onMouseEnter={handleHover}
+          onMouseLeave={handleLeave}
+          layoutId={layout ? `card-${card.title}` : undefined}
+          className="relative rounded-3xl bg-gray-100 dark:bg-neutral-900 h-80 w-56 md:h-[30rem] md:w-96 overflow-hidden flex flex-col items-start justify-start"
+        >
+          <div className="absolute h-full top-0 inset-x-0 bg-gradient-to-b from-black/50 via-transparent to-transparent z-30 pointer-events-none" />
+          <div className="relative z-40 p-8">
+            <motion.p
+              layoutId={layout ? `title-${card.title}` : undefined}
+              className="text-white text-xl md:text-3xl font-semibold max-w-xs text-left [text-wrap:balance] font-sans mt-2"
+            >
+              {card.title}
+            </motion.p>
           </div>
-        )}
-      </motion.div>
-      <ChatArea isOpen={isOpen} onOpenChange={onOpenChange} />
+          <img
+            src={card.src}
+            alt={card.title}
+            className="object-cover absolute z-10 inset-0 h-full w-full"
+          />
+
+          {showMessages && (
+            <div className="absolute inset-0 z-50 bg-black/30 flex flex-col justify-between p-4">
+              <div className="flex flex-col gap-2 overflow-y-auto">
+                {messages.map((message, i) => (
+                  <div
+                    key={i}
+                    className={`p-2 rounded-lg text-sm max-w-[70%] ${
+                      message.type === "sent"
+                        ? "self-end bg-[#f15d5d] text-white"
+                        : "self-start bg-gray text-black"
+                    }`}
+                  >
+                    {message.text}
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex gap-2 items-center mt-2 w-full">
+                <input
+                  type="text"
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  placeholder="Type a message..."
+                  className="flex-1 p-2 rounded-lg border border-gray-300 text-sm sm:text-base sm:p-3 md:p-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                />
+                <button
+                  onClick={handleSendMessage}
+                  className="p-2 sm:p-3 md:p-4 bg-button text-white rounded-lg flex-shrink-0 hover:bg-button-hover active:bg-button-active transition-all duration-200"
+                >
+                  <IconSend className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
+                </button>
+              </div>
+            </div>
+          )}
+        </motion.div>
+      </Link>
     </>
   );
 };

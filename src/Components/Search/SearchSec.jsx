@@ -28,7 +28,7 @@ function SearchSec() {
         </Link>
       </div>
 
-      <div className="w-full container mx-auto p-4 bg-white shadow-lg rounded-lg mb-16">
+      <div className="max-w-7xl mx-auto p-4 bg-white shadow-lg rounded-lg mb-16">
         <div className="flex gap-3 mb-4">
           <button
             className={`px-6 py-2 rounded-xl text-white ${

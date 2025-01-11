@@ -2,19 +2,23 @@ import React from "react";
 import FilterItem from "./FilterItem";
 import RangeSlider from "./RangeSlider";
 import {
-    FaBriefcase,
-    FaDumbbell,
-    FaGraduationCap,
-    FaMoneyBillWave,
-    FaUserTie,
-    FaUsers,
-  } from "react-icons/fa";
-  import { MdLocationOn } from "react-icons/md";
-  import { RiHeartsFill } from "react-icons/ri";
-  import { BiBody, BiWorld } from "react-icons/bi";
+  FaBriefcase,
+  FaDumbbell,
+  FaGraduationCap,
+  FaMoneyBillWave,
+  FaUserTie,
+  FaUsers,
+} from "react-icons/fa";
+import { MdLocationOn } from "react-icons/md";
+import { RiHeartsFill } from "react-icons/ri";
+import { BiBody, BiWorld } from "react-icons/bi";
 
-
-function FilterOption({activeFilter,filters,activeLocation,setActiveLocation}) {
+function FilterOption({
+  activeFilter,
+  filters,
+  activeLocation,
+  setActiveLocation,
+}) {
   return (
     <>
       {activeFilter === "filter" && (
@@ -50,18 +54,25 @@ function FilterOption({activeFilter,filters,activeLocation,setActiveLocation}) {
           </div>
 
           <div className="space-y-6 mt-4">
-            <RangeSlider
-              title="Weight"
-              range={filters.weight}
-              unit="Kg"
-              icon={<FaDumbbell />}
-            />
-            <RangeSlider
-              title="Age"
-              range={filters.age}
-              unit="yrs"
-              icon={<BiWorld />}
-            />
+            <div className="flex gap-6 mt-4">
+              <div className="flex-1">
+                <RangeSlider
+                  title="Weight"
+                  range={filters.weight}
+                  unit="Kg"
+                  icon={<FaDumbbell />}
+                />
+              </div>
+              <div className="flex-1">
+                <RangeSlider
+                  title="Age"
+                  range={filters.age}
+                  unit="yrs"
+                  icon={<BiWorld />}
+                />
+              </div>
+            </div>
+
             <RangeSlider
               title="Height"
               range={filters.height}
