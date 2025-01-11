@@ -9,7 +9,8 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import slide_img_4 from "../../assets/Screenshot 2024-12-27 at 11.49.50 AM.png";
-
+import { AiOutlineAudio } from "react-icons/ai";
+import { MdReport } from "react-icons/md";
 export default function ChatArea({ onOpenChange, isOpen }) {
   return (
     <>
@@ -73,7 +74,16 @@ export default function ChatArea({ onOpenChange, isOpen }) {
                       </div>
                     </div>
 
-                    <div className="flex flex-col flex-auto h-auto ">
+                    <div className="flex flex-col flex-auto h-auto">
+                      <div className="flex items-center justify-between px-4 py-2 bg-gray-100 rounded-t-2xl">
+                        <h2 className="text-lg font-semibold">Chat</h2>
+                        <div>
+                          <button className="flex items-center gap-2 bg-button text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none">
+                            <MdReport className="w-5 h-5" /> {/* Icon */}
+                            Block / Report
+                          </button>
+                        </div>
+                      </div>
                       <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray h-full p-4">
                         <div className="flex flex-col h-full overflow-x-auto mb-4">
                           <div className="flex flex-col h-full">
@@ -135,7 +145,12 @@ export default function ChatArea({ onOpenChange, isOpen }) {
                               />
                             </div>
                           </div>
-                          <div className="ml-4">
+                          <div className="flex gap-4 ml-4">
+                            <div>
+                              <button className="flex items-center justify-center text-primary hover:text-black">
+                                <AiOutlineAudio className="w-6 h-6" />
+                              </button>
+                            </div>
                             <button className="flex items-center justify-center bg-button hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
                               Send
                             </button>

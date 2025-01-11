@@ -22,13 +22,13 @@ function PriceingPlan() {
 
         <div className="relative z-10 mt-8 w-full">
           <Link to="/">
-            <h1 className="text-sm underline text-center cursor-pointer">
+            <h1 className="text-md underline text-center cursor-pointer">
               Skip for now
             </h1>
           </Link>
         </div>
 
-        <div className="fixed p-4 p-6 w-full bottom-0 bg-white shadow-2xl shadow-black z-0">
+        <div className="fixed p-6 w-full bottom-0 bg-white shadow-2xl shadow-black z-0">
           <div className="w-full h-full flex justify-between items-center">
             <p className="text-gray-700 font-medium text-sm sm:text-base">
               ₹29 - Secure your access now!

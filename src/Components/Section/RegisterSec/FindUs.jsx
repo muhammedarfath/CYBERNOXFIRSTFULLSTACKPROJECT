@@ -12,7 +12,7 @@ function FindUs() {
         <hr className="mb-3 border-gray-300 w-1/2 mx-auto" />
       </div>
       <div className="mt-8 flex justify-center items-center w-full">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:w-[40rem] lg:w-[90rem] w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:w-[40rem] lg:w-[90rem] w-full">
           <div className="flex flex-col bg-primary items-center text-center text-white p-6 rounded-lg shadow-md">
             <img
               src={register}

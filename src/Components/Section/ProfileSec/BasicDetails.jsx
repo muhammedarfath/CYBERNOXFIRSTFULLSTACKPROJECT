@@ -13,8 +13,6 @@ function BasicDetails() {
     { label: "Gender", value: "Male" },
     { label: "Marital Status", value: "Never Married" },
     { label: "Creating Profile for", value: "My Self" },
-    { label: "Willing to Relocate", value: "Add Relocate", action: true },
-    { label: "Marriage Plan", value: "Add Marriage Plan", action: true },
     { label: "Any Health / Disability Issues?", value: "No" },
     { label: "Ethnic Group", value: "Add Ethnicity", action: true },
     { label: "Mother Tongue", value: "Add Mother Tongue", action: true },

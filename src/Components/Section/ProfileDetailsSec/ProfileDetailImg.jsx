@@ -1,4 +1,5 @@
 import React from "react";
+import BottomIcons from "./BottomIcons";
 
 function ProfileDetailImg({slide_img_5}) {
   return (
@@ -25,6 +26,7 @@ function ProfileDetailImg({slide_img_5}) {
           />
         </div>
       </div>
+      <BottomIcons/>
     </div>
   );
 }
