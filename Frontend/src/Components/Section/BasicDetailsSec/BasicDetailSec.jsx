@@ -195,14 +195,12 @@ function BasicDetailSec() {
               </div>
             </div>
 
-            {/* Physical Challenges Field */}
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Physical Challenges
                 </label>
                 <div className="flex items-center gap-4">
-                  {/* Yes Option */}
                   <label className="flex items-center text-gray-700">
                     <input
                       type="radio"
@@ -230,7 +228,6 @@ function BasicDetailSec() {
               </div>
             </div>
 
-            {/* Conditional Physical Status Field */}
             {physicalChallenges === "Yes" && (
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full px-3">

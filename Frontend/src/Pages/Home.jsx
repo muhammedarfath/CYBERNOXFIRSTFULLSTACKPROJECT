@@ -10,14 +10,14 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const navigate = useNavigate();
+  const { isLoggedIn, token } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn || !token) {
       navigate("/register");
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, token, navigate]);
 
   const slideData = [
     {

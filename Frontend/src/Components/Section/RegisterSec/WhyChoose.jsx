@@ -4,7 +4,7 @@ function WhyChoose() {
   return (
     <div className="p-8 w-full h-full flex flex-col items-center justify-center">
       <div className="flex flex-col gap-9 text-center">
-        <h1 className="font-extrabold text-3xl">
+        <h1 className="font-extrabold text-3xl ">
           Why Choose [Your Matrimony Name]?
         </h1>
 

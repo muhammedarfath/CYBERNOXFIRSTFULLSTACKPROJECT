@@ -22,7 +22,8 @@ import { useNavigate } from "react-router-dom";
 function ProfileCards() {
   const [isLoading, setIsLoading] = useState(true);
   const swiperRef = useRef(null);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+
 
   const slideData = [
     {
@@ -83,40 +84,43 @@ function ProfileCards() {
           <div className="loader">Loading...</div>
         </div>
       ) : (
-          <div className="container mx-auto md:px-[2.15rem]" onClick={() => handleProfileClick()}>
-            <Swiper
-              ref={swiperRef}
-              effect={"coverflow"}
-              grabCursor={true}
-              centeredSlides={true}
-              loop={true}
-              slidesPerView={"auto"}
-              coverflowEffect={{
-                rotate: 0,
-                stretch: 0,
-                depth: 100,
-                modifier: 2.5,
-              }}
-              pagination={{ el: ".swiper-pagination", clickable: true }}
-              navigation={{
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-                clickable: true,
-              }}
-              modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
-              className="swiper_container "
-            >
-              {slideData.map((slide, index) => (
-                <SwiperSlide key={index}>
-                  <SwiperSlideContent
-                    slide={slide}
-                    swiperRef={swiperRef}
-                    index={index}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+        <div
+          className="container mx-auto md:px-[2.15rem]"
+          onClick={() => handleProfileClick()}
+        >
+          <Swiper
+            ref={swiperRef}
+            effect={"coverflow"}
+            grabCursor={true}
+            centeredSlides={true}
+            loop={true}
+            slidesPerView={"auto"}
+            coverflowEffect={{
+              rotate: 0,
+              stretch: 0,
+              depth: 100,
+              modifier: 2.5,
+            }}
+            pagination={{ el: ".swiper-pagination", clickable: true }}
+            navigation={{
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+              clickable: true,
+            }}
+            modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
+            className="swiper_container "
+          >
+            {slideData.map((slide, index) => (
+              <SwiperSlide key={index}>
+                <SwiperSlideContent
+                  slide={slide}
+                  swiperRef={swiperRef}
+                  index={index}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       )}
       <div className="slider-controler ">
         <FloatingDockDemo />

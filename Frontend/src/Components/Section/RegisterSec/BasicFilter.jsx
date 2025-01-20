@@ -6,6 +6,8 @@ import slide_img_5 from "../../../assets/Screenshot 2024-12-27 at 11.50.31 AM.
 import React, { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdOutlineStarBorder } from "react-icons/md";
+import { useDisclosure } from "@nextui-org/react";
+import Login from "../../Modal/Login";
 
 function BasicFilter() {
   const [lookingFor, setLookingFor] = useState("Bride");
@@ -14,6 +16,7 @@ function BasicFilter() {
   const [heightFrom, setHeightFrom] = useState("150");
   const [heightTo, setHeightTo] = useState("170");
   const [community, setCommunity] = useState("Any");
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const profiles = [
     {
@@ -163,18 +166,19 @@ function BasicFilter() {
           </div>
         </div>
         <div className="w-full items-center flex justify-center">
-          <button className="bg-button max-w-6xl  text-white py-2 px-9 rounded-md hover:bg-teal-500 transition-colors w-full ">
+          <button className="bg-button max-w-xl  text-white py-2 px-9 rounded-md hover:bg-teal-500 transition-colors w-full ">
             SEARCH
           </button>
         </div>
       </div>
 
       <div className="max-w-6xl mx-auto p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 ">
           {profiles.map((profile) => (
             <div
               key={profile.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden group"
+              className="bg-white rounded-lg shadow-md overflow-hidden group cursor-pointer" 
+              onClick={onOpen}
             >
               <div className="relative">
                 <img
@@ -199,6 +203,7 @@ function BasicFilter() {
           ))}
         </div>
       </div>
+      <Login isOpen={isOpen} onOpenChange={onOpenChange} />
     </div>
   );
 }

@@ -7,25 +7,31 @@ import {
   loginFailure,
 } from "../../Redux/slices/authSlice";
 import { useState } from "react";
+import axios from "axios";
 
 export default function Login({ onOpenChange, isOpen }) {
   const dispatch = useDispatch();
-  const authState = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
+  const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     dispatch(startLoading());
 
     try {
-      const response = await fakeLoginAPI(mobile, password);
-
-      if (response.success) {
-        dispatch(loginSuccess({ username: response.username }));
+      const response = await loginAPI(mobile, email, password);
+      if (response) {
+        dispatch(
+          loginSuccess({
+            email: response.email,
+            token: response.access,
+            refresh: response.refresh,
+          })
+        );
+        console.log("home set");
         navigate("/");
       } else {
         throw new Error("Login failed");
@@ -36,11 +42,13 @@ export default function Login({ onOpenChange, isOpen }) {
     }
   };
 
-  const fakeLoginAPI = async (mobile, password) => {
-    if (mobile === "1234567890" && password === "password123") {
-      return { success: true, username: "testuser" };
-    }
-    return { success: false };
+  const loginAPI = async (mobile, email, password) => {
+    const payload = { mobile, email, password };
+    const response = await axios.post(
+      "http://127.0.0.1:8000/auth/login/",
+      payload
+    );
+    return response.data;
   };
 
   return (
@@ -71,13 +79,15 @@ export default function Login({ onOpenChange, isOpen }) {
                     </label>
                     <input
                       type="text"
-                      name="mobile"
-                      id="mobile"
                       className="bg-gray-50 border border-gray text-gray-900 rounded-lg block w-full p-2.5"
                       placeholder="Mobile Number / Email Address"
+                      value={mobile || email}
+                      onChange={(e) =>
+                        mobile
+                          ? setMobile(e.target.value)
+                          : setEmail(e.target.value)
+                      }
                       required
-                      value={mobile}
-                      onChange={(e) => setMobile(e.target.value)}
                       style={{ outline: "none" }}
                     />
                   </div>
@@ -90,13 +100,11 @@ export default function Login({ onOpenChange, isOpen }) {
                     </label>
                     <input
                       type="password"
-                      name="password"
-                      id="password"
                       placeholder="Password"
                       className="bg-gray-50 border border-gray text-gray-900 rounded-lg block w-full p-2.5"
-                      required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                      required
                       style={{ outline: "none" }}
                     />
                   </div>
