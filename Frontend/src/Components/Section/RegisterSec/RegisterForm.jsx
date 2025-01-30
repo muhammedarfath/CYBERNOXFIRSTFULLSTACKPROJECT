@@ -2,20 +2,23 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import requests from "../../../lib/urls";
-
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../../Redux/slices/authSlice";
+import { toast } from "react-hot-toast";
 function RegisterForm() {
   const [profileForOptions, setProfileForOptions] = useState([]);
   const [genderOptions, setGenderOptions] = useState([]);
   const [formData, setFormData] = useState({
     email: "",
     mobile: "",
-    createfor: "", 
+    createfor: "",
     gender: "",
     password: "",
     termsandcondition: false,
   });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchDropdownData = async () => {
@@ -44,7 +47,7 @@ function RegisterForm() {
   };
 
   const handleProfileForChange = (event) => {
-    setFormData({ ...formData, createfor: event.target.value }); // Use createfor here
+    setFormData({ ...formData, createfor: event.target.value }); 
     setErrors({ ...errors, createfor: "" });
   };
 
@@ -53,7 +56,7 @@ function RegisterForm() {
     if (!formData.email) newErrors.email = "Email is required.";
     if (!formData.mobile) newErrors.mobile = "Mobile number is required.";
     if (!formData.createfor || formData.createfor === "Choose One")
-      newErrors.createfor = "Please select who this profile is for."; 
+      newErrors.createfor = "Please select who this profile is for.";
     if (formData.createfor && !formData.gender)
       newErrors.gender = "Please select gender.";
     if (!formData.password) newErrors.password = "Password is required.";
@@ -66,6 +69,7 @@ function RegisterForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (validateForm()) {
       try {
         const { mobile, ...rest } = formData;
@@ -80,11 +84,22 @@ function RegisterForm() {
             },
           }
         );
-        alert("Registration successful!");
-        console.log(response.data);
+
+        console.log(response);
+        dispatch(
+          loginSuccess({
+            email: response.data.user.email,
+            token: response.data.access,
+            refresh: response.data.refresh,
+            userId: response.data.user.id,
+          })
+        );
+
+        toast.success("Registration successful!");
+
         navigate("/basic-details");
       } catch (error) {
-        console.error("Error registering user:", error.response.data);
+        console.error("Error registering user:", error);
         alert("Registration failed. Please try again.");
       }
     }
@@ -160,8 +175,8 @@ function RegisterForm() {
               errors.createfor ? "border-red" : "border-gray"
             } rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
             id="profile-for"
-            value={formData.createfor} 
-            onChange={handleProfileForChange} 
+            value={formData.createfor}
+            onChange={handleProfileForChange}
           >
             <option>Choose One</option>
             {profileForOptions.map((option) => (

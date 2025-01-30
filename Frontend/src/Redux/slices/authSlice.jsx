@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const loadState = () => {
   try {
-    const serializedState = localStorage.getItem('authState');
+    const serializedState = localStorage.getItem('authTokens');
     if (serializedState === null) {
       return undefined;
     }
@@ -17,7 +17,7 @@ const loadState = () => {
 const initialState = loadState() || {
   isLoggedIn: false,
   userId: null,
-  username: null,
+  email: null,
   token: null,
   refresh: null,
   loading: false,
@@ -32,14 +32,14 @@ const authSlice = createSlice({
       state.loading = true;
     },
     loginSuccess: (state, action) => {
-      const { username, token, refresh } = action.payload;
+      const { email, token, refresh, userId } = action.payload;
       state.isLoggedIn = true;
-      state.username = username;
+      state.email = email;
+      state.userId = userId;
       state.token = token;
       state.refresh = refresh;
       state.loading = false;
       state.error = null;
-      localStorage.setItem("authState", JSON.stringify(state));
     },
     loginFailure: (state) => {
       state.loading = false;
@@ -47,12 +47,12 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state.isLoggedIn = false;
-      state.username = null;
+      state.email = null;
       state.token = null;
       state.refresh = null;
       state.loading = false;
       state.error = null;
-      localStorage.removeItem("authState"); 
+      localStorage.removeItem("authTokens"); 
     },
   },
 });

@@ -6,13 +6,16 @@ import {
   loginSuccess,
   loginFailure,
 } from "../../Redux/slices/authSlice";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
+import { toast } from "react-hot-toast";
+import Swal from "sweetalert2";
+import AuthContext from "../../context/AuthContext";
 
 export default function Login({ onOpenChange, isOpen }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const {fetchDetails } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
@@ -29,16 +32,22 @@ export default function Login({ onOpenChange, isOpen }) {
             email: response.email,
             token: response.access,
             refresh: response.refresh,
+            userId: response.userid,
           })
         );
-        console.log("home set");
         navigate("/");
+        fetchDetails();
+        Swal.fire({
+          title: "Welcome Back",
+          icon: "success",
+          draggable: true
+        });
       } else {
         throw new Error("Login failed");
       }
     } catch (error) {
       dispatch(loginFailure());
-      alert("Invalid credentials. Please try again.");
+      toast.error("Invalid credentials. Please try again.")
     }
   };
 

@@ -1,11 +1,27 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import user from "../../../assets/arfath.jpg";
 import verifiedIcon from "../../../assets/Verified Icon.png";
+import AuthContext from "../../../context/AuthContext";
+import userphoto from "../../../assets/User Male Profile.svg";
+import { backendUrl } from "../../../Constants/Constants";
 
 function Navbar({ toggleMenu }) {
   const [isHovered, setIsHovered] = useState(false);
+  const { profileDetails, posts, setPosts, loading } = useContext(AuthContext);
+  const [preview, setPreview] = useState(null);
+
+  useEffect(() => {
+    if (profileDetails?.user_profile?.user.profile_picture) {
+      setPreview(
+        `${backendUrl}${profileDetails.user_profile.user.profile_picture}`
+      );
+    } else {
+      setPreview(userphoto);
+    }
+  }, [profileDetails]);
+
   return (
     <nav className="mx-auto flex items-center justify-between md:p-2 p-6 lg:px-8 ">
       <div className="flex lg:flex-1 items-center">
@@ -52,8 +68,8 @@ function Navbar({ toggleMenu }) {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <Link to="/contact">
-            <img src={user} alt="User Profile" className="w-12 rounded-xl" />
+          <Link to="/profile">
+            <img src={preview} alt="User Profile" className="w-12 h-12 rounded-xl" />
           </Link>
           <img
             src={verifiedIcon}
