@@ -20,7 +20,7 @@ body {
 .swiper-slide {
   width: clamp(20rem, 50vw, 37rem);
   /* Dynamically adjusts width */
-  height: clamp(25rem, 60vh, 42rem);
+  height: clamp(30rem, 65vh, 45rem);
   /* Dynamically adjusts height */
   border-radius: 2rem;
   object-fit: cover;
@@ -34,8 +34,8 @@ body {
   }
 
   .swiper-slide {
-    width: 30rem;
-    height: 38rem;
+    width: 35rem;
+    height: 44rem;
   }
 }
 

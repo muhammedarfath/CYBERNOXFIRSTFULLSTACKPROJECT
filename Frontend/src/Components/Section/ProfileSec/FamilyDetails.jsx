@@ -1,74 +1,94 @@
-import React from "react";
-import { TbChevronRight, TbUserEdit } from "react-icons/tb";
+import React, { useState } from "react";
+import { MdChevronRight } from "react-icons/md";
+import HomeTypeModal from "../../Modal/HomeTypeModal";
+import LivingSituationModal from "../../Modal/LivingSituationModal";
+import MotherNameModal from "../../Modal/MotherNameModal"; // Import the MotherNameModal component
 
-function FamilyDetails() {
+function FamilyDetails({ profileDetails }) {
+  const { family_info } = profileDetails;
+  const [isHomeTypeModalOpen, setIsHomeTypeModalOpen] = useState(false);
+  const [isLivingSituationModalOpen, setIsLivingSituationModalOpen] = useState(false);
+  const [isMotherNameModalOpen, setIsMotherNameModalOpen] = useState(false); 
+  const [homeType, setHomeType] = useState(family_info?.home_type || "");
+  const [livingSituation, setLivingSituation] = useState(family_info?.living_situation || "");
+  const [motherName, setMotherName] = useState(family_info?.mother_name || "");
+
+  const handleOpenHomeTypeModal = () => {
+    setIsHomeTypeModalOpen(true);
+  };
+
+  const handleOpenLivingSituationModal = () => {
+    setIsLivingSituationModalOpen(true);
+  };
+
+  const handleOpenMotherNameModal = () => {
+    setIsMotherNameModalOpen(true);
+  };
+
   const details = [
-    { label: "Family Type", value: "Add Family Type", isAction: true },
-    { label: "Financial Status", value: "Middle Class" },
-    { label: "Home Type", value: "Add Home Type", isAction: true },
-    {
-      label: "Living Situation",
-      value: "Add Living Situation",
-      isAction: true,
-    },
-    { label: "Father Name", value: "Add Father Name", isAction: true },
-    {
-      label: "Father Alive or Not?",
-      value: "Add Father Details",
-      isAction: true,
-    },
-    {
-      label: "Father's Occupation",
-      value: "Add Father's Occupation",
-      isAction: true,
-    },
-    { label: "Mother Name", value: "Add Mother Name", isAction: true },
-    {
-      label: "Mother Alive or Not?",
-      value: "Add Mother Details",
-      isAction: true,
-    },
-    {
-      label: "Mother's Occupation",
-      value: "Add Mother's Occupation",
-      isAction: true,
-    },
-    { label: "No. Elder Brothers", value: "0" },
-    { label: "No. Younger Brothers", value: "0" },
-    { label: "No. Married Brothers", value: "0" },
-    { label: "No. Elder Sisters", value: "0" },
-    { label: "No. Younger Sisters", value: "0" },
-    { label: "No. Married Sisters", value: "0" },
-    { label: "Family Values", value: "Add Family Values", isAction: true },
-    { label: "Family Origin", value: "Add Family Origin", isAction: true },
-    { label: "Family Details", value: "Add Family Details", isAction: true },
+    { label: "Family Type", value: family_info?.family_type, isAction: true },
+    { label: "Financial Status", value: family_info?.family_status },
+    { label: "Home Type", value: homeType, isAction: true, onClick: handleOpenHomeTypeModal },
+    { label: "Living Situation", value: livingSituation, isAction: true, onClick: handleOpenLivingSituationModal },
+    { label: "Father Name", value: family_info?.father_name, isAction: true },
+    { label: "Father Alive or Not?", value: family_info?.father_alive, isAction: true },
+    { label: "Father's Occupation", value: family_info?.father_occupation, isAction: true },
+    { label: "Mother Name", value: motherName, isAction: true, onClick: handleOpenMotherNameModal },
+    { label: "Mother Alive or Not?", value: family_info?.mother_alive, isAction: true },
+    { label: "Mother's Occupation", value: family_info?.mother_occupation, isAction: true },
+    { label: "No. Brothers", value: family_info?.number_of_brothers ?? "0" },
+    { label: "No. Married Brothers", value: family_info?.married_brothers ?? "0" },
+    { label: "No. Sisters", value: family_info?.number_of_sisters ?? "0" },
+    { label: "No. Married Sisters", value: family_info?.married_sisters ?? "0" },
+    { label: "Family Details", value: family_info?.family_description, isAction: true },
   ];
 
   return (
     <div className="w-full mx-auto p-3">
-      <div className="flex justify-between items-center mb-3">
-        <h1 className="text-xl font-bold ">Family & Living Details</h1>
-        <TbUserEdit className="text-2xl bg-button rounded-xl text-white p-1 cursor-pointer text-gray-400" />
-      </div>
-
       <div className="space-y-1">
         {details.map((detail, index) => (
           <div
             key={index}
             className="flex items-center justify-between py-4 border-b border-gray-200 cursor-pointer hover:bg-gray-50"
+            onClick={detail.onClick} 
           >
             <span className="text-gray-700 text-lg">{detail.label}</span>
             <div className="flex items-center">
-              <span
-                className={detail.isAction ? "text-primary2" : "text-gray-900"}
-              >
-                {detail.value}
+              <span className={detail.value ? "text-gray-900" : "text-primary2"}>
+                {detail.value || `Add ${detail.label}`}
               </span>
-              <TbChevronRight className="ml-2 w-5 h-5" />
+              {!detail.value && <MdChevronRight className="h-5 w-5 text-gray-400" />}
             </div>
           </div>
         ))}
       </div>
+
+      {/* Home Type Modal */}
+      {isHomeTypeModalOpen && (
+        <HomeTypeModal
+          open={isHomeTypeModalOpen}
+          setOpen={setIsHomeTypeModalOpen}
+          setHomeType={setHomeType}
+        />
+      )}
+
+      {/* Living Situation Modal */}
+      {isLivingSituationModalOpen && (
+        <LivingSituationModal
+          open={isLivingSituationModalOpen}
+          setOpen={setIsLivingSituationModalOpen}
+          setLivingSituation={setLivingSituation}
+        />
+      )}
+
+      {/* Mother Name Modal */}
+      {isMotherNameModalOpen && (
+        <MotherNameModal
+          open={isMotherNameModalOpen}
+          setOpen={setIsMotherNameModalOpen}
+          setMotherName={setMotherName}
+        />
+      )}
     </div>
   );
 }

@@ -102,7 +102,7 @@ function Option({
               <label
                 key={option.id}
                 className="flex items-center space-x-3 cursor-pointer hover:bg-button hover:bg-opacity-60 hover:text-white p-2 rounded-lg"
-                onClick={() => handleToggle(option.status)} // Ensure toggle happens when clicked
+                onClick={() => handleToggle(option.status)} 
               >
                 <div className="flex-shrink-0">
                   {selectedValue.includes(option.status) ? (

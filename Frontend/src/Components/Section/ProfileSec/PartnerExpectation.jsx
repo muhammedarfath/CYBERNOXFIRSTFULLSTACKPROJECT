@@ -81,10 +81,6 @@ function PartnerExpectation() {
       <div className="mb-6 rounded-lg">
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
           <h2 className="text-lg font-semibold">Partner Basic Preferences</h2>
-          <TbUserEdit
-            className="text-2xl bg-button rounded-xl text-white p-1 cursor-pointer text-gray-400"
-            onClick={() => handleOpenModal("Partner Age Preference", "age")}
-          />
         </div>
         <div className="divide-y divide-gray-200">
           <PreferenceItem
@@ -156,12 +152,6 @@ function PartnerExpectation() {
           <h2 className="text-lg font-semibold">
             Education & Professional Preferences
           </h2>
-          <TbUserEdit
-            className="text-2xl bg-button rounded-xl text-white p-1 cursor-pointer text-gray-400"
-            onClick={() =>
-              handleOpenModal("Partner Education Preferences", "education")
-            }
-          />
         </div>
         <div className="divide-y divide-gray-200">
           <PreferenceItem
@@ -195,12 +185,6 @@ function PartnerExpectation() {
           <h2 className="text-lg font-semibold">
             Partner Location Preferences
           </h2>
-          <TbUserEdit
-            className="text-2xl bg-button rounded-xl text-white p-1 cursor-pointer text-gray-400"
-            onClick={() =>
-              handleOpenModal("Partner District Preferences", "district")
-            }
-          />
         </div>
         <div className="divide-y divide-gray-200">
           <PreferenceItem

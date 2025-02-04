@@ -5,17 +5,14 @@ import { CgClose } from "react-icons/cg";
 import { backendUrl } from "../../../Constants/Constants";
 
 export function MobileProfileCards({ slides }) {
-  // State to track the current index of the slide
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Function to go to the next slide
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === slides.length - 1 ? 0 : prevIndex + 1
     );
   };
 
-  // Function to go to the previous slide
   const prevSlide = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? slides.length - 1 : prevIndex - 1
@@ -61,7 +58,6 @@ export function MobileProfileCards({ slides }) {
             </button>
           </div>
 
-          {/* Profile Info */}
           <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-25 p-4 text-center text-black">
             <h2 className="text-xl font-bold">{slides[currentIndex].username}</h2>
             <p>{slides[currentIndex].status}</p>
@@ -69,7 +65,7 @@ export function MobileProfileCards({ slides }) {
           </div>
         </div>
       ) : (
-        <p>No users found</p> // Display message if no slides
+        <p>No users found</p>
       )}
     </div>
   );

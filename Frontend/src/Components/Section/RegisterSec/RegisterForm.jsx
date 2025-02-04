@@ -247,8 +247,6 @@ function RegisterForm() {
           )}
         </div>
       </div>
-
-      {/* Terms and Conditions Checkbox */}
       <div className="flex items-start mb-6">
         <input
           className="mr-2 leading-tight"

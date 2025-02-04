@@ -5,6 +5,7 @@ import { FaRegUserCircle, FaHeart } from "react-icons/fa";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import { LuGraduationCap } from "react-icons/lu";
 import { backendUrl } from "../../../Constants/Constants";
+import userphoto from "../../../assets/User Male Profile.svg";
 
 function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
   const [showHeart, setShowHeart] = useState(false);
@@ -28,18 +29,29 @@ function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
     }, 1000);
   };
 
+
   return (
     <div
       className="relative h-full w-full container cursor-pointer"
       onClick={() => handleProfileClick(slide)}
     >
-      <img
-        src={`${backendUrl}/${slide.user_profile.user.profile_picture}`}
-        alt={`Slide ${index + 1}`}
-        className="object-cover object-left-top absolute h-full w-full inset-0"
-      />
+      {slide.user_profile &&
+      slide.user_profile.user &&
+      slide.user_profile.user.profile_picture ? (
+        <img
+          src={`${backendUrl}/${slide.user_profile.user.profile_picture}`}
+          alt={`Slide ${index + 1}`}
+          className="object-cover object-left-top absolute h-full w-full inset-0"
+        />
+      ) : (
+        <img
+          src={userphoto}
+          alt="image"
+          className="object-cover object-left-top absolute h-full w-full inset-0"
+        />
+      )}
 
-      <div className="absolute font-semibold flex mb-20 flex-col left-10 md:left-0 rounded-[2rem] inset-x-0 bottom-0 p-4 pl-10 text-black">
+      <div className="absolute font-semibold flex mb-20 flex-col left-10 md:left-0 inset-x-0 bottom-0 p-4 pl-10 text-black bg-white opacity-60">
         <h1 className="text-xl md:text-2xl lg:text-4xl">
           {slide.user_profile.name}
         </h1>

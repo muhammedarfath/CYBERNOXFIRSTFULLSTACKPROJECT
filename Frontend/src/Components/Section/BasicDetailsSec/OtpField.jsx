@@ -1,46 +1,40 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  startLoading,
-  loginSuccess,
-  loginFailure,
-} from "../../../Redux/slices/authSlice";
 import { motion } from "framer-motion";
+import requests from "../../../lib/urls";
+import axiosInstance from "../../../axios";
 
-function OtpField({
-  otpSent,
-  handleSendOtp,
-  handleOtpChange,
-  otp,
-  mobileNumber,
-}) {
-  const dispatch = useDispatch();
-  const authState = useSelector((state) => state.auth);
+function OtpField({ otpSent, handleSendOtp, handleOtpChange,otp, referenceId }) {
   const navigate = useNavigate();
 
+
+  console.log(referenceId,"this is ref");
+
+
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
-
-    dispatch(startLoading());
-
+    e.preventDefault();
+    if (!otp) {
+      alert("Please enter the OTP.");
+      return;
+    }
     try {
-      const response = await fakeVerifyOtpApi({ otp, mobileNumber }); 
-      if (response.success) {
-        dispatch(loginSuccess({ username: response.username })); 
-        navigate("/pricing"); 
+      const response = await axiosInstance.post(`${requests.VerifyOtp}`, {
+        otp,
+        referenceId,
+      });
+
+      if (response) {
+        console.log(response, "otp result");
+        // navigate("/pricing");
       } else {
-        dispatch(loginFailure());
         alert("Invalid OTP. Please try again.");
       }
     } catch (error) {
-      dispatch(loginFailure());
       console.error("Error verifying OTP:", error);
       alert("An error occurred. Please try again later.");
     }
   };
 
-  // Define animation variants for entry and exit
   const variants = {
     hidden: { opacity: 0, y: -20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
@@ -60,7 +54,7 @@ function OtpField({
               className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               htmlFor="otp"
             >
-              Enter OTP sent to your linked mobile number: {mobileNumber}
+              Enter OTP sent to your linked mobile number
             </label>
             <input
               type="text"
@@ -104,15 +98,3 @@ function OtpField({
 }
 
 export default OtpField;
-
-const fakeVerifyOtpApi = async ({ otp, mobileNumber }) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      if (otp === "123456") {
-        resolve({ success: true, username: "testuser" });
-      } else {
-        resolve({ success: false });
-      }
-    }, 1000);
-  });
-};

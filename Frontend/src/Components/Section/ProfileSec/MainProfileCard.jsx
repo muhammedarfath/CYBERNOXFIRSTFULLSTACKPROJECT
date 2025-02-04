@@ -18,9 +18,7 @@ function MainProfileCard({ profileDetails,logoutUser }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  console.log(profileDetails,"wht the fuc");
-
+  
   const calculateAge = (dateOfBirth) => {
     if (!dateOfBirth) return "N/A";
     const birthDate = new Date(dateOfBirth);

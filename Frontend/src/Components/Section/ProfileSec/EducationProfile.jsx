@@ -1,26 +1,53 @@
-import React, { useState } from "react";
-import { FaChevronRight } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
 import { MdChevronRight } from "react-icons/md";
-import { TbUserEdit } from "react-icons/tb";
+import CompanyModal from "../../Modal/CompanyModal";
+import JobExperienceModal from "../../Modal/JobExperienceModal";
 
-export default function EducationProfile() {
+export default function EducationProfile({ profileDetails }) {
   const [education, setEducation] = useState({
-    degree: "Diploma (Computers/ IT)",
+    degree: "",
     institution: "",
-    eduDetails: "",
-    profession: "Software Consultant",
+    profession: "",
     company: "",
     jobDetails: "",
     experience: "",
-    professionType: "Business",
     annualIncome: "",
   });
 
+  const [isCompanyModalOpen, setIsCompanyModalOpen] = useState(false);
+  const [isJobExperienceModalOpen, setIsJobExperienceModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (profileDetails?.groom_bride_info) {
+      setEducation({
+        degree: profileDetails.groom_bride_info.education || "",
+        institution: profileDetails.groom_bride_info.college_name || "",
+        profession: profileDetails.groom_bride_info.occupation || "",
+        company: profileDetails.groom_bride_info.company_name || "",
+        jobDetails: profileDetails.groom_bride_info.employment || "",
+        experience: profileDetails.groom_bride_info.experience || "",
+        annualIncome: profileDetails.groom_bride_info.income || "",
+      });
+    }
+  }, [profileDetails]);
+
   const handleEdit = (field) => {
-    console.log(`Edit ${field}`);
+    if (field === "company") {
+      setIsCompanyModalOpen(true);
+    } else if (field === "experience") {
+      setIsJobExperienceModalOpen(true);
+    }
   };
 
-  const renderField = (label, value, field) => (
+  const updateCompany = (newCompany) => {
+    setEducation((prev) => ({ ...prev, company: newCompany }));
+  };
+
+  const updateExperience = (newExperience) => {
+    setEducation((prev) => ({ ...prev, experience: newExperience }));
+  };
+
+  const renderField = (label, value, field, showIcon = false) => (
     <div
       className="flex items-center justify-between p-4 bg-white rounded-lg shadow mb-4 cursor-pointer hover:bg-gray-50"
       onClick={() => handleEdit(field)}
@@ -31,45 +58,22 @@ export default function EducationProfile() {
           {value || `Add ${label}`}
         </p>
       </div>
-      <MdChevronRight className="h-5 w-5 text-gray-400" />
+      {showIcon && <MdChevronRight className="h-5 w-5 text-gray-400" />}
     </div>
   );
 
   return (
     <div className="w-full mx-auto p-2">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex justify-between items-center">
-          <h1 className="text-xl font-semibold">
-            Education & Professional Details
-          </h1>
-          <TbUserEdit className="text-2xl bg-button rounded-xl text-white p-1 cursor-pointer text-gray-400" />
-        </div>
-
-        <button
-          className="p-2 bg-green-600 text-white rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-          onClick={() => console.log("Edit all details")}
-        >
-          <MdChevronRight className="h-5 w-5 text-gray-400" />
-        </button>
-      </div>
-
       {renderField("Education", education.degree, "degree")}
-      {renderField(
-        "Education Institution",
-        education.institution,
-        "institution"
-      )}
-      {renderField("Edu Details", education.eduDetails, "eduDetails")}
+      {renderField("Education Institution", education.institution, "institution")}
       {renderField("Profession", education.profession, "profession")}
-      {renderField("Company Name", education.company, "company")}
+      {renderField("Company Name", education.company, "company", true)}
       {renderField("Job Details", education.jobDetails, "jobDetails")}
-      {renderField("Job Experience", education.experience, "experience")}
-      {renderField(
-        "Profession Type",
-        education.professionType,
-        "professionType"
-      )}
+      {renderField("Job Experience", education.experience, "experience", true)}
       {renderField("Annual Income", education.annualIncome, "annualIncome")}
+
+      <CompanyModal open={isCompanyModalOpen} setOpen={setIsCompanyModalOpen} setCompany={updateCompany} />
+      <JobExperienceModal open={isJobExperienceModalOpen} setOpen={setIsJobExperienceModalOpen} setExperience={updateExperience} />
     </div>
   );
 }

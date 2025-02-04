@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ProofFile from "../Components/Section/BasicDetailsSec/ProofFile";
 import OtpField from "../Components/Section/BasicDetailsSec/OtpField";
-
+import requests from "../lib/urls";
+import axiosInstance from "../axios";
 
 function AadharOtp() {
-
   const [aadharNumber, setAadharNumber] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
-  const [mobileNumber, setMobileNumber] = useState("");
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [referenceId, setReferenceId] = useState(null);
 
   const handleAadharChange = (e) => setAadharNumber(e.target.value);
   const handleOtpChange = (e) => setOtp(e.target.value);
@@ -29,15 +29,27 @@ function AadharOtp() {
     }
   };
 
-  const handleSendOtp = () => {
-    if (aadharNumber.trim() === "") {
-      alert("Please enter an Aadhaar number or upload an identity proof.");
+  const handleSendOtp = async () => {
+    if (aadharNumber.trim().length !== 12) {
+      alert("Please enter a valid 12-digit Aadhaar number.");
       return;
     }
-    const linkedMobile = "9999999999";
-    setMobileNumber(linkedMobile);
-    setOtpSent(true);
-    console.log("OTP sent to: " + linkedMobile);
+
+
+    try {
+      const response = await axiosInstance.post(`${requests.SendOtp}`, {
+        aadhaar_number: aadharNumber,
+      });
+      if (response.status == 200) {
+        setReferenceId(response.data.result.data.reference_id)
+        setOtpSent(true);
+      } else {
+        alert(response.data);
+      }
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      alert("Failed to send OTP. Please try again.");
+    }
   };
 
   const handleSubmit = (e) => {
@@ -107,7 +119,7 @@ function AadharOtp() {
           handleSendOtp={handleSendOtp}
           handleOtpChange={handleOtpChange}
           otp={otp}
-          mobileNumber={mobileNumber}
+          referenceId={referenceId}
         />
       </form>
     </div>

@@ -1,26 +1,23 @@
+import { useDisclosure } from "@nextui-org/react";
 import React, { useState } from "react";
 import { FiSave, FiX } from "react-icons/fi";
 import { TbUserEdit } from "react-icons/tb";
 import { motion, AnimatePresence } from "framer-motion";
 import { CgClose } from "react-icons/cg";
-
-function EditProfile({ isOpen, onOpenChange, profileDetails }) {
+export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
   const [profileData, setProfileData] = useState({
-    familyType: "Single",
-    financialStatus: "Middle Class",
-    homeType: "Apartment",
-    livingSituation: "With Parents",
-    fatherName: "Add Father Name",
-    fatherAlive: "Add Father Details",
-    fathersOccupation: "Engineer",
-    motherName: "Add Mother Name",
-    motherAlive: "Add Mother Details",
-    mothersOccupation: "Teacher",
-    noBrothers: "0",
-    noMarriedBrothers: "0",
-    noSisters: "0",
-    noMarriedSisters: "0",
-    familyDetails: "Add Family Details",
+    "Pets Details": "Add Pets Details",
+    "Favourite Sports": "Add Favourite Sports",
+    "Favourite Places": "Add Favourite Places",
+    "Your Favourite Books": "Add Favourite Books",
+    "Movies and Musics": "Add Movies and Musics",
+    "Dress Sense": "Add Dress Sense",
+    "Body Art": "Add Body Art",
+    Exercise: "Add Exercise",
+    "Eating Habits": "Add Eating Habits",
+    "Smoking Habits": "Add Smoking Habits",
+    "Drinking Habits": "Add Drinking Habits",
+    "Cooking Skill": "Add Cooking Skill",
   });
 
   const handleChange = (e) => {
@@ -37,7 +34,7 @@ function EditProfile({ isOpen, onOpenChange, profileDetails }) {
   };
 
   const handleClose = () => {
-    onOpenChange(false); 
+    onOpenChange(false);
   };
 
   if (!isOpen) return null;
@@ -55,7 +52,7 @@ function EditProfile({ isOpen, onOpenChange, profileDetails }) {
         >
           <div className="p-6 bg-gradient-to-r from-primary ">
             <h2 className="text-2xl font-bold text-white flex items-center">
-              <TbUserEdit className="mr-2" /> Edit Family & Living Details
+              <TbUserEdit className="mr-2" /> Edit Hobbies, Likes & Favorites
             </h2>
             <button
               onClick={handleClose}
@@ -65,249 +62,201 @@ function EditProfile({ isOpen, onOpenChange, profileDetails }) {
             </button>
           </div>
           <div className="p-6 overflow-y-auto max-h-[calc(90vh-100px)]">
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Left column */}
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            >
               <div className="space-y-2">
                 <label
-                  htmlFor="familyType"
+                  htmlFor="pets-details"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Family Type
-                </label>
-                <select
-                  id="familyType"
-                  name="familyType"
-                  value={profileData.familyType}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
-                >
-                  <option value="Single">Single</option>
-                  <option value="Joint">Joint</option>
-                  <option value="Nuclear">Nuclear</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="financialStatus"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Financial Status
-                </label>
-                <select
-                  id="financialStatus"
-                  name="financialStatus"
-                  value={profileData.financialStatus}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
-                >
-                  <option value="Lower Class">Lower Class</option>
-                  <option value="Middle Class">Middle Class</option>
-                  <option value="Upper Class">Upper Class</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="fatherName"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Father Name
+                  Pets Details
                 </label>
                 <input
                   type="text"
-                  id="fatherName"
-                  name="fatherName"
-                  value={profileData.fatherName}
+                  id="pets-details"
+                  name="Pets Details"
+                  value={profileData["Pets Details"]}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 />
               </div>
-
               <div className="space-y-2">
                 <label
-                  htmlFor="fatherAlive"
+                  htmlFor="favourite-sports"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Father Alive or Not?
+                  Favourite Sports
                 </label>
                 <input
                   type="text"
-                  id="fatherAlive"
-                  name="fatherAlive"
-                  value={profileData.fatherAlive}
+                  id="favourite-sports"
+                  name="Favourite Sports"
+                  value={profileData["Favourite Sports"]}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 />
               </div>
-
               <div className="space-y-2">
                 <label
-                  htmlFor="noBrothers"
+                  htmlFor="favourite-places"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  No. Brothers
+                  Favourite Places
                 </label>
                 <input
                   type="text"
-                  id="noBrothers"
-                  name="noBrothers"
-                  value={profileData.noBrothers}
+                  id="favourite-places"
+                  name="Favourite Places"
+                  value={profileData["Favourite Places"]}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 />
               </div>
-
               <div className="space-y-2">
                 <label
-                  htmlFor="noMarriedBrothers"
+                  htmlFor="your-favourite-books"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  No. Married Brothers
+                  Your Favourite Books
                 </label>
                 <input
                   type="text"
-                  id="noMarriedBrothers"
-                  name="noMarriedBrothers"
-                  value={profileData.noMarriedBrothers}
+                  id="your-favourite-books"
+                  name="Your Favourite Books"
+                  value={profileData["Your Favourite Books"]}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 />
               </div>
-
-              {/* Right column */}
               <div className="space-y-2">
                 <label
-                  htmlFor="homeType"
+                  htmlFor="movies-and-musics"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Home Type
-                </label>
-                <select
-                  id="homeType"
-                  name="homeType"
-                  value={profileData.homeType}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
-                >
-                  <option value="Apartment">Apartment</option>
-                  <option value="Independent House">Independent House</option>
-                  <option value="Villa">Villa</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="livingSituation"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Living Situation
-                </label>
-                <select
-                  id="livingSituation"
-                  name="livingSituation"
-                  value={profileData.livingSituation}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
-                >
-                  <option value="With Parents">With Parents</option>
-                  <option value="Alone">Alone</option>
-                  <option value="With Spouse">With Spouse</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="fathersOccupation"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Father's Occupation
-                </label>
-                <select
-                  id="fathersOccupation"
-                  name="fathersOccupation"
-                  value={profileData.fathersOccupation}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
-                >
-                  <option value="Engineer">Engineer</option>
-                  <option value="Doctor">Doctor</option>
-                  <option value="Businessman">Businessman</option>
-                  <option value="Teacher">Teacher</option>
-                  <option value="Farmer">Farmer</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="mothersOccupation"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Mother's Occupation
-                </label>
-                <select
-                  id="mothersOccupation"
-                  name="mothersOccupation"
-                  value={profileData.mothersOccupation}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
-                >
-                  <option value="Teacher">Teacher</option>
-                  <option value="Housewife">Housewife</option>
-                  <option value="Nurse">Nurse</option>
-                  <option value="Businesswoman">Businesswoman</option>
-                  <option value="Farmer">Farmer</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="motherName"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Mother Name
+                  Movies and Musics
                 </label>
                 <input
                   type="text"
-                  id="motherName"
-                  name="motherName"
-                  value={profileData.motherName}
+                  id="movies-and-musics"
+                  name="Movies and Musics"
+                  value={profileData["Movies and Musics"]}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 />
               </div>
-
               <div className="space-y-2">
                 <label
-                  htmlFor="motherAlive"
+                  htmlFor="dress-sense"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Mother Alive or Not?
+                  Dress Sense
                 </label>
                 <input
                   type="text"
-                  id="motherAlive"
-                  name="motherAlive"
-                  value={profileData.motherAlive}
+                  id="dress-sense"
+                  name="Dress Sense"
+                  value={profileData["Dress Sense"]}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 />
               </div>
-
               <div className="space-y-2">
                 <label
-                  htmlFor="familyDetails"
+                  htmlFor="body-art"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Family Details
+                  Body Art
                 </label>
-                <textarea
-                  id="familyDetails"
-                  name="familyDetails"
-                  value={profileData.familyDetails}
+                <input
+                  type="text"
+                  id="body-art"
+                  name="Body Art"
+                  value={profileData["Body Art"]}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
-                ></textarea>
+                />
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="exercise"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Exercise
+                </label>
+                <input
+                  type="text"
+                  id="exercise"
+                  name="Exercise"
+                  value={profileData["Exercise"]}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
+                />
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="eating-habits"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Eating Habits
+                </label>
+                <input
+                  type="text"
+                  id="eating-habits"
+                  name="Eating Habits"
+                  value={profileData["Eating Habits"]}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
+                />
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="smoking-habits"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Smoking Habits
+                </label>
+                <input
+                  type="text"
+                  id="smoking-habits"
+                  name="Smoking Habits"
+                  value={profileData["Smoking Habits"]}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
+                />
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="drinking-habits"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Drinking Habits
+                </label>
+                <input
+                  type="text"
+                  id="drinking-habits"
+                  name="Drinking Habits"
+                  value={profileData["Drinking Habits"]}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
+                />
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="cooking-skill"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Cooking Skill
+                </label>
+                <input
+                  type="text"
+                  id="cooking-skill"
+                  name="Cooking Skill"
+                  value={profileData["Cooking Skill"]}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
+                />
               </div>
 
               <div className="flex justify-end space-x-4">
@@ -333,5 +282,3 @@ function EditProfile({ isOpen, onOpenChange, profileDetails }) {
     </AnimatePresence>
   );
 }
-
-export default EditProfile;

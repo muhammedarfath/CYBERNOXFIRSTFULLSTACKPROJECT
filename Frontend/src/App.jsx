@@ -17,6 +17,7 @@ import ChatArea from "./Components/Section/MessageSec/ChatArea";
 import Error from "./Pages/Error";
 import PrivateRoute from "./lib/PrivateRoute";
 import { Toaster } from "react-hot-toast";
+import AadharOtp from "./Pages/AadharOtp";
 
 function App() {
   return (
@@ -111,6 +112,16 @@ function App() {
             </PrivateRoute>
           }
         />
+
+        <Route
+          path="/otp"
+          element={
+            <PrivateRoute>
+              <AadharOtp />
+            </PrivateRoute>
+          }
+        />
+
         <Route
           path="/pricing"
           element={
