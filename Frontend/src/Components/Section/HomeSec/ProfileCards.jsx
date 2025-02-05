@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../../Loading/Loader";
 
 function ProfileCards({ slides }) {
+
   const swiperRef = useRef(null);
   const navigate = useNavigate();
 

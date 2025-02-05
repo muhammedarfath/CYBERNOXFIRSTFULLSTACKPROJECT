@@ -27,16 +27,14 @@ export function MobileProfileCards({ slides }) {
         <div
           className="max-w-[calc(100vw-2rem)] w-[calc(100vw-2rem)] h-full bg-white rounded-lg shadow flex flex-col relative mb-4"
         >
-          {/* Link to profile details */}
           <Link to="/profiledetails">
             <img
               className="rounded-lg object-cover w-full h-[calc(100vh-10.4rem)] transition-all duration-500"
-              src={`${backendUrl}/${slides[currentIndex].user_profile.user.profile_picture}`} // Using currentIndex to show the image
-              alt={slides[currentIndex].username} // Using 'username' for alt text
+              src={`${backendUrl}${slides[currentIndex].user_profile.user.profile_picture}`} 
+              alt={slides[currentIndex].username} 
             />
           </Link>
 
-          {/* Buttons for next/like */}
           <div className="absolute inset-x-0 bottom-28 flex justify-between px-4">
             <button
               onClick={(e) => {

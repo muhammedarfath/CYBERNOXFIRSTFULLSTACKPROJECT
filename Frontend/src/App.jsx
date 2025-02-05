@@ -113,14 +113,14 @@ function App() {
           }
         />
 
-        <Route
+        {/* <Route
           path="/otp"
           element={
             <PrivateRoute>
               <AadharOtp />
             </PrivateRoute>
           }
-        />
+        /> */}
 
         <Route
           path="/pricing"

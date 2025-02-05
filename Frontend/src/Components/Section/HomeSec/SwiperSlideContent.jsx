@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { MdOutlineStarBorder } from "react-icons/md";
 import { FaRegUserCircle, FaHeart } from "react-icons/fa";
@@ -6,14 +6,76 @@ import { MdOutlineWorkOutline } from "react-icons/md";
 import { LuGraduationCap } from "react-icons/lu";
 import { backendUrl } from "../../../Constants/Constants";
 import userphoto from "../../../assets/User Male Profile.svg";
+import { useSelector } from "react-redux";
+
+const socketBaseUrl = "ws://127.0.0.1:8000/ws/notifications/";
+
+
+
 
 function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
   const [showHeart, setShowHeart] = useState(false);
   const [showClose, setShowClose] = useState(false);
+  const [socket, setSocket] = useState(null);
+  const accessToken = useSelector((state) => state.auth.token);
+
+
+  
+
+  useEffect(() => {
+
+
+   if (!accessToken) {
+      console.error("No access token found");
+      return;
+    }
+
+    const socketUrl = `${socketBaseUrl}?token=${accessToken}`;  
+    const newSocket = new WebSocket(socketUrl);
+    
+    newSocket.onopen = () => {
+      console.log("WebSocket Connected");
+    };
+
+    newSocket.onclose = (event) => {
+      console.log("WebSocket Closed:", event.code, event.reason);
+    };
+
+    newSocket.onerror = (error) => {
+      console.error("WebSocket Error:", error);
+    };
+
+  
+
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.close();
+    };
+  }, []);
+
+
+
+
 
   const handleHeartClick = (e) => {
+
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+      console.error("WebSocket is not open. Cannot send message.");
+      return;
+    }
+
+
     e.stopPropagation();
     setShowHeart(true);
+    socket.send(
+      JSON.stringify({
+        option: "interest_sent",
+        userId: slide.user_profile.user.id,
+      })
+    );
+    
+
     setTimeout(() => {
       swiperRef.current.swiper.slideNext();
       setShowHeart(false);
@@ -30,6 +92,7 @@ function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
   };
 
 
+
   return (
     <div
       className="relative h-full w-full container cursor-pointer"
@@ -39,7 +102,7 @@ function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
       slide.user_profile.user &&
       slide.user_profile.user.profile_picture ? (
         <img
-          src={`${backendUrl}/${slide.user_profile.user.profile_picture}`}
+          src={`${backendUrl}${slide.user_profile.user.profile_picture}`}
           alt={`Slide ${index + 1}`}
           className="object-cover object-left-top absolute h-full w-full inset-0"
         />

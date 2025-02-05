@@ -107,7 +107,7 @@ function ProfileSec() {
           <div className="columns-2 xl:columns-3 p-4 gap-4 space-y-4">
             {posts.map((post) => (
               <div key={post.id} className="relative">
-                <img className="h-auto max-w-full rounded-lg" src={`${backendUrl}/${post.image}`} alt={post.content} />
+                <img className="h-auto max-w-full rounded-lg" src={`${backendUrl}${post.image}`} alt={post.content} />
                 <button onClick={() => handleDelete(post.id)} className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2">
                   <TiDeleteOutline className="text-3xl text-red bg-white rounded-md p-1" />
                 </button>
