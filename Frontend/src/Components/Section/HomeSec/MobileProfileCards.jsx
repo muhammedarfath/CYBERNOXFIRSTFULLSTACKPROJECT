@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { CgClose } from "react-icons/cg";
 import { backendUrl } from "../../../Constants/Constants";
 
 export function MobileProfileCards({ slides }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
@@ -19,7 +20,12 @@ export function MobileProfileCards({ slides }) {
     );
   };
 
-  console.log(`${backendUrl}${slides[currentIndex].user_profile.user.profile_picture}`);
+
+  const handleProfileClick = (slide) => {
+    navigate("/profiledetails", { state: { slide } });
+  };
+
+
 
   return (
     <div className="flex justify-center items-center p-4">
@@ -27,13 +33,13 @@ export function MobileProfileCards({ slides }) {
         <div
           className="max-w-[calc(100vw-2rem)] w-[calc(100vw-2rem)] h-full bg-white rounded-lg shadow flex flex-col relative mb-4"
         >
-          <Link to="/profiledetails">
+          <div onClick={() => handleProfileClick(slides[currentIndex])}>
             <img
               className="rounded-lg object-cover w-full h-[calc(100vh-10.4rem)] transition-all duration-500"
               src={`${backendUrl}${slides[currentIndex].user_profile.user.profile_picture}`} 
               alt={slides[currentIndex].username} 
             />
-          </Link>
+          </div>
 
           <div className="absolute inset-x-0 bottom-28 flex justify-between px-4">
             <button

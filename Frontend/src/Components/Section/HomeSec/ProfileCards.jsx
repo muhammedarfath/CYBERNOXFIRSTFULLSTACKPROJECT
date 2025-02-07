@@ -13,7 +13,6 @@ import {
 import { FloatingDockDemo } from "../../Layout/FloatingDockDemo";
 import SwiperSlideContent from "./SwiperSlideContent";
 import { useNavigate } from "react-router-dom";
-import Loader from "../../Loading/Loader";
 
 function ProfileCards({ slides }) {
 

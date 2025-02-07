@@ -86,7 +86,7 @@ function App() {
             }
           />
           <Route
-            path="/chatarea"
+            path="/chatarea/:name"
             element={
               <PrivateRoute>
                 <ChatArea />

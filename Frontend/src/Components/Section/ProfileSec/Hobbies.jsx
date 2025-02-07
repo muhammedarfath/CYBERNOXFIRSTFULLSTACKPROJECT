@@ -44,8 +44,6 @@ function Hobbies({profileDetails}) {
         ))}
       </div>
 
-
-
       <HobbiesModal
           isOpen={isOpen}
           onOpenChange={onOpenChange}

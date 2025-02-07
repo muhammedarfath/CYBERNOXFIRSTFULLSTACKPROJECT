@@ -35,7 +35,11 @@ const requests = {
     fetchDrinkingStatus :`${backendUrl}/partner/fetch-drinking-status/`,
     fetchSmokingStatus :`${backendUrl}/partner/fetch-smoking-status/`,
     fetchMaritalStatus :`${backendUrl}/partner/fetch-marital-status/`,
-
+    fetchBodyArt:`${backendUrl}/partner/fetch-body-art/`,
+    fetchCookingSkill:`${backendUrl}/partner/fetch-cooking-status/`,
+    fetchEatingHabits:`${backendUrl}/partner/fetch-eating-status/`,
+    fetchExercise:`${backendUrl}/partner/fetch-exercise-status/`,
+    
     fetchReligiousnesServices :`${backendUrl}/auth/fetch-religious-services/`,
     updateReligiousnesServices :`${backendUrl}/auth/update-religiousnes-services/`,
     fetchPolygamyOptions :`${backendUrl}/auth/fetch-polygamy/`,
@@ -51,8 +55,15 @@ const requests = {
     getHairTypeOptions :`${backendUrl}/auth/fetch-hair-type/`,
     editHairType :`${backendUrl}/auth/update-hair-type/`,
     editAppearance :`${backendUrl}/auth/update-appearance/`,
-    
+    getHomeTypeOptions :`${backendUrl}/auth/fetch-home-type/`,
+    editHomeType :`${backendUrl}/auth/update-home-type/`,
+    getLivingSituationOptions :`${backendUrl}/auth/fetch-living-situation/`,
+    editLivingSituation :`${backendUrl}/auth/update-living-situation/`,
+    editMotherName :`${backendUrl}/auth/update-mothername/`,
+    getMessageUser :`${backendUrl}/auth/message-user/`,
+    UpdateHobbies :`${backendUrl}/partner/update_hobbies/`,
+
     SendOtp :`${backendUrl}/aadhaarotp/send-otp/`,
     VerifyOtp:`${backendUrl}/aadhaarotp/verify-otp/`,
 }
-export default requests
+export default requests  

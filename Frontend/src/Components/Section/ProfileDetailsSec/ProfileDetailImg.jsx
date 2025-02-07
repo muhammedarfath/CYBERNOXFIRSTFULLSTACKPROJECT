@@ -3,14 +3,13 @@ import BottomIcons from "./BottomIcons";
 import { backendUrl } from "../../../Constants/Constants";
 
 function ProfileDetailImg({ slide }) {
-  console.log(slide);
 
   return (
-    <div className="col-span-4 sm:col-span-3">
+    <div className="">
       <div className="bg-white shadow rounded-lg p-6">
         <div className="flex flex-col items-center">
           <img
-            src={`${backendUrl}/${slide.user_profile.user.profile_picture}`}
+            src={`${backendUrl}${slide.user_profile.user.profile_picture}`}
             className="w-full h-full bg-gray mb-4"
             alt="Profile"
           />
@@ -19,7 +18,6 @@ function ProfileDetailImg({ slide }) {
         </div>
         <hr className="my-6 border-t border-gray-300" />
 
-        {/* Posts Section */}
         <div className="flex flex-col">
           <span className="text-gray-700 uppercase font-bold tracking-wider mb-4">
             Posts
@@ -33,7 +31,7 @@ function ProfileDetailImg({ slide }) {
                 <p className="text-gray-800 mb-2">{post.content}</p>
                 {post.image && (
                   <img
-                    src={`${backendUrl}/${post.image}`}
+                    src={`${backendUrl}${post.image}`}
                     className="w-full h-full object-cover rounded-md"
                     alt={`Post ${index + 1}`}
                   />

@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { TbEdit, TbCamera } from "react-icons/tb";
+import { TbCamera } from "react-icons/tb";
 import userphoto from "../../../assets/User Male Profile.svg";
 import indian from "../../../assets/Indian Flag Icon.png";
-import axios from "axios";
 import axiosInstance from "../../../axios";
 import requests from "../../../lib/urls";
 import { backendUrl } from "../../../Constants/Constants";
@@ -12,13 +11,13 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../../Redux/slices/authSlice";
 import { useDispatch } from "react-redux";
 
-function MainProfileCard({ profileDetails,logoutUser }) {
+function MainProfileCard({ profileDetails, logoutUser }) {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   const calculateAge = (dateOfBirth) => {
     if (!dateOfBirth) return "N/A";
     const birthDate = new Date(dateOfBirth);
@@ -44,8 +43,8 @@ function MainProfileCard({ profileDetails,logoutUser }) {
 
   const handleLogout = () => {
     dispatch(logout());
-    logoutUser() 
-    navigate("/register"); 
+    logoutUser();
+    navigate("/register");
   };
 
   useEffect(() => {
@@ -152,25 +151,23 @@ function MainProfileCard({ profileDetails,logoutUser }) {
           <p className="text-gray-700 text-sm sm:text-base text-center lg:text-left">
             {occupation}
           </p>
-          <div className="flex items-center gap-2 mt-2 bg-gray px-4 py-2 rounded-full w-fit mx-auto lg:mx-0">
-            <img src={indian} alt="Indian flag" className="w-5 h-5" />
-            <span className="text-gray-700 text-sm">
-              {city}, {state}, {country}
-            </span>
+          <div className="flex flex-col items-center justify-center gap-5">
+            <div className="flex items-center gap-2 mt-2 bg-gray px-4 py-2 rounded-full w-fit mx-auto lg:mx-0">
+              <img src={indian} alt="Indian flag" className="w-5 h-5" />
+              <span className="text-gray-700 text-sm">
+                {city}, {state}, {country}
+              </span>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="bg-button flex items-center gap-3 p-2 text-white rounded-lg"
+            >
+              <AiOutlineLogout />
+              Logout
+            </button>
           </div>
-          <button
-            onClick={handleLogout} 
-            className="bg-button flex items-center gap-3 p-2 text-white rounded-lg"
-          >
-            <AiOutlineLogout />
-            Logout
-          </button>
         </div>
       </div>
-
-      <button className="bg-button p-2 rounded-lg transition-colors self-center lg:self-start">
-        <TbEdit className="text-white w-6 h-6" />
-      </button>
     </div>
   );
 }

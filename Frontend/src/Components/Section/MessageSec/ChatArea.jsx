@@ -1,20 +1,104 @@
-import React, { useEffect, useRef } from "react";
-import slide_img_4 from "../../../assets/Screenshot 2024-12-27 at 11.49.50 AM.png";
+import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineAudio } from "react-icons/ai";
 import { MdReport } from "react-icons/md";
+import { useLocation, useParams } from "react-router-dom";
+import axiosInstance from "../../../axios";
+import requests from "../../../lib/urls";
+import { backendUrl } from "../../../Constants/Constants";
+import { useSelector } from "react-redux";
+
+const socketBaseUrl = "ws://127.0.0.1:8000/ws/chat/";
 
 export default function ChatArea() {
-  // Reference for the message container
+  const { name } = useParams();
+  const location = useLocation();
+  const userId = location.state?.userId;
   const messageEndRef = useRef(null);
+  const [messageUser, setMessageUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const accessToken = useSelector((state) => state.auth.token);
+  const [socket, setSocket] = useState(null);
+  const [message, setMessage] = useState("");
 
-  // Scroll to the bottom when the component mounts
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axiosInstance.get(`${requests.getMessageUser}`, {
+          params: { user_id: userId },
+        });
+        setMessageUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userId) {
+      fetchUser();
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    if (!accessToken) {
+      console.error("No access token found");
+      return;
+    }
+
+    const socketUrl = `${socketBaseUrl}?token=${accessToken}`;
+    const newSocket = new WebSocket(socketUrl);
+
+    newSocket.onopen = () => {
+      console.log("WebSocket Connected");
+    };
+
+    newSocket.onclose = (event) => {
+      console.log("WebSocket Closed:", event.code, event.reason);
+    };
+
+    newSocket.onerror = (error) => {
+      console.error("WebSocket Error:", error);
+    };
+
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.close();
+    };
+  }, []);
+
+  const handleSend = () => {
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+      console.error("WebSocket is not open. Cannot send message.");
+      return;
+    }
+
+    if (!message.trim()) {
+      console.error("Message is empty. Cannot send.");
+      return;
+    }
+
+
+
+    socket.send(
+      JSON.stringify({
+        option: "new_messages",
+        userId: userId,
+        message: message,
+      })
+    );
+
+    setMessage("");
+  };
+
   return (
     <div className="flex h-full text-black">
       <div className="flex md:flex-row flex-col gap-4 md:gap-0 h-full w-full overflow-x-hidden">
+        {/* Sidebar */}
         <div className="flex flex-col md:py-8 md:pl-6 md:pr-2 md:w-64 w-full bg-white flex-shrink-0">
           <div className="flex flex-row items-center justify-center h-12 w-full">
             <div className="flex items-center justify-center rounded-2xl text-black h-10 w-10">
@@ -35,23 +119,32 @@ export default function ChatArea() {
             </div>
             <div className="ml-2 font-bold text-2xl">QuickChat</div>
           </div>
+
+          {/* User Info */}
           <div className="flex flex-col text-white items-center bg-primary mt-4 w-full py-6 px-4 rounded-lg">
-            <div className="h-20 w-20 rounded-full overflow-hidden">
-              <img
-                src={slide_img_4}
-                alt="Avatar"
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <div className="text-sm font-semibold mt-2">Aminos Co.</div>
-            <div className="text-xs">Lead UI/UX Designer</div>
-            <div className="flex flex-row items-center mt-3">
-              <div className="flex flex-col justify-center h-4 w-8  rounded-full">
-                <div className="h-3 w-3 bg-[#5BE65C] rounded-full self-end mr-1"></div>
-              </div>
-              <div className="leading-none ml-1 text-xs">Active</div>
-            </div>
+            {loading ? (
+              <div className="text-center text-white">Loading...</div>
+            ) : (
+              <>
+                <div className="h-20 w-20 rounded-full overflow-hidden">
+                  <img
+                    src={`${backendUrl}${messageUser?.profile_picture}`}
+                    alt="Avatar"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div className="text-sm font-semibold mt-2">{name}</div>
+                <div className="text-xs">Lead UI/UX Designer</div>
+                <div className="flex flex-row items-center mt-3">
+                  <div className="flex flex-col justify-center h-4 w-8 rounded-full">
+                    <div className="h-3 w-3 bg-[#5BE65C] rounded-full self-end mr-1"></div>
+                  </div>
+                  <div className="leading-none ml-1 text-xs">Active</div>
+                </div>
+              </>
+            )}
           </div>
+
           <div className="mt-4">
             <button className="flex items-center gap-2 bg-button text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none">
               <MdReport className="w-5 h-5" />
@@ -75,7 +168,7 @@ export default function ChatArea() {
                         A
                       </div>
                       <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-                        <div>Hey How are you today?</div>
+                        <div>Hey, how are you today?</div>
                       </div>
                     </div>
                   </div>
@@ -93,7 +186,7 @@ export default function ChatArea() {
               </div>
             </div>
 
-            {/* Input Area */}
+            {/* Message Input */}
             <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
               <div>
                 <button className="flex items-center justify-center text-gray-400 hover:text-gray-600">
@@ -125,6 +218,9 @@ export default function ChatArea() {
                     type="text"
                     className="flex w-full border border-gray rounded-xl focus:outline-none focus:border-gray pl-4 h-10"
                     placeholder="Type your message..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)} // Capture user input
+                    onKeyPress={(e) => e.key === "Enter" && handleSend()} // Send on Enter key
                   />
                 </div>
               </div>
@@ -134,14 +230,16 @@ export default function ChatArea() {
                     <AiOutlineAudio className="w-6 h-6" />
                   </button>
                 </div>
-                <button className="flex items-center justify-center bg-button hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
+                <button
+                  onClick={handleSend}
+                  className="flex items-center justify-center bg-button hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
+                >
                   Send
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Empty space to push the input area to the bottom */}
           <div ref={messageEndRef}></div>
         </div>
       </div>

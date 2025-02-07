@@ -1,36 +1,119 @@
 import { useDisclosure } from "@nextui-org/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiSave, FiX } from "react-icons/fi";
 import { TbUserEdit } from "react-icons/tb";
 import { motion, AnimatePresence } from "framer-motion";
 import { CgClose } from "react-icons/cg";
+import requests from "../../lib/urls";
+import axiosInstance from "../../axios";
+
 export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
-  const [profileData, setProfileData] = useState({
-    "Pets Details": "Add Pets Details",
-    "Favourite Sports": "Add Favourite Sports",
-    "Favourite Places": "Add Favourite Places",
-    "Your Favourite Books": "Add Favourite Books",
-    "Movies and Musics": "Add Movies and Musics",
-    "Dress Sense": "Add Dress Sense",
-    "Body Art": "Add Body Art",
-    Exercise: "Add Exercise",
-    "Eating Habits": "Add Eating Habits",
-    "Smoking Habits": "Add Smoking Habits",
-    "Drinking Habits": "Add Drinking Habits",
-    "Cooking Skill": "Add Cooking Skill",
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    pets_details: "",
+    favourite_sports: "",
+    favourite_places: "",
+    favourite_books: "",
+    movies_and_music: "",
+    dress_sense: "",
+    body_art:"",
+    exercise:"",
+    eating_habit:"",
+    smoking_habits:"",
+    drinking_habits:"",
+    cooking_skill:"",
   });
 
+  const [options, setOptions] = useState({
+    BodyArt: [],
+    Exercise: [],
+    EatingHabits: [],
+    DrinkingHabits: [],
+    SmokingPreference: [],
+    CookingSkill: [],
+  });
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const [
+          BodyArtRes,
+          ExerciseRes,
+          EatingHabitsRes,
+          DrinkingHabitsRes,
+          SmokingPreferenceRes,
+          CookingSkillRes,
+        ] = await Promise.all([
+          axiosInstance.get(requests.fetchBodyArt),
+          axiosInstance.get(requests.fetchExercise),
+          axiosInstance.get(requests.fetchEatingHabits),
+          axiosInstance.get(requests.fetchDrinkingStatus),
+          axiosInstance.get(requests.fetchSmokingStatus),
+          axiosInstance.get(requests.fetchCookingSkill),
+        ]);
+
+        console.log("Fetched Data:", {
+          BodyArt: BodyArtRes.data,
+          Exercise: ExerciseRes.data,
+          EatingHabits: EatingHabitsRes.data,
+          DrinkingHabits: DrinkingHabitsRes.data,
+          SmokingPreference: SmokingPreferenceRes.data,
+          CookingSkill: CookingSkillRes.data,
+        });
+
+        setOptions({
+          BodyArt: BodyArtRes.data || [],
+          Exercise: ExerciseRes.data || [],
+          EatingHabits: EatingHabitsRes.data || [],
+          DrinkingHabits: DrinkingHabitsRes.data || [],
+          SmokingPreference: SmokingPreferenceRes.data || [],
+          CookingSkill: CookingSkillRes.data || [],
+        });
+      } catch (error) {
+        console.error("Error fetching options:", error);
+      }
+    };
+
+    fetchOptions();
+  }, []);
+
   const handleChange = (e) => {
-    setProfileData({
-      ...profileData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(profileData);
-    onOpenChange(false);
+    setLoading(true);
+
+    const updatedFields = {};
+    Object.keys(formData).forEach((key) => {
+      if (formData[key]) updatedFields[key] = formData[key];
+    });
+
+    try {
+      const response = await axiosInstance.patch(
+        requests.UpdateHobbies,
+        updatedFields
+      );
+
+      if (response.status === 200) {
+        console.log("Hobbies updated successfully:", response.data);
+        onOpenChange(false); // Close modal or update UI
+      } else {
+        console.error("Failed response:", response);
+      }
+    } catch (error) {
+      console.error(
+        "Error updating hobbies:",
+        error.response?.data || error.message
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleClose = () => {
@@ -77,7 +160,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                   type="text"
                   id="pets-details"
                   name="Pets Details"
-                  value={profileData["Pets Details"]}
+                  value={formData.pets_details}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 />
@@ -93,7 +176,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                   type="text"
                   id="favourite-sports"
                   name="Favourite Sports"
-                  value={profileData["Favourite Sports"]}
+                  value={formData.favourite_sports}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 />
@@ -109,7 +192,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                   type="text"
                   id="favourite-places"
                   name="Favourite Places"
-                  value={profileData["Favourite Places"]}
+                  value={formData.favourite_places}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 />
@@ -125,7 +208,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                   type="text"
                   id="your-favourite-books"
                   name="Your Favourite Books"
-                  value={profileData["Your Favourite Books"]}
+                  value={formData.favourite_books}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 />
@@ -141,7 +224,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                   type="text"
                   id="movies-and-musics"
                   name="Movies and Musics"
-                  value={profileData["Movies and Musics"]}
+                  value={formData.movies_and_music}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 />
@@ -157,7 +240,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                   type="text"
                   id="dress-sense"
                   name="Dress Sense"
-                  value={profileData["Dress Sense"]}
+                  value={formData.dress_sense}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 />
@@ -169,15 +252,22 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 >
                   Body Art
                 </label>
-                <input
-                  type="text"
+                <select
                   id="body-art"
                   name="Body Art"
-                  value={profileData["Body Art"]}
+                  value={formData.body_art}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
-                />
+                >
+                  <option value="">Select an option</option>
+                  {options.BodyArt.map((option) => (
+                    <option key={option.id} value={option.name}>
+                      {option.name}
+                    </option>
+                  ))}
+                </select>
               </div>
+
               <div className="space-y-2">
                 <label
                   htmlFor="exercise"
@@ -185,15 +275,22 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 >
                   Exercise
                 </label>
-                <input
-                  type="text"
+                <select
                   id="exercise"
                   name="Exercise"
-                  value={profileData["Exercise"]}
+                  value={formData.exercise}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
-                />
+                >
+                  <option value="">Select an option</option>
+                  {options.Exercise.map((option) => (
+                    <option key={option.id} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
               </div>
+
               <div className="space-y-2">
                 <label
                   htmlFor="eating-habits"
@@ -201,15 +298,22 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 >
                   Eating Habits
                 </label>
-                <input
-                  type="text"
+                <select
                   id="eating-habits"
                   name="Eating Habits"
-                  value={profileData["Eating Habits"]}
+                  value={formData.eating_habit}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
-                />
+                >
+                  <option value="">Select an option</option>
+                  {options.EatingHabits.map((option) => (
+                    <option key={option.id} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
               </div>
+
               <div className="space-y-2">
                 <label
                   htmlFor="smoking-habits"
@@ -217,15 +321,22 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 >
                   Smoking Habits
                 </label>
-                <input
-                  type="text"
+                <select
                   id="smoking-habits"
                   name="Smoking Habits"
-                  value={profileData["Smoking Habits"]}
+                  value={formData.smoking_habits}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
-                />
+                >
+                  <option value="">Select an option</option>
+                  {options.SmokingPreference.map((option) => (
+                    <option key={option.id} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
               </div>
+
               <div className="space-y-2">
                 <label
                   htmlFor="drinking-habits"
@@ -233,15 +344,22 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 >
                   Drinking Habits
                 </label>
-                <input
-                  type="text"
+                <select
                   id="drinking-habits"
                   name="Drinking Habits"
-                  value={profileData["Drinking Habits"]}
+                  value={formData.drinking_habits}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
-                />
+                >
+                  <option value="">Select an option</option>
+                  {options.DrinkingHabits.map((option) => (
+                    <option key={option.id} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
               </div>
+
               <div className="space-y-2">
                 <label
                   htmlFor="cooking-skill"
@@ -249,30 +367,36 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 >
                   Cooking Skill
                 </label>
-                <input
-                  type="text"
+                <select
                   id="cooking-skill"
                   name="Cooking Skill"
-                  value={profileData["Cooking Skill"]}
+                  value={formData.cooking_skill}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
-                />
+                >
+                  <option value="">Select an option</option>
+                  {options.CookingSkill.map((option) => (
+                    <option key={option.id} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
               </div>
 
-              <div className="flex justify-end space-x-4">
+              <div className="col-span-2 flex justify-end space-x-4">
                 <button
-                  onClick={handleClose}
-                  className="flex items-center text-gray-600 hover:text-gray-800"
+                  type="button"
+                  onClick={() => onOpenChange(false)}
+                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
                 >
-                  <FiX size={20} />
-                  <span className="ml-2">Cancel</span>
+                  Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex items-center text-blue-500 hover:text-blue-700"
+                  disabled={loading}
+                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark flex items-center"
                 >
-                  <FiSave size={20} />
-                  <span className="ml-2">Save</span>
+                  {loading ? "Saving..." : <><FiSave className="mr-2" /> Save</>}
                 </button>
               </div>
             </form>

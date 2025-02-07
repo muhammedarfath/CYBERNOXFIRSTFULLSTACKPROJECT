@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
 import axiosInstance from "../../axios";
 import requests from "../../lib/urls";
@@ -7,15 +7,26 @@ export default function HomeTypeModal({ open, setOpen, setHomeType }) {
   const [selectedHomeType, setSelectedHomeType] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [homeTypeOptions, setHomeTypeOptions] = useState([]);
 
-  const homeTypeOptions = [
-    "Apartment",
-    "House",
-    "Villa",
-    "Cottage",
-    "Bungalow",
-    "Other",
-  ];
+  useEffect(() => {
+    if (!open) return;
+
+    const fetchHomeTypeOptions = async () => {
+      try {
+        const response = await axiosInstance.get(requests.getHomeTypeOptions);
+        if (response.status === 200 && response.data.options) {
+          setHomeTypeOptions(response.data.options);
+        } else {
+          setError("No home type options found.");
+        }
+      } catch (err) {
+        setError("Failed to fetch home type options.");
+      }
+    };
+
+    fetchHomeTypeOptions();
+  }, [open]);
 
   const handleSave = async () => {
     if (!selectedHomeType) return;
@@ -27,6 +38,7 @@ export default function HomeTypeModal({ open, setOpen, setHomeType }) {
       const response = await axiosInstance.patch(requests.editHomeType, {
         home_type: selectedHomeType,
       });
+      
 
       if (response.status === 200) {
         setHomeType(selectedHomeType);
@@ -65,8 +77,8 @@ export default function HomeTypeModal({ open, setOpen, setHomeType }) {
         >
           <option value="">Select Home Type</option>
           {homeTypeOptions.map((type) => (
-            <option key={type} value={type}>
-              {type}
+            <option key={type.id} value={type.name}>
+              {type.name}
             </option>
           ))}
         </select>
