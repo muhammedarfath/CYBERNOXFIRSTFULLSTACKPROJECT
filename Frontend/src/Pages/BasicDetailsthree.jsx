@@ -87,11 +87,6 @@ function BasicDetailsthree({ basicdetails, groomBrideDetails }) {
       const response = await axiosInstance.post(
         requests.profileGroomFamily,
         payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
       );
 
       console.log("Response:", response.data);

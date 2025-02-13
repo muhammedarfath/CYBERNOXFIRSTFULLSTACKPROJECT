@@ -18,7 +18,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
     dress_sense: "",
     body_art:"",
     exercise:"",
-    eating_habit:"",
+    eating_habits:"",
     smoking_habits:"",
     drinking_habits:"",
     cooking_skill:"",
@@ -43,6 +43,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
           DrinkingHabitsRes,
           SmokingPreferenceRes,
           CookingSkillRes,
+          
         ] = await Promise.all([
           axiosInstance.get(requests.fetchBodyArt),
           axiosInstance.get(requests.fetchExercise),
@@ -89,6 +90,8 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
     e.preventDefault();
     setLoading(true);
 
+    console.log(formData,"this is formdata");
+
     const updatedFields = {};
     Object.keys(formData).forEach((key) => {
       if (formData[key]) updatedFields[key] = formData[key];
@@ -102,7 +105,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
 
       if (response.status === 200) {
         console.log("Hobbies updated successfully:", response.data);
-        onOpenChange(false); // Close modal or update UI
+        onOpenChange(false);
       } else {
         console.error("Failed response:", response);
       }
@@ -158,8 +161,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 </label>
                 <input
                   type="text"
-                  id="pets-details"
-                  name="Pets Details"
+                  name="pets_details"
                   value={formData.pets_details}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
@@ -175,7 +177,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 <input
                   type="text"
                   id="favourite-sports"
-                  name="Favourite Sports"
+                  name="favourite_sports"
                   value={formData.favourite_sports}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
@@ -191,7 +193,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 <input
                   type="text"
                   id="favourite-places"
-                  name="Favourite Places"
+                  name="favourite_places"
                   value={formData.favourite_places}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
@@ -207,7 +209,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 <input
                   type="text"
                   id="your-favourite-books"
-                  name="Your Favourite Books"
+                  name="favourite_books"
                   value={formData.favourite_books}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
@@ -223,7 +225,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 <input
                   type="text"
                   id="movies-and-musics"
-                  name="Movies and Musics"
+                  name="movies_and_music"
                   value={formData.movies_and_music}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
@@ -239,7 +241,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 <input
                   type="text"
                   id="dress-sense"
-                  name="Dress Sense"
+                  name="dress_sense"
                   value={formData.dress_sense}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
@@ -254,14 +256,14 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 </label>
                 <select
                   id="body-art"
-                  name="Body Art"
+                  name="body_art"
                   value={formData.body_art}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 >
                   <option value="">Select an option</option>
                   {options.BodyArt.map((option) => (
-                    <option key={option.id} value={option.name}>
+                    <option key={option.id} value={option.id}>
                       {option.name}
                     </option>
                   ))}
@@ -277,15 +279,15 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 </label>
                 <select
                   id="exercise"
-                  name="Exercise"
+                  name="exercise"
                   value={formData.exercise}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 >
                   <option value="">Select an option</option>
                   {options.Exercise.map((option) => (
-                    <option key={option.id} value={option.value}>
-                      {option.label}
+                    <option key={option.id} value={option.id}>
+                      {option.name}
                     </option>
                   ))}
                 </select>
@@ -300,15 +302,15 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 </label>
                 <select
                   id="eating-habits"
-                  name="Eating Habits"
-                  value={formData.eating_habit}
+                  name="eating_habits"
+                  value={formData.eating_habits}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 >
                   <option value="">Select an option</option>
                   {options.EatingHabits.map((option) => (
-                    <option key={option.id} value={option.value}>
-                      {option.label}
+                    <option key={option.id} value={option.id}>
+                      {option.name}
                     </option>
                   ))}
                 </select>
@@ -323,15 +325,15 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 </label>
                 <select
                   id="smoking-habits"
-                  name="Smoking Habits"
+                  name="smoking_habits"
                   value={formData.smoking_habits}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 >
                   <option value="">Select an option</option>
                   {options.SmokingPreference.map((option) => (
-                    <option key={option.id} value={option.value}>
-                      {option.label}
+                    <option key={option.id} value={option.id}>
+                      {option.status}
                     </option>
                   ))}
                 </select>
@@ -346,15 +348,15 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 </label>
                 <select
                   id="drinking-habits"
-                  name="Drinking Habits"
+                  name="drinking_habits"
                   value={formData.drinking_habits}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 >
                   <option value="">Select an option</option>
                   {options.DrinkingHabits.map((option) => (
-                    <option key={option.id} value={option.value}>
-                      {option.label}
+                    <option key={option.id} value={option.id}>
+                      {option.status}
                     </option>
                   ))}
                 </select>
@@ -369,15 +371,15 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 </label>
                 <select
                   id="cooking-skill"
-                  name="Cooking Skill"
+                  name="cooking_skill"
                   value={formData.cooking_skill}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-black shadow-sm outline-none"
                 >
                   <option value="">Select an option</option>
                   {options.CookingSkill.map((option) => (
-                    <option key={option.id} value={option.value}>
-                      {option.label}
+                    <option key={option.id} value={option.id}>
+                      {option.name}
                     </option>
                   ))}
                 </select>

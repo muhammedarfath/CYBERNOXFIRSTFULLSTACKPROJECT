@@ -8,6 +8,7 @@ import requests from "../lib/urls";
 function Home() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  
   useEffect(() => {
     const fetchUsers = async () => {
       try {

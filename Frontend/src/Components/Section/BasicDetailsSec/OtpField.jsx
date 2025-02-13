@@ -3,13 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import requests from "../../../lib/urls";
 import axiosInstance from "../../../axios";
+import Swal from "sweetalert2";
 
-function OtpField({ otpSent, handleSendOtp, handleOtpChange,otp, referenceId }) {
+function OtpField({
+  otpSent,
+  handleSendOtp,
+  handleOtpChange,
+  otp,
+  referenceId,
+  setAadhaarData,
+}) {
   const navigate = useNavigate();
-
-
-  console.log(referenceId,"this is ref");
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,9 +27,14 @@ function OtpField({ otpSent, handleSendOtp, handleOtpChange,otp, referenceId }) 
         referenceId,
       });
 
-      if (response) {
+      if (response.status === 200) {
         console.log(response, "otp result");
-        // navigate("/pricing");
+        Swal.fire({
+          title: "Otp Verified Success",
+          icon: "success",
+          draggable: true
+        });
+        setAadhaarData(response.data.aadhaar_data); 
       } else {
         alert("Invalid OTP. Please try again.");
       }

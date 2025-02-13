@@ -20,7 +20,6 @@ export function FloatingDockDemo() {
 
     ws.current.onopen = () => {
       console.log("WebSocket Connected");
-      // Request unread notifications once the WebSocket connection is established
       ws.current.send(
         JSON.stringify({
           option: "fetch_unread_notification",

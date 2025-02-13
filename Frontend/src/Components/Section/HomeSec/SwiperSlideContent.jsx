@@ -82,6 +82,7 @@ function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
     }, 1000);
   };
 
+  
   const handleCloseClick = (e) => {
     e.stopPropagation();
     setShowClose(true);
