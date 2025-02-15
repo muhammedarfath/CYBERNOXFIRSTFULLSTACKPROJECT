@@ -67,5 +67,8 @@ const requests = {
 
     SendOtp :`${backendUrl}/aadhaarotp/send-otp/`,
     VerifyOtp:`${backendUrl}/aadhaarotp/verify-otp/`,
+
+    Messages:`${backendUrl}/socketconnection/messages/`,
+    UnreadNotification:`${backendUrl}/socketconnection/unread-notifications/`,
 }
 export default requests  

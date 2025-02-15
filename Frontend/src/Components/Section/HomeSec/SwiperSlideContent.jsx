@@ -20,6 +20,7 @@ function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
   const accessToken = useSelector((state) => state.auth.token);
 
 
+
   
 
   useEffect(() => {
@@ -53,9 +54,6 @@ function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
       newSocket.close();
     };
   }, []);
-
-
-
 
 
   const handleHeartClick = (e) => {

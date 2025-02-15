@@ -18,6 +18,8 @@ import Error from "./Pages/Error";
 import PrivateRoute from "./lib/PrivateRoute";
 import { Toaster } from "react-hot-toast";
 import AadharOtp from "./Pages/AadharOtp";
+import ForgotPassword from "./Components/Section/RegisterSec/ForgotPassword";
+import ResetPassword from "./Components/Section/RegisterSec/ResetPassword";
 
 function App() {
   return (
@@ -113,14 +115,7 @@ function App() {
           }
         />
 
-        {/* <Route
-          path="/otp"
-          element={
-            <PrivateRoute>
-              <AadharOtp />
-            </PrivateRoute>
-          }
-        /> */}
+        <Route path="/reset-password/:uid/:token" element={<ResetPassword />} />
 
         <Route
           path="/pricing"

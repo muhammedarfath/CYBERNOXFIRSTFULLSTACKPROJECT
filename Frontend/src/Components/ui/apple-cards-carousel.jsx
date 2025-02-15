@@ -18,6 +18,7 @@ import { IconSend } from "@tabler/icons-react";
 import { useDisclosure } from "@nextui-org/react";
 import ChatArea from "../Modal/ChatArea";
 import { Link } from "react-router-dom";
+import { backendUrl } from "../../Constants/Constants";
 export const CarouselContext = createContext({
   onCardClose: () => {},
   currentIndex: 0,
@@ -141,6 +142,7 @@ export const Carousel = ({ items, initialScroll = 0 }) => {
 };
 
 export const Card = ({ card, index, layout = false }) => {
+  console.log(card,"this is card");
   const [open, setOpen] = useState(false);
   const [showMessages, setShowMessages] = useState(false);
   const [inputMessage, setInputMessage] = useState("");
@@ -177,7 +179,7 @@ export const Card = ({ card, index, layout = false }) => {
             </motion.p>
           </div>
           <img
-            src={card.src}
+            src={`${backendUrl}${card.src}`}
             alt={card.title}
             className="object-cover absolute z-10 inset-0 h-full w-full"
           />

@@ -11,14 +11,16 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import Swal from "sweetalert2";
 import AuthContext from "../../context/AuthContext";
+import ForgotPassword from "./ForgotPassword";
 
 export default function Login({ onOpenChange, isOpen }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {fetchDetails } = useContext(AuthContext);
+  const { fetchDetails } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,16 +40,28 @@ export default function Login({ onOpenChange, isOpen }) {
         navigate("/");
         fetchDetails();
         Swal.fire({
-          title: "Welcome Back",
-          icon: "success",
-          draggable: true
+          width: "800px", // Set custom width
+          html: `
+            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+              <img src="https://www.waytonikah.com/images/keralanikah/side-img.png" alt="Custom image" style="max-width: 150px; height: auto; border-radius: 5px;">
+              <p style="margin: 0; font-size: 18px; font-weight: 500;">
+              ❤️ Welcome back! <br>  
+              We are excited to help you find your perfect match.
+            </p>
+            </div>
+          `,
+          showConfirmButton: true,
+          confirmButtonColor: "#CC2B52", // Custom button color (green)
+          customClass: {
+            popup: "custom-swal",
+          },
         });
       } else {
         throw new Error("Login failed");
       }
     } catch (error) {
       dispatch(loginFailure());
-      toast.error("Invalid credentials. Please try again.")
+      toast.error("Invalid credentials. Please try again.");
     }
   };
 
@@ -84,7 +98,7 @@ export default function Login({ onOpenChange, isOpen }) {
                       htmlFor="mobile"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Mobile No
+                      Mobile No / Email
                     </label>
                     <input
                       type="text"
@@ -119,12 +133,15 @@ export default function Login({ onOpenChange, isOpen }) {
                   </div>
 
                   <div className="flex justify-end">
-                    <a
-                      href="/forgot-password"
-                      className="text-sm text-primary-600 hover:text-primary-700"
+                    <div
+                      onClick={() => {
+                        onClose();
+                        setIsForgotPasswordOpen(true);
+                      }}
+                      className="text-sm text-primary-600 hover:text-primary-700 cursor-pointer"
                     >
                       Forgot Password?
-                    </a>
+                    </div>
                   </div>
 
                   <button
@@ -197,6 +214,11 @@ export default function Login({ onOpenChange, isOpen }) {
           )}
         </ModalContent>
       </Modal>
+
+      <ForgotPassword
+        isOpen={isForgotPasswordOpen}
+        onOpenChange={setIsForgotPasswordOpen}
+      />
     </>
   );
 }

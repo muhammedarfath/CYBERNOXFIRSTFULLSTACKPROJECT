@@ -1,27 +1,175 @@
-import React, { useState } from "react";
-import { Carousel, Card } from "../../../Components/ui/apple-cards-carousel"; // Importing Carousel and Card from your UI components
-import slide_img_1 from "../../../assets/Screenshot 2024-12-27 at 11.53.55 AM.png";
-import slide_img_2 from "../../../assets/Screenshot 2024-12-27 at 11.46.41 AM.png";
-import slide_img_3 from "../../../assets/Screenshot 2024-12-27 at 11.48.47 AM.png";
-import slide_img_4 from "../../../assets/Screenshot 2024-12-27 at 11.49.50 AM.png";
-import slide_img_5 from "../../../assets/Screenshot 2024-12-27 at 11.50.31 AM.png";
+import React, { useState, useEffect } from "react";
+import { Carousel, Card } from "../../../Components/ui/apple-cards-carousel";
+import { MdFilterList } from "react-icons/md";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { FloatingDockDemo } from "../../Layout/FloatingDockDemo";
+import axiosInstance from "../../../axios";
+import requests from "../../../lib/urls";
+
 
 export function MessageSec() {
-  const cards = data.map((card, index) => (
-    <Card key={card.src} card={card} index={index} />
+  const [filter, setFilter] = useState("All Messages");
+  const [showFilterOptions, setShowFilterOptions] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    setLoading(true);
+    axiosInstance
+      .get(`${requests.Messages}`)
+      .then((response) => {
+        const { users, latest_messages } = response.data;
+
+        const formattedData = latest_messages.map((msg) => {
+          const user = users.find(
+            (u) => u.id === msg.author.id || u.id === msg.sender.id
+          );
+
+          return {
+            id: user?.id,
+            title: user?.unique_id, 
+            src: user?.profile_picture || "/default-avatar.png",
+            content: <p>{msg.content}</p>,
+            unread: !msg.is_read,
+          };
+        });
+
+        setMessages(formattedData);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError("Failed to load messages");
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    const ws = new WebSocket("wss://yourdomain.com/ws/chat/");
+    
+    ws.onopen = () => {
+      console.log("WebSocket Connected");
+    };
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      if (data.option === "new_messages") {
+        setMessages((prevMessages) => [
+          {
+            id: data.messages[0].author,
+            title: data.messages[0].author,
+            src: "/default-avatar.png",
+            content: <p>{data.messages[0].content}</p>,
+            unread: true,
+          },
+          ...prevMessages,
+        ]);
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error("WebSocket Error:", error);
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket Disconnected");
+    };
+
+    setSocket(ws);
+
+    return () => {
+      ws.close();
+    };
+  }, []);
+
+  const filteredData =
+    filter === "Unread Messages"
+      ? messages.filter((msg) => msg.unread)
+      : messages;
+
+  const cards = filteredData.map((card, index) => (
+    <Card key={card.id} card={card} index={index} />
   ));
 
   return (
     <div className="w-full h-screen">
-      <div className=" flex flex-col gap-4 w-full n container mx-auto p-4 mt-5">
-        <div className="flex flex-col gap-3">
-          <h1 className="font-semibold text-4xl">Messages</h1>
+      <div className="flex flex-col gap-4 w-full container mx-auto p-4 mt-5">
+        <div className="flex justify-between items-center gap-3 bg-white p-6 rounded-lg shadow-lg">
+          <div>
+            <h1 className="text-4xl font-bold text-purple-800">
+              {filter === "Unread Messages"
+                ? "Unread Messages"
+                : "All Messages"}
+            </h1>
+            <p className="text-gray-600 text-sm">
+              View and manage all your messages.
+            </p>
+          </div>
+          <div className="relative">
+            <button
+              onClick={() => setShowFilterOptions(!showFilterOptions)}
+              className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md shadow-lg hover:bg-primary-dark"
+            >
+              <MdFilterList className="text-2xl" />
+              Filter
+            </button>
+            {showFilterOptions && (
+              <div className="absolute right-0 mt-3 w-56 bg-white shadow-md rounded-md p-2 z-50 animate-fade-in">
+                <ul className="flex flex-col">
+                  <li
+                    className={`flex items-center gap-2 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-100 ${
+                      filter === "All Messages" ? "bg-gray-200 font-bold" : ""
+                    }`}
+                    onClick={() => {
+                      setFilter("All Messages");
+                      setShowFilterOptions(false);
+                    }}
+                  >
+                    <IoIosCheckmarkCircleOutline
+                      className={`text-xl ${
+                        filter === "All Messages"
+                          ? "text-green-500"
+                          : "text-gray-400"
+                      }`}
+                    />
+                    All Messages
+                  </li>
+                  <li
+                    className={`flex items-center gap-2 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-100 ${
+                      filter === "Unread Messages"
+                        ? "bg-gray-200 font-bold"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      setFilter("Unread Messages");
+                      setShowFilterOptions(false);
+                    }}
+                  >
+                    <IoIosCheckmarkCircleOutline
+                      className={`text-xl ${
+                        filter === "Unread Messages"
+                          ? "text-green-500"
+                          : "text-gray-400"
+                      }`}
+                    />
+                    Unread Messages
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
-        <hr />
       </div>
 
-      <Carousel items={cards} />
+      {loading ? (
+        <p className="text-center text-gray-500">Loading messages...</p>
+      ) : error ? (
+        <p className="text-center text-red-500">{error}</p>
+      ) : (
+        <Carousel items={cards} />
+      )}
 
       <div className="slider-controler">
         <FloatingDockDemo />
@@ -29,65 +177,3 @@ export function MessageSec() {
     </div>
   );
 }
-
-const DummyContent = () => {
-  return (
-    <>
-      {[...new Array(3).fill(1)].map((_, index) => {
-        return (
-          <div
-            key={"dummy-content" + index}
-            className="bg-[#F5F5F7] dark:bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4"
-          >
-            <p className="text-neutral-600 dark:text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
-              <span className="font-bold text-neutral-700 dark:text-neutral-200">
-                The first rule of Apple club is that you boast about Apple club.
-              </span>{" "}
-              Keep a journal, quickly jot down a grocery list, and take amazing
-              class notes. Want to convert those notes to text? No problem.
-              Langotiya jeetu ka mara hua yaar is ready to capture every
-              thought.
-            </p>
-            <img
-              src="https://assets.aceternity.com/macbook.png"
-              alt="Macbook mockup from Aceternity UI"
-              height="500"
-              width="500"
-              className="md:w-1/2 md:h-1/2 h-full w-full mx-auto object-contain"
-            />
-          </div>
-        );
-      })}
-    </>
-  );
-};
-
-const data = [
-  {
-    title: "Sreya, 19",
-    src: slide_img_1,
-    content: <DummyContent />,
-  },
-  {
-    title: "John, 25",
-    src: slide_img_2,
-    content: <DummyContent />,
-  },
-  {
-    title: "Asha, 22",
-    src: slide_img_3,
-    content: <DummyContent />,
-  },
-
-  {
-    title: "Arjun, 27",
-    src: slide_img_4,
-    content: <DummyContent />,
-  },
-  {
-    title: "Maya, 23",
-    src: slide_img_5,
-    content: <DummyContent />,
-  },
-
-];
