@@ -11,6 +11,7 @@ import { MdMessage } from "react-icons/md";
 function ProfileDetails() {
   const location = useLocation();
   const { slide } = location.state || {};
+  
   const [isPaid, setIsPaid] = useState(false);
   const navigate = useNavigate();
 

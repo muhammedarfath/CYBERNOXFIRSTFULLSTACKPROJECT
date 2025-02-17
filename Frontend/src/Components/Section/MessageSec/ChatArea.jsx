@@ -25,6 +25,7 @@ export default function ChatArea() {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [newMessage]);
 
+  
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -41,6 +42,7 @@ export default function ChatArea() {
 
     if (userId) fetchUser();
   }, [userId]);
+
 
   useEffect(() => {
     if (!accessToken) {
@@ -97,6 +99,7 @@ export default function ChatArea() {
     };
   }, [name, accessToken]);
 
+
   const handleSend = () => {
     if (!socketRef.current || socketRef.current.readyState !== WebSocket.OPEN) {
       console.error("WebSocket is not open. Cannot send message.");
@@ -122,6 +125,7 @@ export default function ChatArea() {
 
     setMessage("");
   };
+
 
   if (loading)
     return (
