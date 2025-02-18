@@ -35,7 +35,6 @@ const requests = {
     fetchDrinkingStatus :`${backendUrl}/partner/fetch-drinking-status/`,
     fetchSmokingStatus :`${backendUrl}/partner/fetch-smoking-status/`,
     fetchMaritalStatus :`${backendUrl}/partner/fetch-marital-status/`,
-    fetchAgeOptions:`${backendUrl}/partner/fetch-age-status/`,
     fetchHeightOptions:`${backendUrl}/partner/fetch-height-status/`,
     fetchBodyArt:`${backendUrl}/partner/fetch-body-art/`,
     fetchCookingSkill:`${backendUrl}/partner/fetch-cooking-status/`,

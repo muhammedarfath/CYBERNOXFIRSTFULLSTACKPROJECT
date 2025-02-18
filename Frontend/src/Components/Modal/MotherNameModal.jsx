@@ -53,7 +53,8 @@ export default function MotherNameModal({ open, setOpen, setMotherName }) {
           value={motherName}
           onChange={(e) => setMotherNameInput(e.target.value)}
           placeholder="Enter Mother's Name"
-          className="block w-full text-gray-700 bg-gray-200 border border-gray-300 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
+          className="appearance-none block w-full text-gray-700 bg-gray-200 border
+          border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           disabled={loading}
         />
 
@@ -63,7 +64,9 @@ export default function MotherNameModal({ open, setOpen, setMotherName }) {
           <button
             onClick={handleSave}
             className={`px-6 py-2 rounded-full transition ${
-              motherName.trim() ? "bg-button text-white hover:bg-green-700" : "bg-button text-white cursor-not-allowed"
+              motherName.trim()
+                ? "bg-button text-white hover:bg-green-700"
+                : "bg-button text-white cursor-not-allowed"
             }`}
             disabled={!motherName.trim() || loading}
           >

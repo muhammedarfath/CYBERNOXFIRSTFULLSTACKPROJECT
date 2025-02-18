@@ -8,18 +8,16 @@ import AppearanceModal from "../../Modal/AppearanceModal";
 
 function PhysicalDetails({ profileDetails }) {
   const { user_profile } = profileDetails;
-
-  // State to control the modal visibility
   const [isSkinColorModalOpen, setSkinColorModalOpen] = useState(false);
   const [isBloodGroupModalOpen, setBloodGroupModalOpen] = useState(false);
   const [isHairColorModalOpen, setHairColorModalOpen] = useState(false);
   const [isHairTypeModalOpen, setHairTypeModalOpen] = useState(false);
   const [skinColor, setSkinColor] = useState(user_profile.skin_color || "N/A");
   const [bloodGroup, setBloodGroup] = useState(
-    user_profile.skin_color || "N/A"
+    user_profile.blood_group || "N/A"
   );
-  const [hairColor, setHairColor] = useState(user_profile.skin_color || "N/A");
-  const [hairType, setHairType] = useState(user_profile.skin_color || "N/A");
+  const [hairColor, setHairColor] = useState(user_profile.hair_color || "N/A");
+  const [hairType, setHairType] = useState(user_profile.hair_type || "N/A");
   const [appearance, setAppearance] = useState(
     user_profile.appearance || "N/A"
   );

@@ -7,21 +7,21 @@ import { CgClose } from "react-icons/cg";
 import requests from "../../lib/urls";
 import axiosInstance from "../../axios";
 
-export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
+export function HobbiesModal({ isOpen, onOpenChange, userHobby,fetchDetails }) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    pets_details: "",
-    favourite_sports: "",
-    favourite_places: "",
-    favourite_books: "",
-    movies_and_music: "",
-    dress_sense: "",
-    body_art:"",
-    exercise:"",
-    eating_habits:"",
-    smoking_habits:"",
-    drinking_habits:"",
-    cooking_skill:"",
+    pets_details: userHobby.pets_details || "",
+    favourite_sports: userHobby.favourite_sports || "",
+    favourite_places: userHobby.favourite_places || "",
+    favourite_books: userHobby.favourite_books || "",
+    movies_and_music: userHobby.movies_and_music || "",
+    dress_sense: userHobby.dress_sense || "",
+    body_art: userHobby.body_art || "",
+    exercise: userHobby.exercise || "",
+    eating_habits: userHobby.eating_habits || "",
+    smoking_habits: userHobby.smoking_habits || "",
+    drinking_habits: userHobby.drinking_habits || "",
+    cooking_skill: userHobby.cooking_skill || "",
   });
 
   const [options, setOptions] = useState({
@@ -103,8 +103,10 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
         updatedFields
       );
 
+
       if (response.status === 200) {
         console.log("Hobbies updated successfully:", response.data);
+        fetchDetails();
         onOpenChange(false);
       } else {
         console.error("Failed response:", response);
@@ -263,7 +265,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 >
                   <option value="">Select an option</option>
                   {options.BodyArt.map((option) => (
-                    <option key={option.id} value={option.id}>
+                    <option key={option.id} value={option.name}>
                       {option.name}
                     </option>
                   ))}
@@ -286,7 +288,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 >
                   <option value="">Select an option</option>
                   {options.Exercise.map((option) => (
-                    <option key={option.id} value={option.id}>
+                    <option key={option.id} value={option.name}>
                       {option.name}
                     </option>
                   ))}
@@ -309,7 +311,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 >
                   <option value="">Select an option</option>
                   {options.EatingHabits.map((option) => (
-                    <option key={option.id} value={option.id}>
+                    <option key={option.id} value={option.name}>
                       {option.name}
                     </option>
                   ))}
@@ -332,7 +334,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 >
                   <option value="">Select an option</option>
                   {options.SmokingPreference.map((option) => (
-                    <option key={option.id} value={option.id}>
+                    <option key={option.id} value={option.name}>
                       {option.status}
                     </option>
                   ))}
@@ -355,7 +357,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 >
                   <option value="">Select an option</option>
                   {options.DrinkingHabits.map((option) => (
-                    <option key={option.id} value={option.id}>
+                    <option key={option.id} value={option.name}>
                       {option.status}
                     </option>
                   ))}
@@ -378,7 +380,7 @@ export function HobbiesModal({ isOpen, onOpenChange, profileDetails }) {
                 >
                   <option value="">Select an option</option>
                   {options.CookingSkill.map((option) => (
-                    <option key={option.id} value={option.id}>
+                    <option key={option.id} value={option.name}>
                       {option.name}
                     </option>
                   ))}

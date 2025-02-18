@@ -13,7 +13,9 @@ export default function SkinColorModal({ open, setOpen, setSkinColor }) {
     if (open) {
       const fetchSkinColorOptions = async () => {
         try {
-          const response = await axiosInstance.get(requests.fetchSkinColorOptions);
+          const response = await axiosInstance.get(
+            requests.fetchSkinColorOptions
+          );
           if (response.status === 200) {
             setSkinColorOptions(response.data.options);
           } else {
@@ -26,7 +28,7 @@ export default function SkinColorModal({ open, setOpen, setSkinColor }) {
 
       fetchSkinColorOptions();
     }
-  }, [open]); 
+  }, [open]);
 
   const handleSave = async () => {
     if (!selectedSkinColor) return;
@@ -72,7 +74,8 @@ export default function SkinColorModal({ open, setOpen, setSkinColor }) {
         <select
           value={selectedSkinColor}
           onChange={(e) => setSelectedSkinColor(e.target.value)}
-          className="block w-full text-gray-700 bg-gray-200 border border-gray-300 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
+          className="appearance-none block w-full text-gray-700 bg-gray-200 border
+          border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           disabled={loading}
         >
           <option value="">Select Skin Color</option>
@@ -93,7 +96,9 @@ export default function SkinColorModal({ open, setOpen, setSkinColor }) {
           <button
             onClick={handleSave}
             className={`px-6 py-2 rounded-full transition ${
-              selectedSkinColor ? "bg-button text-white hover:bg-green-700" : "bg-button text-white cursor-not-allowed"
+              selectedSkinColor
+                ? "bg-button text-white hover:bg-green-700"
+                : "bg-button text-white cursor-not-allowed"
             }`}
             disabled={!selectedSkinColor || loading}
           >

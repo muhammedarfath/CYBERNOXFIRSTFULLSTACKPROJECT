@@ -38,7 +38,6 @@ export default function HomeTypeModal({ open, setOpen, setHomeType }) {
       const response = await axiosInstance.patch(requests.editHomeType, {
         home_type: selectedHomeType,
       });
-      
 
       if (response.status === 200) {
         setHomeType(selectedHomeType);
@@ -72,7 +71,8 @@ export default function HomeTypeModal({ open, setOpen, setHomeType }) {
         <select
           value={selectedHomeType}
           onChange={(e) => setSelectedHomeType(e.target.value)}
-          className="block w-full text-gray-700 bg-gray-200 border border-gray-300 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
+          className="appearance-none block w-full text-gray-700 bg-gray-200 border
+          border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           disabled={loading}
         >
           <option value="">Select Home Type</option>

@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import { MdChevronRight } from "react-icons/md";
 import HomeTypeModal from "../../Modal/HomeTypeModal";
 import LivingSituationModal from "../../Modal/LivingSituationModal";
-import MotherNameModal from "../../Modal/MotherNameModal"; // Import the MotherNameModal component
+import MotherNameModal from "../../Modal/MotherNameModal";
 
 function FamilyDetails({ profileDetails }) {
   const { family_info } = profileDetails;
   const [isHomeTypeModalOpen, setIsHomeTypeModalOpen] = useState(false);
-  const [isLivingSituationModalOpen, setIsLivingSituationModalOpen] = useState(false);
-  const [isMotherNameModalOpen, setIsMotherNameModalOpen] = useState(false); 
+  const [isLivingSituationModalOpen, setIsLivingSituationModalOpen] =
+    useState(false);
+  const [isMotherNameModalOpen, setIsMotherNameModalOpen] = useState(false);
   const [homeType, setHomeType] = useState(family_info?.home_type || "");
-  const [livingSituation, setLivingSituation] = useState(family_info?.living_situation || "");
+  const [livingSituation, setLivingSituation] = useState(
+    family_info?.current_living || ""
+  );
   const [motherName, setMotherName] = useState(family_info?.mother_name || "");
 
   const handleOpenHomeTypeModal = () => {
@@ -26,21 +29,57 @@ function FamilyDetails({ profileDetails }) {
   };
 
   const details = [
-    { label: "Family Type", value: family_info?.family_type, isAction: true },
+    { label: "Family Type", value: family_info?.family_type },
     { label: "Financial Status", value: family_info?.family_status },
-    { label: "Home Type", value: homeType, isAction: true, onClick: handleOpenHomeTypeModal },
-    { label: "Living Situation", value: livingSituation, isAction: true, onClick: handleOpenLivingSituationModal },
-    { label: "Father Name", value: family_info?.father_name, isAction: true },
-    { label: "Father Alive or Not?", value: family_info?.father_alive, isAction: true },
-    { label: "Father's Occupation", value: family_info?.father_occupation, isAction: true },
-    { label: "Mother Name", value: motherName, isAction: true, onClick: handleOpenMotherNameModal },
-    { label: "Mother Alive or Not?", value: family_info?.mother_alive, isAction: true },
-    { label: "Mother's Occupation", value: family_info?.mother_occupation, isAction: true },
+    {
+      label: "Home Type",
+      value: homeType,
+      isAction: true,
+      onClick: handleOpenHomeTypeModal,
+    },
+    {
+      label: "Living Situation",
+      value: livingSituation,
+      isAction: true,
+      onClick: handleOpenLivingSituationModal,
+    },
+    { label: "Father Name", value: family_info?.father_name },
+    {
+      label: "Father Alive or Not?",
+      value: family_info?.father_alive,
+    },
+    {
+      label: "Father's Occupation",
+      value: family_info?.father_occupation,
+    },
+    {
+      label: "Mother Name",
+      value: motherName,
+      isAction: true,
+      onClick: handleOpenMotherNameModal,
+    },
+    {
+      label: "Mother Alive or Not?",
+      value: family_info?.mother_alive,
+    },
+    {
+      label: "Mother's Occupation",
+      value: family_info?.mother_occupation,
+    },
     { label: "No. Brothers", value: family_info?.number_of_brothers ?? "0" },
-    { label: "No. Married Brothers", value: family_info?.married_brothers ?? "0" },
+    {
+      label: "No. Married Brothers",
+      value: family_info?.married_brothers ?? "0",
+    },
     { label: "No. Sisters", value: family_info?.number_of_sisters ?? "0" },
-    { label: "No. Married Sisters", value: family_info?.married_sisters ?? "0" },
-    { label: "Family Details", value: family_info?.family_description, isAction: true },
+    {
+      label: "No. Married Sisters",
+      value: family_info?.married_sisters ?? "0",
+    },
+    {
+      label: "Family Details",
+      value: family_info?.family_description,
+    },
   ];
 
   return (
@@ -50,14 +89,19 @@ function FamilyDetails({ profileDetails }) {
           <div
             key={index}
             className="flex items-center justify-between py-4 border-b border-gray-200 cursor-pointer hover:bg-gray-50"
-            onClick={detail.onClick} 
+            onClick={detail.onClick}
           >
             <span className="text-gray-700 text-lg">{detail.label}</span>
             <div className="flex items-center">
-              <span className={detail.value ? "text-gray-900" : "text-primary2"}>
+            <span
+                className={detail.isAction ? "text-primary2" : "text-gray-900"}
+              >
+                
                 {detail.value || `Add ${detail.label}`}
               </span>
-              {!detail.value && <MdChevronRight className="h-5 w-5 text-gray-400" />}
+              {(detail.isAction) && (
+                <MdChevronRight className="h-5 w-5 text-gray-400" />
+              )}
             </div>
           </div>
         ))}

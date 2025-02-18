@@ -85,7 +85,6 @@ function BasicDetails({ profileDetails, fetchDetails }) {
         <h1 className="text-2xl font-semibold">Basic Details</h1>
       </div>
       <div className="bg-white rounded-lg shadow-sm divide-y">
-        {/* Display basic details */}
         {details.map((detail, index) => (
           <div
             key={index}
@@ -97,7 +96,6 @@ function BasicDetails({ profileDetails, fetchDetails }) {
         ))}
 
         <div className="flex flex-col">
-          {/* Languages Section */}
           <div className="flex items-center justify-between p-4">
             <div className="text-black">Languages Spoken</div>
             <Select

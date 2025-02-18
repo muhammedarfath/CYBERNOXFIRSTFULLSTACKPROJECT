@@ -40,7 +40,7 @@ export default function Login({ onOpenChange, isOpen }) {
         navigate("/");
         fetchDetails();
         Swal.fire({
-          width: "800px", // Set custom width
+          width: "800px", 
           html: `
             <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
               <img src="https://www.waytonikah.com/images/keralanikah/side-img.png" alt="Custom image" style="max-width: 150px; height: auto; border-radius: 5px;">
@@ -51,7 +51,7 @@ export default function Login({ onOpenChange, isOpen }) {
             </div>
           `,
           showConfirmButton: true,
-          confirmButtonColor: "#CC2B52", // Custom button color (green)
+          confirmButtonColor: "#CC2B52", 
           customClass: {
             popup: "custom-swal",
           },

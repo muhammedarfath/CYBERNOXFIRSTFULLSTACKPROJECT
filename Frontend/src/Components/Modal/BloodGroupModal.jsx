@@ -18,9 +18,9 @@ export default function BloodGroupModal({ open, setOpen, setBloodGroup }) {
   const fetchBloodGroupOptions = async () => {
     setLoading(true);
     setError("");
-    
+
     try {
-      const response = await axiosInstance.get(requests.fetchBloodGroupOptions);  // Replace with your API endpoint
+      const response = await axiosInstance.get(requests.fetchBloodGroupOptions); // Replace with your API endpoint
       if (response.status === 200) {
         setBloodGroupOptions(response.data.options); // Assuming response contains an "options" array
       }
@@ -74,7 +74,8 @@ export default function BloodGroupModal({ open, setOpen, setBloodGroup }) {
         <select
           value={selectedBloodGroup}
           onChange={(e) => setSelectedBloodGroup(e.target.value)}
-          className="block w-full text-gray-700 bg-gray-200 border border-gray-300 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
+          className="appearance-none block w-full text-gray-700 bg-gray-200 border
+          border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           disabled={loading}
         >
           <option value="">Select Blood Group</option>
@@ -91,7 +92,9 @@ export default function BloodGroupModal({ open, setOpen, setBloodGroup }) {
           <button
             onClick={handleSave}
             className={`px-6 py-2 rounded-full transition ${
-              selectedBloodGroup ? "bg-button text-white hover:bg-green-700" : "bg-button text-white cursor-not-allowed"
+              selectedBloodGroup
+                ? "bg-button text-white hover:bg-green-700"
+                : "bg-button text-white cursor-not-allowed"
             }`}
             disabled={!selectedBloodGroup || loading}
           >

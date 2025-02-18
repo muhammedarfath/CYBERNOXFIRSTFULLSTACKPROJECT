@@ -6,9 +6,8 @@ import SecondaryNumberModal from "../../Modal/SecondaryNumberModal";
 import TimeToCallModal from "../../Modal/TimeToCallModal"; 
 import FullAddressModal from "../../Modal/FullAddressModal";
 
-export default function ContactDetails({ profileDetails }) {
+export default function ContactDetails({ profileDetails,fetchDetails }) {
   const { user_profile, groom_bride_info } = profileDetails || {};
-  console.log(groom_bride_info,"check");
   const [openLocationModal, setOpenLocationModal] = useState(false);
   const [openSecondaryNumberModal, setOpenSecondaryNumberModal] =
     useState(false); 
@@ -85,6 +84,7 @@ export default function ContactDetails({ profileDetails }) {
         <LocationModal
           openModal={openLocationModal}
           setOpenModal={setOpenLocationModal}
+          fetchDetails={fetchDetails}
           setLocation={setLocation}
         />
       )}

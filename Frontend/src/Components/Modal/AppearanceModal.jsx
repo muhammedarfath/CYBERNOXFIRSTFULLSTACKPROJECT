@@ -52,7 +52,8 @@ export default function AppearanceModal({ open, setOpen, setAppearance }) {
           value={appearance}
           onChange={(e) => setAppearanceValue(e.target.value)}
           rows={4}
-          className="block w-full text-gray-700 bg-gray-200 border border-gray-300 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
+          className="appearance-none block w-full text-gray-700 bg-gray-200 border
+          border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           placeholder="Describe your appearance"
           disabled={loading}
         />
@@ -63,7 +64,9 @@ export default function AppearanceModal({ open, setOpen, setAppearance }) {
           <button
             onClick={handleSave}
             className={`px-6 py-2 rounded-full transition ${
-              appearance ? "bg-button text-white hover:bg-green-700" : "bg-button text-white cursor-not-allowed"
+              appearance
+                ? "bg-button text-white hover:bg-green-700"
+                : "bg-button text-white cursor-not-allowed"
             }`}
             disabled={!appearance || loading}
           >

@@ -71,7 +71,7 @@ function ProfileSec() {
           </div>
 
           <div className="w-full bg-white p-2 rounded-lg shadow-md">
-            <ContactDetails profileDetails={profileDetails} />
+            <ContactDetails profileDetails={profileDetails} fetchDetails={fetchDetails}/>
           </div>
 
           {[
@@ -79,8 +79,8 @@ function ProfileSec() {
             { title: "Socio - Religious Details", key: "ReligiousDetails", component: <ReligiousDetails profileDetails={profileDetails} /> },
             { title: "Physical Details", key: "PhysicalDetails", component: <PhysicalDetails profileDetails={profileDetails} /> },
             { title: "Family Details", key: "FamilyDetails", component: <FamilyDetails profileDetails={profileDetails} /> },
-            { title: "Hobbies", key: "Hobbies", component: <Hobbies profileDetails={profileDetails} /> },
-            { title: "Partner Expectation", key: "PartnerExpectation", component: <PartnerExpectation /> },
+            { title: "Hobbies", key: "Hobbies", component: <Hobbies profileDetails={profileDetails} fetchDetails={fetchDetails}/> },
+            { title: "Partner Expectation", key: "PartnerExpectation", component: <PartnerExpectation preferences={profileDetails}/> },
           ].map(({ title, key, component }) => (
             <div key={key} className="w-full bg-white md:p-6 rounded-lg shadow-md cursor-pointer">
               <div className="flex items-center justify-between" onClick={() => toggleSection(key)}>

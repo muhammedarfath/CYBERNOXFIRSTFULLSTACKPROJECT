@@ -3,20 +3,23 @@ import React from "react";
 import { TbChevronRight, TbUserEdit } from "react-icons/tb";
 import { HobbiesModal } from "../../Modal/HobbiesModal";
 
-function Hobbies({profileDetails}) {
+function Hobbies({ profileDetails,fetchDetails }) {
+
+  const userHobby = profileDetails?.user_hobby || {}; 
+
   const hobbies = [
-    { label: "Pets Details", value: "Add Pets Details" },
-    { label: "Favourite Sports", value: "Add Favourite Sports" },
-    { label: "Favourite Places", value: "Add Favourite Places" },
-    { label: "Your Favourite Books", value: "Add Favourite Books" },
-    { label: "Movies and Musics", value: "Add Movies and Musics" },
-    { label: "Dress Sense", value: "Add Dress Sense" },
-    { label: "Body Art", value: "Add Body Art" },
-    { label: "Exercise", value: "Add Exercise" },
-    { label: "Eating Habits", value: "Add Eating Habits" },
-    { label: "Smoking Habits", value: "Add Smoking Habits" },
-    { label: "Drinking Habits", value: "Add Drinking Habits" },
-    { label: "Cooking Skil", value: "Add Cooking Skil" },
+    { label: "Pets Details", value: userHobby.pets_details || "Add Pets Details" },
+    { label: "Favourite Sports", value: userHobby.favourite_sports || "Add Favourite Sports" },
+    { label: "Favourite Places", value: userHobby.favourite_places || "Add Favourite Places" },
+    { label: "Your Favourite Books", value: userHobby.favourite_books || "Add Favourite Books" },
+    { label: "Movies and Musics", value: userHobby.movies_and_music || "Add Movies and Musics" },
+    { label: "Dress Sense", value: userHobby.dress_sense || "Add Dress Sense" },
+    { label: "Body Art", value: userHobby.body_art || "Add Body Art" },
+    { label: "Exercise", value: userHobby.exercise || "Add Exercise" },
+    { label: "Eating Habits", value: userHobby.eating_habits || "Add Eating Habits" },
+    { label: "Smoking Habits", value: userHobby.smoking_habits || "Add Smoking Habits" },
+    { label: "Drinking Habits", value: userHobby.drinking_habits || "Add Drinking Habits" },
+    { label: "Cooking Skill", value: userHobby.cooking_skill || "Add Cooking Skill" },
   ];
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -27,7 +30,7 @@ function Hobbies({profileDetails}) {
         <TbUserEdit
           className="text-2xl bg-button rounded-xl text-white p-1 cursor-pointer text-gray-400"
           onClick={onOpen}
-        />{" "}
+        />
       </div>
 
       <div className="space-y-1">
@@ -44,11 +47,7 @@ function Hobbies({profileDetails}) {
         ))}
       </div>
 
-      <HobbiesModal
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-          profileDetails={profileDetails}
-        />
+      <HobbiesModal isOpen={isOpen} onOpenChange={onOpenChange} userHobby={userHobby} fetchDetails={fetchDetails}/>
     </div>
   );
 }

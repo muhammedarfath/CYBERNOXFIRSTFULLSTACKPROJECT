@@ -4,7 +4,7 @@ import axiosInstance from "../../axios";
 import requests from "../../lib/urls";
 
 export default function ReligiousServicesModal({ open, setOpen, setReligiousService }) {
-  const [selectedReligiousnesServices, setSelectedReligiousnesServices] = useState(""); // Use this state for selected service
+  const [selectedReligiousnesServices, setSelectedReligiousnesServices] = useState(""); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [religiousnesServicesOptions, setReligiousnesServicesOptions] = useState([]);
@@ -44,7 +44,7 @@ export default function ReligiousServicesModal({ open, setOpen, setReligiousServ
       if (response.status === 200) {
         setReligiousService(selectedReligiousnesServices); // Update the selected service in the parent
         setOpen(false);
-        setSelectedReligiousnesServices(""); // Reset the selection
+        setSelectedReligiousnesServices(""); 
       } else {
         setError("Failed to update. Try again.");
       }

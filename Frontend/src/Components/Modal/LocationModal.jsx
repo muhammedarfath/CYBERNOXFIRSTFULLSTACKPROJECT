@@ -7,6 +7,7 @@ import requests from "../../lib/urls";
 export default function LocationModal({
   openModal,
   setOpenModal,
+  fetchDetails,
   setLocation,
 }) {
   const [countries, setCountries] = useState([]);
@@ -49,7 +50,18 @@ export default function LocationModal({
     };
 
     try {
-      await axiosInstance.put(`${requests.editLocation}`, data);
+      const { data: responseData } = await axiosInstance.put(
+        requests.editLocation,
+        data
+      );
+
+      const { updated_location } = responseData;
+      if (updated_location) {
+        const { city, state, country } = updated_location;
+        setLocation(`${city}, ${state}, ${country}`);
+      }
+      
+      fetchDetails();
       setOpenModal(false);
     } catch (error) {
       console.error("Error updating location:", error);

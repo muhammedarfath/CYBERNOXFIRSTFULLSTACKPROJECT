@@ -73,7 +73,8 @@ export default function HairColorModal({ open, setOpen, setHairColor }) {
           <select
             value={selectedHairColor}
             onChange={(e) => setSelectedHairColor(e.target.value)}
-            className="block w-full text-gray-700 bg-gray-200 border border-gray-300 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
+            className="appearance-none block w-full text-gray-700 bg-gray-200 border
+            border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             disabled={loading}
           >
             <option value="">Select Hair Color</option>
@@ -108,4 +109,3 @@ export default function HairColorModal({ open, setOpen, setHairColor }) {
     </div>
   );
 }
- 

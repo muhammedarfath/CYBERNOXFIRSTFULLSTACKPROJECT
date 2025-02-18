@@ -3,7 +3,11 @@ import { MdClose } from "react-icons/md";
 import axiosInstance from "../../axios";
 import requests from "../../lib/urls";
 
-export default function LivingSituationModal({ open, setOpen, setLivingSituation }) {
+export default function LivingSituationModal({
+  open,
+  setOpen,
+  setLivingSituation,
+}) {
   const [selectedLivingSituation, setSelectedLivingSituation] = useState("");
   const [livingSituationOptions, setLivingSituationOptions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -14,7 +18,9 @@ export default function LivingSituationModal({ open, setOpen, setLivingSituation
 
     const fetchLivingSituationOptions = async () => {
       try {
-        const response = await axiosInstance.get(requests.getLivingSituationOptions);
+        const response = await axiosInstance.get(
+          requests.getLivingSituationOptions
+        );
         if (response.status === 200) {
           setLivingSituationOptions(response.data.options);
         }
@@ -69,7 +75,8 @@ export default function LivingSituationModal({ open, setOpen, setLivingSituation
         <select
           value={selectedLivingSituation}
           onChange={(e) => setSelectedLivingSituation(e.target.value)}
-          className="block w-full text-gray-700 bg-gray-200 border border-gray-300 rounded py-3 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
+          className="appearance-none block w-full text-gray-700 bg-gray-200 border
+          border-gray rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           disabled={loading || livingSituationOptions.length === 0}
         >
           <option value="">Select Living Situation</option>
