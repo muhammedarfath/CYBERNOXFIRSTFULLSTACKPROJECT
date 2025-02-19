@@ -1,15 +1,17 @@
 import React from "react";
 
-function SearchFilter({activeFilter}) {
+function SearchFilter({activeFilter,profileId,setProfileId}) {
   return (
     <>
       {activeFilter === "search" && (
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-3 border-b pb-3 border p-4 rounded-full border-gray">
             <input
-              type="email"
+              type="text"
               placeholder="Enter Profile ID"
               class="w-full outline-none bg-transparent text-gray-600 text-sm"
+              value={profileId} 
+              onChange={(e) => setProfileId(e.target.value)} 
             />
             <svg
               xmlns="http://www.w3.org/2000/svg"

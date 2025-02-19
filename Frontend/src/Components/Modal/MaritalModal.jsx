@@ -11,8 +11,6 @@ function MaritalModal({ open, setOpen, setMaritalStatus }) {
 
 
 
-
-
   useEffect(() => {
     if (open) {
       const fetchMaritalOptions = async () => {

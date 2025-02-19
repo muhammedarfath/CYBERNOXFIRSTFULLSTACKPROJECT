@@ -69,5 +69,7 @@ const requests = {
 
     Messages:`${backendUrl}/socketconnection/messages/`,
     UnreadNotification:`${backendUrl}/socketconnection/unread-notifications/`,
+
+    Search:`${backendUrl}/auth/search/`
 }
 export default requests  

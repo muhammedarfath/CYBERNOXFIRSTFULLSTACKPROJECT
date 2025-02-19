@@ -59,7 +59,7 @@ function ProfileSec() {
   };
 
   return (
-    <div className="w-full overflow-scroll h-full">
+    <div className="w-full overflow-scroll h-full mb-9">
       <div className="flex md:flex-row w-full p-4">
         <div className="flex flex-col md:w-1/2 w-full flex-wrap gap-4 md:p-4 mb-28">
           <div className="w-full flex items-center justify-between bg-white rounded-lg shadow-md p-5">
@@ -82,7 +82,7 @@ function ProfileSec() {
             { title: "Hobbies", key: "Hobbies", component: <Hobbies profileDetails={profileDetails} fetchDetails={fetchDetails}/> },
             { title: "Partner Expectation", key: "PartnerExpectation", component: <PartnerExpectation preferences={profileDetails}/> },
           ].map(({ title, key, component }) => (
-            <div key={key} className="w-full bg-white md:p-6 rounded-lg shadow-md cursor-pointer">
+            <div key={key} className="w-full bg-white md:p-6 rounded-lg p-4 shadow-md cursor-pointer">
               <div className="flex items-center justify-between" onClick={() => toggleSection(key)}>
                 <h2 className="text-lg font-semibold">{title}</h2>
                 {openSection === key ? (

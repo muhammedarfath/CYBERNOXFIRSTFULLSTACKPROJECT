@@ -105,6 +105,9 @@ function MainProfileCard({ profileDetails, logoutUser }) {
 
   const age = calculateAge(dateOfBirth);
 
+  // Check if validation is complete (example check)
+  const validationComplete = profileDetails?.user_profile?.validation_status === false;
+
   return (
     <div className="flex flex-col lg:flex-row items-start justify-between p-6 bg-gray-50 rounded-lg gap-6">
       <div className="flex flex-col lg:flex-row gap-6 w-full lg:w-auto">
@@ -165,6 +168,12 @@ function MainProfileCard({ profileDetails, logoutUser }) {
               <AiOutlineLogout />
               Logout
             </button>
+            {/* Warning badge */}
+            {!validationComplete && (
+              <div className="mt-4 bg-[#FFAB00] text-yellow-800 text-sm py-2 px-4 rounded-full text-center">
+                <p>Your account validation is not completed. <a href="/validate" className="text-blue-500 underline">Click here</a> to complete it.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
