@@ -1,33 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineAudio } from "react-icons/ai";
+import EmojiPicker from "emoji-picker-react";
 
-function MessageInput({message,setMessage,handleSend}) {
+function MessageInput({ message, setMessage, handleSend }) {
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  const handleEmojiClick = (emojiObject) => {
+    setMessage((prevMessage) => prevMessage + emojiObject.emoji);
+    setShowEmojiPicker(false); 
+  };
+
   return (
     <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
-      <div>
-        <button className="flex items-center justify-center text-gray-400 hover:text-gray-600">
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M15.172 7l-6.586 6.586a2 2 0 002.828 2.828l6.586-6.586A2 2 0 1015.172 7z"
-            ></path>
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 20h16"
-            ></path>
-          </svg>
+      <div className="relative">
+        <button
+          onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+          className="flex items-center justify-center text-gray-400 hover:text-gray-600"
+        >
+          😀
         </button>
+        {showEmojiPicker && (
+          <div className="absolute bottom-12 left-0 z-50">
+            <EmojiPicker onEmojiClick={handleEmojiClick} />
+          </div>
+        )}
       </div>
+
       <div className="flex-grow ml-4">
         <div className="relative w-full">
           <input
@@ -35,11 +33,12 @@ function MessageInput({message,setMessage,handleSend}) {
             className="flex w-full border border-gray rounded-xl focus:outline-none focus:border-gray pl-4 h-10"
             placeholder="Type your message..."
             value={message}
-            onChange={(e) => setMessage(e.target.value)} // Capture user input
-            onKeyPress={(e) => e.key === "Enter" && handleSend()} // Send on Enter key
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && handleSend()}
           />
         </div>
       </div>
+
       <div className="flex gap-4 ml-4">
         <div>
           <button className="flex items-center justify-center text-primary hover:text-black">

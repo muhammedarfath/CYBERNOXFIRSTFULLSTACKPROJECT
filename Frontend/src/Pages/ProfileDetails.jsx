@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { CiPhone } from "react-icons/ci";
-import slide_img_5 from "../assets/Screenshot 2024-12-27 at 11.48.47 AM.png";
 import ProfileDetailImg from "../Components/Section/ProfileDetailsSec/ProfileDetailImg";
 import ProfileDetailsHobbies from "../Components/Section/ProfileDetailsSec/ProfileDetailsHobbies";
 import ProfileDetailOther from "../Components/Section/ProfileDetailsSec/ProfileDetailOther";
@@ -8,9 +7,12 @@ import { FaLeftLong } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { MdMessage } from "react-icons/md";
+
+
 function ProfileDetails() {
   const location = useLocation();
   const { slide } = location.state || {};
+
   
   const [isPaid, setIsPaid] = useState(false);
   const navigate = useNavigate();
@@ -50,7 +52,7 @@ function ProfileDetails() {
               <div className="bg-white shadow rounded-lg p-6">
                 <h2 className="text-xl font-bold mb-4">Profile Description</h2>
                 <p className="text-gray-700 text-sm md:text-base leading-relaxed">
-                  {slide.family_info.family_description}
+                  {slide.family_info?.family_description}
                 </p>
                 <div
                   className={`w-full h-auto mt-6 text-white bg-[#f15d5d] bg-opacity-10 flex flex-col justify-center items-center p-3 gap-5 rounded-2xl transition-all duration-300 ${
@@ -83,8 +85,8 @@ function ProfileDetails() {
                 )}
 
                 <div className="mt-6">
-                  <ProfileDetailsHobbies />
-                  <ProfileDetailOther />
+                  <ProfileDetailsHobbies hobbies={slide.hobbies}/>
+                  <ProfileDetailOther slide={slide}/>
                 </div>
               </div>
             </div>

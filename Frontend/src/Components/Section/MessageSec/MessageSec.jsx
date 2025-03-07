@@ -6,7 +6,6 @@ import { FloatingDockDemo } from "../../Layout/FloatingDockDemo";
 import axiosInstance from "../../../axios";
 import requests from "../../../lib/urls";
 
-
 export function MessageSec() {
   const [filter, setFilter] = useState("All Messages");
   const [showFilterOptions, setShowFilterOptions] = useState(false);
@@ -20,68 +19,41 @@ export function MessageSec() {
     axiosInstance
       .get(`${requests.Messages}`)
       .then((response) => {
-        const { users, latest_messages } = response.data;
+        console.log(response, "this are response");
+
+        const { users, latest_messages, profiles } = response.data;
 
         const formattedData = latest_messages.map((msg) => {
+          // Find the corresponding user (either author or sender)
           const user = users.find(
-            (u) => u.id === msg.author.id || u.id === msg.sender.id
+            (u) => u.id === msg.sender.id || u.id === msg.receiver.id
           );
+
+          // Find the corresponding profile based on the user id
+          const profile = profiles.find((p) => p.user === user?.id);
 
           return {
             id: user?.id,
-            title: user?.unique_id, 
+            title: user?.unique_id,
             src: user?.profile_picture || "/default-avatar.png",
             content: <p>{msg.content}</p>,
             unread: !msg.is_read,
+            name: profile?.name || "Unknown",
+            timestamp: new Date(msg.timestamp),
           };
         });
 
-        setMessages(formattedData);
+        const sortedData = formattedData.sort(
+          (a, b) => b.timestamp - a.timestamp
+        );
+
+        setMessages(sortedData);
         setLoading(false);
       })
       .catch((err) => {
         setError("Failed to load messages");
         setLoading(false);
       });
-  }, []);
-
-  useEffect(() => {
-    const ws = new WebSocket("wss://yourdomain.com/ws/chat/");
-    
-    ws.onopen = () => {
-      console.log("WebSocket Connected");
-    };
-
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-
-      if (data.option === "new_messages") {
-        setMessages((prevMessages) => [
-          {
-            id: data.messages[0].author,
-            title: data.messages[0].author,
-            src: "/default-avatar.png",
-            content: <p>{data.messages[0].content}</p>,
-            unread: true,
-          },
-          ...prevMessages,
-        ]);
-      }
-    };
-
-    ws.onerror = (error) => {
-      console.error("WebSocket Error:", error);
-    };
-
-    ws.onclose = () => {
-      console.log("WebSocket Disconnected");
-    };
-
-    setSocket(ws);
-
-    return () => {
-      ws.close();
-    };
   }, []);
 
   const filteredData =
@@ -94,7 +66,7 @@ export function MessageSec() {
   ));
 
   return (
-    <div className="w-full h-screen">
+    <div className="w-full h-full">
       <div className="flex flex-col gap-4 w-full container mx-auto p-4 mt-5">
         <div className="flex justify-between items-center gap-3 bg-white p-6 rounded-lg shadow-lg">
           <div>
@@ -167,6 +139,8 @@ export function MessageSec() {
         <p className="text-center text-gray-500">Loading messages...</p>
       ) : error ? (
         <p className="text-center text-red-500">{error}</p>
+      ) : filteredData.length === 0 ? (
+        <p className="text-center text-gray-500">No messages available.</p>
       ) : (
         <Carousel items={cards} />
       )}

@@ -6,6 +6,7 @@ import { IoMedalSharp } from "react-icons/io5";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { BiMessageSquare } from "react-icons/bi";
 import { PiChatFill } from "react-icons/pi";
+import Logo from "../../assets/logo PNG M 2.png";
 
 function MobileFooterMenu() {
   const [activeIcon, setActiveIcon] = useState(null);
@@ -41,11 +42,11 @@ function MobileFooterMenu() {
           <div className="text-center relative">
             <Link to="/">
               <img
-                src="https://assets.aceternity.com/logo-dark.png"
+                src={Logo}
                 width={40}
                 height={40}
                 alt="Aceternity Logo"
-                className="relative -top-1"
+                className="relative -top-1 scale-150"
               />
             </Link>
           </div>

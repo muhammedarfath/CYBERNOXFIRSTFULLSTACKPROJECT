@@ -17,7 +17,7 @@ import { useOutsideClick } from "../hooks/use-outside-click";
 import { IconSend } from "@tabler/icons-react";
 import { useDisclosure } from "@nextui-org/react";
 import ChatArea from "../Modal/ChatArea";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { backendUrl } from "../../Constants/Constants";
 export const CarouselContext = createContext({
   onCardClose: () => {},
@@ -142,7 +142,6 @@ export const Carousel = ({ items, initialScroll = 0 }) => {
 };
 
 export const Card = ({ card, index, layout = false }) => {
-  console.log(card,"this is card");
   const [open, setOpen] = useState(false);
   const [showMessages, setShowMessages] = useState(false);
   const [inputMessage, setInputMessage] = useState("");
@@ -150,6 +149,8 @@ export const Card = ({ card, index, layout = false }) => {
     { type: "received", text: "Hello, how are you?" },
     { type: "sent", text: "I'm good, thank you!" },
   ]);
+
+  const navigate = useNavigate()
   const handleHover = () => setShowMessages(true);
   const handleLeave = () => setShowMessages(false);
 
@@ -160,27 +161,39 @@ export const Card = ({ card, index, layout = false }) => {
     }
   };
 
+
+
+
+  const handleChatNavigation = () => {
+    if (card.id && card.name) {
+      navigate(`/chatarea/${encodeURIComponent(card.name)}`, {
+        state: { userId: card.id },
+      });
+    }
+  };
+  
+
   return (
     <>
-      <Link to='/chatarea'>
         <motion.div
           onMouseEnter={handleHover}
           onMouseLeave={handleLeave}
-          layoutId={layout ? `card-${card.title}` : undefined}
+          layoutId={layout ? `card-${card.name}` : undefined}
           className="relative rounded-3xl bg-gray-100 dark:bg-neutral-900 h-80 w-56 md:h-[30rem] md:w-96 overflow-hidden flex flex-col items-start justify-start"
+          onClick={handleChatNavigation}
         >
           <div className="absolute h-full top-0 inset-x-0 bg-gradient-to-b from-black/50 via-transparent to-transparent z-30 pointer-events-none" />
           <div className="relative z-40 p-8">
             <motion.p
-              layoutId={layout ? `title-${card.title}` : undefined}
+              layoutId={layout ? `title-${card.name}` : undefined}
               className="text-white text-xl md:text-3xl font-semibold max-w-xs text-left [text-wrap:balance] font-sans mt-2"
             >
-              {card.title}
+              {card.name}
             </motion.p>
           </div>
           <img
             src={`${backendUrl}${card.src}`}
-            alt={card.title}
+            alt={card.name}
             className="object-cover absolute z-10 inset-0 h-full w-full"
           />
 
@@ -219,7 +232,6 @@ export const Card = ({ card, index, layout = false }) => {
             </div>
           )}
         </motion.div>
-      </Link>
     </>
   );
 };

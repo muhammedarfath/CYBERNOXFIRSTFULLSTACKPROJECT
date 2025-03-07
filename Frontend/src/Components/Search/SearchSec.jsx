@@ -6,43 +6,88 @@ import FilterOption from "./FilterOption";
 import SearchFilter from "./SearchFilter";
 import requests from "../../lib/urls";
 import axiosInstance from "../../axios";
-import { FaHeart, FaTimes, FaStar, FaCommentDots } from "react-icons/fa";
-import { backendUrl } from "../../Constants/Constants";
-import Loader from "../Loading/Loader";
+import SearchRes from "./SearchRes";
 
 function SearchSec() {
-  const [filters, setFilters] = useState({
-    weight: [30, 150],
-    age: [18, 21],
-    height: [137, 217],
-  });
   const [profileId, setProfileId] = useState("");
-  const [loading, setLoading] = useState(false); // State to manage loading state
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState(null);
   const [activeFilter, setActiveFilter] = useState("filter");
   const [activeLocation, setActiveLocation] = useState("location");
 
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedState, setSelectedState] = useState("");
+
+  const [maritalStatus, setMaritalStatus] = useState("");
+  const [physicalStatus, setPhysicalStatus] = useState("");
+  const [educationPreference, setEducationPreference] = useState("");
+  const [professionPreference, setProfessionPreference] = useState("");
+  const [incomePreference, setIncomePreference] = useState("");
+  const [religionsPreference, setReligionsPreference] = useState("");
+  const [castPreference, setCastPreference] = useState("");
+  const [selectedReligion, setSelectedReligion] = useState("");
+
+
+  console.log(maritalStatus,"this is marital status");
+
+
+
+  const [rangeFilters, setRangeFilters] = useState({
+    weight: { min: 40, max: 100 },
+    age: { min: 18, max: 50 },
+    height: { min: 140, max: 200 },
+  });
+  
+
+
+
   const handleSearch = async () => {
-    if (!profileId) return;
     setLoading(true);
     setError(null);
+    setUserData(null);
 
     try {
-      const response = await axiosInstance.get(
-        `${requests.Search}?profileId=${profileId}`
-      );
+      let response;
+
+      if (activeFilter === "search") {
+
+        if (!profileId) {
+          alert("Please enter a Profile ID!");
+          setLoading(false);
+          return;
+        }
+
+        response = await axiosInstance.get(
+          `${requests.Search}?profileId=${profileId}`
+        );
+      } else {
+        const params = {
+          country: selectedCountry || undefined,
+          state: selectedState || undefined,
+          marital_status: maritalStatus || undefined,
+          physical_status: physicalStatus || undefined,
+          education: educationPreference || undefined,
+          profession: professionPreference || undefined,
+          income: incomePreference || undefined,
+          religion: religionsPreference || undefined,
+          caste: castPreference || undefined,
+          weight: `${rangeFilters.weight.min}-${rangeFilters.weight.max}`,
+          height: `${rangeFilters.height.min}-${rangeFilters.height.max}`,
+          age: `${rangeFilters.age.min}-${rangeFilters.age.max}`,
+        };
+
+        response = await axiosInstance.get(`${requests.Search}`, { params });
+      }
 
       console.log(response, "search");
       setUserData(response.data);
     } catch (err) {
       if (err.response) {
         if (err.response.status === 404) {
-          alert("User not found! Please enter a valid ID.");
-        } else if (err.response.status === 400) {
-          alert("Profile ID is required!");
+          alert("No matching results found.");
         } else {
-          alert("An unexpected error occurred. Please try again later.");
+          alert("An unexpected error occurred. Please try again.");
         }
       } else {
         alert("Network error. Please check your connection.");
@@ -53,6 +98,7 @@ function SearchSec() {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="relative h-full overflow-scroll bg-gray-100">
@@ -73,8 +119,8 @@ function SearchSec() {
             }`}
             onClick={() => {
               setActiveFilter("filter");
-              setUserData(null); 
-              setProfileId("")
+              setUserData(null);
+              setProfileId("");
             }}
           >
             Filter
@@ -86,8 +132,7 @@ function SearchSec() {
             onClick={() => {
               setActiveFilter("search");
               setUserData(null);
-              setProfileId("")
-
+              setProfileId("");
             }}
           >
             ID Search
@@ -96,9 +141,30 @@ function SearchSec() {
 
         <FilterOption
           activeFilter={activeFilter}
-          filters={filters}
           activeLocation={activeLocation}
           setActiveLocation={setActiveLocation}
+          selectedCountry={selectedCountry}
+          setSelectedCountry={setSelectedCountry}
+          selectedState={selectedState}
+          setSelectedState={setSelectedState}
+          maritalStatus={maritalStatus}
+          setMaritalStatus={setMaritalStatus}
+          physicalStatus={physicalStatus}
+          setPhysicalStatus={setPhysicalStatus}
+          educationPreference={educationPreference}
+          setEducationPreference={setEducationPreference}
+          professionPreference={professionPreference}
+          setProfessionPreference={setProfessionPreference}
+          incomePreference={incomePreference}
+          setIncomePreference={setIncomePreference}
+          religionsPreference={religionsPreference}
+          setReligionsPreference={setReligionsPreference}
+          castPreference={castPreference}
+          setCastPreference={setCastPreference}
+          selectedReligion={selectedReligion}
+          setSelectedReligion={setSelectedReligion}
+          rangeFilters={rangeFilters}
+          setRangeFilters={setRangeFilters}
         />
 
         <SearchFilter
@@ -115,65 +181,7 @@ function SearchSec() {
           Search
         </button>
 
-        {loading ? (
-          <div className="mt-6 max-w-xs mx-auto bg-white rounded-xl shadow-lg overflow-hidden p-4 flex justify-center items-center">
-            <Loader />
-          </div>
-        ) : (
-          userData && (
-            <div className="mt-6 max-w-xs mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-              {/* Profile Image */}
-              <div className="relative">
-                <img
-                  className="w-full h-64 object-cover"
-                  src={`${backendUrl}${userData.profile_picture}`}
-                  alt="Profile"
-                />
-                <div className="absolute top-2 right-2 bg-yellow-500 p-2 rounded-full">
-                  <FaStar className="text-white" />
-                </div>
-              </div>
-
-              {/* User Info */}
-              <div className="p-4">
-                <h3 className="text-xl font-semibold">
-                  {userData.first_name || "No Name"}
-                </h3>
-                <p className="text-gray-600 text-sm">{userData.unique_id}</p>
-                <p className="text-sm font-bold mt-2">
-                  {userData.age || "Age not available"} years, {userData.height}{" "}
-                  cm
-                </p>
-                <p className="text-sm font-medium text-gray-700">
-                  {userData.education || "Education not available"}
-                </p>
-
-                {/* Location */}
-                <div className="mt-3 flex items-center">
-                  <span className="text-sm bg-gray-200 px-3 py-1 rounded-lg flex items-center">
-                    🇮🇳 {userData.location || "Location not available"}
-                  </span>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex justify-between p-4">
-                <button className="bg-white border border-red-500 text-red-500 p-3 rounded-full shadow-lg">
-                  <FaTimes size={20} />
-                </button>
-                <button className="bg-red-500 text-white p-3 rounded-full shadow-lg">
-                  <FaCommentDots size={20} />
-                </button>
-                <button className="bg-white border border-gray-500 text-gray-500 p-3 rounded-full shadow-lg">
-                  <FaStar size={20} />
-                </button>
-                <button className="bg-white border border-red-500 text-red-500 p-3 rounded-full shadow-lg">
-                  <FaHeart size={20} />
-                </button>
-              </div>
-            </div>
-          )
-        )}
+        <SearchRes loading={loading} userData={userData} />
       </div>
     </div>
   );

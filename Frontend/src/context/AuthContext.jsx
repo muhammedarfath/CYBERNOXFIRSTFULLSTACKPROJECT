@@ -35,6 +35,7 @@ export const AuthProvider = ({ children }) => {
   };
 
 
+
   const logoutUser = () => {
     setProfileDetails(null);
     setPosts([]);

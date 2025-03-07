@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { FloatingDock } from "../ui/floating-dock";
 import { CiMedal, CiUser, CiHeart, CiChat1 } from "react-icons/ci";
 import { useNotification } from "../../context/NotificationProvider";
+import Logo from "../../assets/logo.png";
 
 export function FloatingDockDemo() {
-  const { unreadCount } = useNotification();
+  const { unreadCount, messageUnreadCount } = useNotification();
   const [activeItem, setActiveItem] = useState("MATRYMONY");
+
+  console.log(messageUnreadCount,"how muchhhhhhhhhhhhh");
 
   const handleClick = (item) => {
     setActiveItem(item);
@@ -26,10 +29,9 @@ export function FloatingDockDemo() {
       title: "MATRYMONY",
       icon: (
         <img
-          src="https://assets.aceternity.com/logo-dark.png"
-          width={20}
-          height={20}
+          src={Logo}
           alt="Aceternity Logo"
+          className="scale-[3.5]"
         />
       ),
       href: "/",
@@ -52,7 +54,18 @@ export function FloatingDockDemo() {
     },
     {
       title: "Message",
-      icon: <CiChat1 className="h-full w-full" />,
+      icon: (
+        <>
+          {messageUnreadCount > 0 && (
+            <span className="absolute top-0 right-0 bg-button text-white text-xs rounded-full px-2">
+              {messageUnreadCount}
+            </span>
+          )}
+          <div className="relative">
+            <CiChat1 className="h-full w-full" />
+          </div>
+        </>
+      ),
       href: "/message",
     },
   ];

@@ -8,6 +8,7 @@ const NotificationContext = createContext();
 
 export const NotificationProvider = ({ children }) => {
   const [unreadCount, setUnreadCount] = useState(0);
+  const [messageUnreadCount, setMessageUnreadCount] = useState(0);
   const [receivedNotifications, receivedSetNotifications] = useState([]);
   const [sentNotifications, sentSetNotifications] = useState([]);
   const [hasActiveSubscription,hasSetActiveSubscription] = useState(false)
@@ -21,10 +22,7 @@ export const NotificationProvider = ({ children }) => {
 
   const fetchUnreadNotifications = async () => {
     try {
-      console.log("Fetching unread notifications...");
       const response = await axiosInstance.get(requests.UnreadNotification);
-      console.log("API Response:", response.data);
-      console.log(response,"this is response message");
       if (response.data) {
         setUnreadCount(response.data.unread_count);
         receivedSetNotifications(response.data.received_notifications || []);
@@ -63,9 +61,10 @@ export const NotificationProvider = ({ children }) => {
       const data = JSON.parse(event.data);
 
       if (data.notification) {
+        console.log(data.notification,"this is notifiy");
         setUnreadCount((prev) => prev + 1);
         receivedSetNotifications((prev) => [data.notification, ...prev]);
-
+        fetchUnreadNotifications()
         if (data.notification) {
           toast.custom((t) => (
             <div
@@ -113,6 +112,13 @@ export const NotificationProvider = ({ children }) => {
       ) {
         setUnreadCount(data.notifications.length);
       }
+
+      if (
+        data.option === "fetch_unread_messages" &&
+        Array.isArray(data.notifications)
+      ) {
+        setMessageUnreadCount(data.notifications.length);
+      }
     };
 
     ws.current.onclose = () => {
@@ -146,7 +152,9 @@ export const NotificationProvider = ({ children }) => {
         receivedSetNotifications,
         sentNotifications,
         sentSetNotifications,
-        hasActiveSubscription
+        hasActiveSubscription,
+        fetchUnreadNotifications,
+        messageUnreadCount
       }}
     >
       {children}

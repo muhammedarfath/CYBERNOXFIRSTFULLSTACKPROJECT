@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { MdOutlineStarBorder } from "react-icons/md";
 import { FaRegUserCircle, FaHeart } from "react-icons/fa";
@@ -7,33 +7,28 @@ import { LuGraduationCap } from "react-icons/lu";
 import { backendUrl } from "../../../Constants/Constants";
 import userphoto from "../../../assets/User Male Profile.svg";
 import { useSelector } from "react-redux";
+import requests from "../../../lib/urls";
+import axiosInstance from "../../../axios";
 
 const socketBaseUrl = "ws://127.0.0.1:8000/ws/notifications/";
-
-
-
 
 function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
   const [showHeart, setShowHeart] = useState(false);
   const [showClose, setShowClose] = useState(false);
+  const [showSave, setShowSave] = useState(false);
   const [socket, setSocket] = useState(null);
   const accessToken = useSelector((state) => state.auth.token);
 
 
-
-  
-
   useEffect(() => {
-
-
-   if (!accessToken) {
+    if (!accessToken) {
       console.error("No access token found");
       return;
     }
 
-    const socketUrl = `${socketBaseUrl}?token=${accessToken}`;  
+    const socketUrl = `${socketBaseUrl}?token=${accessToken}`;
     const newSocket = new WebSocket(socketUrl);
-    
+
     newSocket.onopen = () => {
       console.log("WebSocket Connected");
     };
@@ -46,8 +41,6 @@ function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
       console.error("WebSocket Error:", error);
     };
 
-  
-
     setSocket(newSocket);
 
     return () => {
@@ -55,32 +48,27 @@ function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
     };
   }, []);
 
-
   const handleHeartClick = (e) => {
-
     if (!socket || socket.readyState !== WebSocket.OPEN) {
       console.error("WebSocket is not open. Cannot send message.");
       return;
     }
 
-
     e.stopPropagation();
     setShowHeart(true);
+
     socket.send(
       JSON.stringify({
         option: "interest_sent",
         userId: slide.user_profile.user.id,
       })
     );
-    
-
     setTimeout(() => {
       swiperRef.current.swiper.slideNext();
       setShowHeart(false);
     }, 1000);
   };
 
-  
   const handleCloseClick = (e) => {
     e.stopPropagation();
     setShowClose(true);
@@ -90,7 +78,21 @@ function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
     }, 1000);
   };
 
+  const handleSaveClick = async (e) => {
+    e.stopPropagation();
+    setShowSave(true);
 
+
+    const response = await axiosInstance.post(`${requests.savePost}`, {
+      saved_user_id: slide.user_profile.user.id,
+    });
+
+
+    setTimeout(() => {
+      swiperRef.current.swiper.slideNext();
+      setShowSave(false);
+    }, 1000);
+  };
 
   return (
     <div
@@ -136,10 +138,15 @@ function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
           <CgClose className="text-button text-9xl md:text-8xl" />
         </div>
       )}
+      {showSave && (
+        <div className="w-16 h-16 items-center absolute text-center inset-0 m-auto animate-heart">
+          <MdOutlineStarBorder className="text-button text-9xl md:text-8xl" />
+        </div>
+      )}
 
       <div className="absolute inset-x-0 top-4 flex justify-end px-10">
         <button
-          onClick={() => swiperRef.current.swiper.slideNext()}
+          onClick={handleSaveClick}
           className="bg-white text-black font-bold p-4 rounded-full flex items-center text-xs md:text-sm lg:text-base transition duration-200 transform hover:scale-110"
         >
           <MdOutlineStarBorder className="text-2xl" />

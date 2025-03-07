@@ -318,3 +318,23 @@ body {
     height: 50px;
   }
 }
+
+
+
+.input-range__track--active {
+  background: #353434 !important; 
+}
+
+.input-range__slider {
+  background: #353434 !important; 
+  border: 2px solid #353434 !important;
+}
+
+.input-range__slider:active {
+  background: #353434 !important;
+  border-color: #353434 !important;
+}
+
+.input-range__label {
+  display: block;
+}

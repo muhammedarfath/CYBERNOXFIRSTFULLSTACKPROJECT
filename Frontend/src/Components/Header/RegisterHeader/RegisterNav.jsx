@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDisclosure } from "@nextui-org/react";
 import Login from "../../Modal/Login";
 import { Link } from "react-router-dom";
+import Logo from "../../../assets/logo PNG M.png";
 
 function RegisterNav() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -21,8 +22,8 @@ function RegisterNav() {
         <div className="flex lg:flex-1">
           <Link to="/">
             <img
-              className="w-auto md:max-h-6 max-h-6 object-contain"
-              src="https://assets.aceternity.com/logo-dark.png"
+              className="w-auto md:max-h-6 max-h-6 object-contain scale-[3.5]"
+              src={Logo}
               alt="Company Logo"
             />
           </Link>

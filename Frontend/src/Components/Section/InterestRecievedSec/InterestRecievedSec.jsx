@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FloatingDockDemo } from "../../Layout/FloatingDockDemo";
 import slide_img_1 from "../../../assets/Screenshot 2024-12-27 at 11.53.55 AM.png";
 import { FaHeartCirclePlus } from "react-icons/fa6";
@@ -7,6 +7,8 @@ import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { useNotification } from "../../../context/NotificationProvider";
 import { backendUrl } from "../../../Constants/Constants";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../../axios";
+import requests from "../../../lib/urls";
 
 function InterestRecievedSec() {
   const navigate = useNavigate();
@@ -14,34 +16,62 @@ function InterestRecievedSec() {
     receivedNotifications = [],
     sentNotifications = [],
     hasActiveSubscription,
+    fetchUnreadNotifications,
   } = useNotification();
   const [filter, setFilter] = useState("received");
   const [showFilterOptions, setShowFilterOptions] = useState(false);
 
-  const receivedLikes = receivedNotifications.map((notification) => ({
-    imgsrc: notification.sender?.profile_picture
-      ? `${backendUrl}${notification.sender.profile_picture}`
-      : slide_img_1,
-    name: notification.sender?.email || "Unknown",
-  }));
+  useEffect(() => {
+    fetchUnreadNotifications();
+  }, []);
 
-  const sentLikes = sentNotifications.map((notification) => ({
-    imgsrc: notification.user?.profile_picture
-      ? `${backendUrl}${notification.user.profile_picture}`
-      : slide_img_1,
-    name: notification.user?.email || "Unknown",
-  }));
+  console.log(receivedNotifications, "check rec");
 
+  const mapNotificationData = (notifications, isReceived) => {
+    return notifications.map((item) => {
+      const notification = item.notification;
+      const userProfile = item.sender_details;
+      const sender = isReceived ? notification.sender : notification.user;
 
-  const handleCardClick = (slide) => {
+      return {
+        notification,
+        userProfile,
+        sender
+      };
+    });
+  };
+
+  const receivedLikes = mapNotificationData(receivedNotifications, true);
+  const sentLikes = mapNotificationData(sentNotifications, false);
+
+  const markNotificationAsRead = async (notificationId) => {
+    try {
+      const response = await axiosInstance.patch(
+        `${requests.MarkAsRead}${notificationId}/`
+      );
+
+      if (response.status !== 200) {
+        throw new Error("Failed to mark notification as read");
+      }
+    } catch (error) {
+      console.error("Error updating notification:", error);
+    }
+  };
+
+  const handleCardClick = async (slide, notificationId, isRead) => {
     if (hasActiveSubscription) {
+      if (!isRead) {
+        await markNotificationAsRead(notificationId);
+      }
       navigate("/profiledetails", { state: { slide } });
     } else {
-      navigate("/pricing"); 
+      navigate("/pricing");
     }
   };
 
   const bestMatches = filter === "received" ? receivedLikes : sentLikes;
+
+  console.log(bestMatches,"adflasdsfa;kfksafks;");
 
   return (
     <div className="w-full h-full">
@@ -95,29 +125,30 @@ function InterestRecievedSec() {
           </div>
         </div>
 
-        {/* Card Section */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-4">
           {bestMatches.length > 0 ? (
             bestMatches.map((match, index) => (
               <div
                 key={index}
                 className="relative group overflow-hidden rounded-lg shadow-lg bg-white hover:shadow-xl transition-shadow cursor-pointer"
-                onClick={() => handleCardClick(match.userId)}
+                onClick={() =>
+                  handleCardClick(
+                    match.userProfile,
+                    match.notification.id,
+                    match.notification.isRead
+                  )
+                }
               >
                 <p className="absolute top-2 left-2 bg-gray-800 bg-opacity-70 text-white px-3 py-1 rounded-lg text-sm font-medium">
-                  {match.name}
+                  {match.userProfile.user_profile.name} 
                 </p>
                 <img
-                  src={match.imgsrc}
+                  src={`${backendUrl}${match.userProfile.user_profile.user.profile_picture}`}
                   alt={match.name}
                   className={`h-[30rem] w-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-105 ${
                     !hasActiveSubscription ? "brightness-75" : ""
                   }`}
                 />
-
-                {!hasActiveSubscription && (
-                  <div className="absolute inset-0 bg-black bg-opacity-70 backdrop-blur-md rounded-lg"></div>
-                )}
 
                 <div className="absolute inset-x-0 bottom-4 flex justify-center">
                   <button className="bg-gradient-to-r from-primary to-white text-white font-bold px-5 py-2 rounded-full flex items-center gap-2 text-sm transition-transform transform hover:scale-110">
@@ -134,7 +165,6 @@ function InterestRecievedSec() {
           )}
         </div>
 
-        {/* Floating Dock Section */}
         <div className="mt-6">
           <FloatingDockDemo />
         </div>

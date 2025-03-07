@@ -5,6 +5,7 @@ import user from "../../../assets/arfath.jpg";
 import verifiedIcon from "../../../assets/Verified Icon.png";
 import AuthContext from "../../../context/AuthContext";
 import userphoto from "../../../assets/User Male Profile.svg";
+import Logo from "../../../assets/logo PNG M.png";
 import { backendUrl } from "../../../Constants/Constants";
 
 function Navbar({ toggleMenu }) {
@@ -27,8 +28,8 @@ function Navbar({ toggleMenu }) {
       <div className="flex lg:flex-1 items-center">
         <Link to="/">
           <img
-            className="w-auto md:max-h-16 max-h-6 object-contain"
-            src="https://assets.aceternity.com/logo-dark.png"
+            className="w-auto md:max-h-20 max-h-9 object-contain scale-150"
+            src={Logo}
             alt="Company Logo"
           />
         </Link>
@@ -69,7 +70,11 @@ function Navbar({ toggleMenu }) {
           onMouseLeave={() => setIsHovered(false)}
         >
           <Link to="/profile">
-            <img src={preview} alt="User Profile" className="w-12 h-12 rounded-xl" />
+            <img
+              src={preview}
+              alt="User Profile"
+              className="w-12 h-12 rounded-xl"
+            />
           </Link>
           <img
             src={verifiedIcon}

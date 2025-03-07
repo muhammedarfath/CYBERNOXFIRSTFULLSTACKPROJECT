@@ -63,13 +63,16 @@ const requests = {
     editMotherName :`${backendUrl}/auth/update-mothername/`,
     getMessageUser :`${backendUrl}/auth/message-user/`,
     UpdateHobbies :`${backendUrl}/partner/update_hobbies/`,
-
+    MarkAsRead :`${backendUrl}/auth/mark-as-read/`,
+    
     SendOtp :`${backendUrl}/aadhaarotp/send-otp/`,
     VerifyOtp:`${backendUrl}/aadhaarotp/verify-otp/`,
 
     Messages:`${backendUrl}/socketconnection/messages/`,
+    getMessage:`${backendUrl}/socketconnection/getmessage/`,
     UnreadNotification:`${backendUrl}/socketconnection/unread-notifications/`,
 
-    Search:`${backendUrl}/auth/search/`
+    Search:`${backendUrl}/auth/search/`,
+    savePost:`${backendUrl}/auth/save-profile/`
 }
 export default requests  

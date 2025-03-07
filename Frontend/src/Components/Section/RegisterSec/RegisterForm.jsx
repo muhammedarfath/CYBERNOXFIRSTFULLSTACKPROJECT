@@ -4,7 +4,7 @@ import axios from "axios";
 import requests from "../../../lib/urls";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../../Redux/slices/authSlice";
-import { toast } from "react-hot-toast";
+
 function RegisterForm() {
   const [profileForOptions, setProfileForOptions] = useState([]);
   const [genderOptions, setGenderOptions] = useState([]);
@@ -94,8 +94,6 @@ function RegisterForm() {
             userId: response.data.user.id,
           })
         );
-
-        toast.success("Registration successful!");
 
         navigate("/basic-details");
       } catch (error) {
@@ -272,7 +270,7 @@ function RegisterForm() {
 
       <div>
         <button
-          className="bg-button text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
+          className="bg-button  text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
           type="submit"
         >
           REGISTER FREE

@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import BasicDetailstwo from "../../../Pages/BasicDetailstwo";
-import { FaChevronDown } from "react-icons/fa";
 import requests from "../../../lib/urls";
 import axiosInstance from "../../../axios";
 import languages from "@cospired/i18n-iso-languages";
 import en from "@cospired/i18n-iso-languages/langs/en.json";
 import Loader from "../../Loading/Loader";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { SlCalender } from "react-icons/sl";
 
 languages.registerLocale(en);
 
 function BasicDetailSec() {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    groomName: "",
-    day: "",
-    month: "",
-    year: "",
+    groomBride: "",
+    dateOfBirth: null,
     selectedMarital: "",
     selectedReligion: "",
     selectedCaste: "",
@@ -35,25 +35,28 @@ function BasicDetailSec() {
     castes: [],
     motherTongue: [],
     bodyType: [],
+    physicalType: [],
   });
-
 
   useEffect(() => {
     const fetchOptions = async () => {
-     const allLanguages = languages.getNames("en")
+      const allLanguages = languages.getNames("en");
 
       try {
-        const [maritalsRes, religionsRes, bodyTypeRes] = await Promise.all([
-          axiosInstance.get(requests.getMarital),
-          axiosInstance.get(requests.getReligion),
-          axiosInstance.get(requests.BodyType),
-        ]);
+        const [maritalsRes, religionsRes, bodyTypeRes, physicalStatusRes] =
+          await Promise.all([
+            axiosInstance.get(requests.getMarital),
+            axiosInstance.get(requests.getReligion),
+            axiosInstance.get(requests.BodyType),
+            axiosInstance.get(requests.fetchPhysicalStatus),
+          ]);
 
         setOptions({
           maritals: maritalsRes.data,
           religions: religionsRes.data,
           bodyType: bodyTypeRes.data,
-          motherTongue:Object.entries(allLanguages).map(([code, name]) => ({
+          physicalType: physicalStatusRes.data,
+          motherTongue: Object.entries(allLanguages).map(([code, name]) => ({
             value: code,
             label: name,
           })),
@@ -85,34 +88,17 @@ function BasicDetailSec() {
   const handleInputChange = (e) => {
     const { id, value } = e.target;
 
-    setFormData((prev) => {
-      const updatedFormData = { ...prev, [id]: value };
-
-      if (
-        updatedFormData.day &&
-        updatedFormData.month &&
-        updatedFormData.year
-      ) {
-        const dateOfBirth = `${
-          updatedFormData.year
-        }-${updatedFormData.month.padStart(
-          2,
-          "0"
-        )}-${updatedFormData.day.padStart(2, "0")}`;
-        updatedFormData.dateOfBirth = dateOfBirth;
-      }
-
-      return updatedFormData;
-    });
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
   };
 
   const handleValidation = () => {
     const errors = {};
     const requiredFields = [
-      "groomName",
-      "day",
-      "month",
-      "year",
+      "groomBride",
+      "dateOfBirth",
       "selectedMarital",
       "selectedReligion",
       "selectedCaste",
@@ -128,8 +114,28 @@ function BasicDetailSec() {
         errors[field] = `${field.replace(/([A-Z])/g, " $1")} is required`;
       }
     });
+
     if (formData.physicalStatus === "Yes" && !formData.typeofphysicalStatus) {
       errors.typeofphysicalStatus = "Physical status description is required";
+    }
+
+    if (formData.dateOfBirth) {
+      const today = new Date();
+      const birthDate = new Date(formData.dateOfBirth);
+      let age = today.getFullYear() - birthDate.getFullYear();
+
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+
+      if (
+        monthDiff < 0 ||
+        (monthDiff === 0 && today.getDate() < birthDate.getDate())
+      ) {
+        age--;
+      }
+
+      if (age < 18) {
+        errors.dateOfBirth = "You must be at least 18 years old.";
+      }
     }
 
     setFormErrors(errors);
@@ -140,10 +146,15 @@ function BasicDetailSec() {
     e.preventDefault();
     if (handleValidation()) {
       const data = new FormData();
-      Object.entries(formData).forEach(([key, value]) =>
-        data.append(key, value)
-      );
-      console.log(formData);
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key === "dateOfBirth" && value) {
+          const formattedDate = new Date(value).toISOString().split("T")[0];
+          data.append(key, formattedDate);
+        } else {
+          data.append(key, value);
+        }
+      });
+      console.log(Object.fromEntries(data));
       setSubmit(true);
     }
   };
@@ -151,10 +162,32 @@ function BasicDetailSec() {
   if (loading) {
     return (
       <div className="w-full h-full flex justify-center items-center">
-        <Loader/>
+        <Loader />
       </div>
     );
   }
+
+  console.log(formData);
+
+  const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
+    <div className="relative">
+      <input
+        type="text"
+        readOnly
+        value={value}
+        onClick={onClick}
+        ref={ref}
+        className={`appearance-none block w-full text-gray-700 bg-gray-200 border ${
+          formErrors.dateOfBirth ? "border-red" : "border-gray"
+        } rounded py-3 pr-28 pl-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+        placeholder="Date of Birth"
+      />
+      <SlCalender
+        className="absolute right-3 top-3 text-gray-600 cursor-pointer"
+        onClick={onClick}
+      />
+    </div>
+  ));
 
   return (
     <div className="flex lg:w-1/2 justify-center w-full md:p-4">
@@ -178,120 +211,23 @@ function BasicDetailSec() {
                 </label>
                 <input
                   className={`appearance-none block w-full text-gray-700 bg-gray-200 border ${
-                    formErrors.groomName ? "border-red" : "border-gray"
+                    formErrors.groomBride ? "border-red" : "border-gray"
                   } rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white`}
-                  id="groomName"
+                  id="groomBride"
                   type="text"
                   placeholder="Enter Groom Name"
                   onChange={handleInputChange}
                 />
-                {formErrors.groomName && (
+                {formErrors.groomBride && (
                   <p className="text-red text-xs italic">
-                    {formErrors.groomName}
+                    {formErrors.groomBride}
                   </p>
                 )}
               </div>
             </div>
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full sm:w-1/3 px-3 mb-3 sm:mb-0 relative">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                  Day
-                </label>
-                <div className="relative">
-                  <select
-                    className={`block w-full bg-gray-200 text-gray-700 border ${
-                      formErrors.day ? "border-red" : "border-gray"
-                    } rounded py-3 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 pr-10 appearance-none`}
-                    value={formData.day}
-                    id="day"
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Day</option>
-                    {[...Array(31)].map((_, i) => (
-                      <option key={i} value={i + 1}>
-                        {i + 1}
-                      </option>
-                    ))}
-                  </select>
-                  <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none" />
-                </div>
-                {formErrors.day && (
-                  <p className="text-red text-xs italic">{formErrors.day}</p>
-                )}
-              </div>
-
-              {/* Month Field */}
-              <div className="w-full sm:w-1/3 px-3 mb-3 sm:mb-0 relative">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                  Month
-                </label>
-                <div className="relative">
-                  <select
-                    className={`block w-full bg-gray-200 text-gray-700 border ${
-                      formErrors.month ? "border-red" : "border-gray"
-                    } rounded py-3 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 pr-10 appearance-none`}
-                    value={formData.month}
-                    id="month"
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Month</option>
-                    {[
-                      "January",
-                      "February",
-                      "March",
-                      "April",
-                      "May",
-                      "June",
-                      "July",
-                      "August",
-                      "September",
-                      "October",
-                      "November",
-                      "December",
-                    ].map((month, index) => (
-                      <option key={index} value={month}>
-                        {month}
-                      </option>
-                    ))}
-                  </select>
-                  <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none" />
-                </div>
-                {formErrors.month && (
-                  <p className="text-red text-xs italic">{formErrors.month}</p>
-                )}
-              </div>
-
-              {/* Year Field */}
-              <div className="w-full sm:w-1/3 px-3 relative">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                  Year
-                </label>
-                <div className="relative">
-                  <select
-                    className={`block w-full bg-gray-200 text-gray-700 border ${
-                      formErrors.year ? "border-red" : "border-gray"
-                    } rounded py-3 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 pr-10 appearance-none`}
-                    value={formData.year}
-                    id="year"
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Year</option>
-                    {[...Array(100)].map((_, i) => (
-                      <option key={i} value={2024 - i}>
-                        {2024 - i}
-                      </option>
-                    ))}
-                  </select>
-                  <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none" />
-                </div>
-                {formErrors.year && (
-                  <p className="text-red text-xs italic">{formErrors.year}</p>
-                )}
-              </div>
-            </div>
 
             <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full px-3">
+              <div className="w-full sm:w-1/2 px-3">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="marital-status"
@@ -317,6 +253,27 @@ function BasicDetailSec() {
                   <p className="text-red text-xs italic">
                     {formErrors.selectedMarital}
                   </p>
+                )}
+              </div>
+              <div className="w-full  md:mt-0 sm:w-1/2 px-3 mb-3 sm:mb-0">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  Date of Birth
+                </label>
+                <DatePicker
+                  selected={formData.dateOfBirth}
+                  onChange={(date) =>
+                    setFormData((prev) => ({ ...prev, dateOfBirth: date }))
+                  }
+                  dateFormat="dd/MM/yyyy"
+                  placeholderText="Date of Birth"
+                  showYearDropdown
+                  scrollableYearDropdown
+                  yearDropdownItemNumber={100}
+                  maxDate={new Date()}
+                  customInput={<CustomInput />}
+                />
+                {formErrors.dateOfBirth && (
+                  <span className="text-red text-xs italic">{formErrors.dateOfBirth}</span>
                 )}
               </div>
             </div>
@@ -395,7 +352,6 @@ function BasicDetailSec() {
                     </option>
                   ))}
                 </select>
-         
 
                 {formErrors.selectedTongue && (
                   <p className="text-red text-xs italic">
@@ -403,19 +359,30 @@ function BasicDetailSec() {
                   </p>
                 )}
               </div>
+
               <div className="w-full sm:w-1/2 px-3">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Height
                 </label>
-                <input
+                <select
                   id="height"
-                  type="number"
                   className={`appearance-none block w-full text-gray-700 bg-gray-200 border ${
                     formErrors.height ? "border-red" : "border-gray"
                   } rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
-                  placeholder="Enter Height"
+                  value={formData.height}
                   onChange={handleInputChange}
-                />
+                >
+                  <option value="">Select Height</option>
+                  {Array.from({ length: 100 }, (_, i) => i + 100).map(
+                    (height) => (
+                      <option
+                        key={height}
+                        value={height}
+                      >{`${height} cm`}</option>
+                    )
+                  )}
+                </select>
+
                 {formErrors.height && (
                   <p className="text-red text-xs italic">{formErrors.height}</p>
                 )}
@@ -508,19 +475,21 @@ function BasicDetailSec() {
                   <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                     Physical Status
                   </label>
-                  <input
-                    type="text"
+                  <select
+                    id="typeofphysicalStatus"
                     className={`appearance-none block w-full text-gray-700 bg-gray-200 border ${
-                      formErrors.typeofphysicalStatus
-                        ? "border-red"
-                        : "border-gray-300"
+                      formErrors.typeofphysicalStatus ? "border-red" : "border-gray"
                     } rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
-                    placeholder="Enter Physical Status"
                     value={formData.typeofphysicalStatus}
                     onChange={handleInputChange}
-                    required={formData.physicalStatus === "Yes"}
-                    id="typeofphysicalStatus"
-                  />
+                  >
+                    <option value="">Choose Body Type</option>
+                    {options.physicalType.map((type) => (
+                      <option key={type.id} value={type.id}>
+                        {type.status}
+                      </option>
+                    ))}
+                  </select>
                   {formErrors.typeofphysicalStatus && (
                     <p className="text-xs text-red">
                       Physical status is required

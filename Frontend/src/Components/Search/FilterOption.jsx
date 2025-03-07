@@ -14,23 +14,35 @@ import { RiHeartsFill } from "react-icons/ri";
 import { BiBody, BiWorld } from "react-icons/bi";
 import requests from "../../lib/urls";
 import axiosInstance from "../../axios";
+import { Country, State } from "country-state-city";
 
 function FilterOption({
   activeFilter,
-  filters,
   activeLocation,
   setActiveLocation,
+  selectedCountry,
+  setSelectedCountry,
+  selectedState,
+  setSelectedState,
+  maritalStatus,
+  setMaritalStatus,
+  physicalStatus,
+  setPhysicalStatus,
+  educationPreference,
+  setEducationPreference,
+  professionPreference,
+  setProfessionPreference,
+  incomePreference,
+  setIncomePreference,
+  religionsPreference,
+  setReligionsPreference,
+  castPreference,
+  setCastPreference,
+  selectedReligion,
+  setSelectedReligion,
+  rangeFilters,
+  setRangeFilters,
 }) {
-  // State for filter preferences
-  const [maritalStatus, setMaritalStatus] = useState("Never Married");
-  const [physicalStatus, setPhysicalStatus] = useState("No Health Issues");
-  const [educationPreference, setEducationPreference] = useState("Any");
-  const [professionPreference, setProfessionPreference] = useState("Any");
-  const [incomePreference, setIncomePreference] = useState("Any");
-  const [religionsPreference, setReligionsPreference] = useState("Any");
-  const [castPreference, setCastPreference] = useState("Any");
-  const [selectedReligion, setSelectedReligion] = useState(""); // Added state for selected religion
-
   const [options, setOptions] = useState({
     maritals: [],
     religions: [],
@@ -39,8 +51,9 @@ function FilterOption({
     educations: [],
     professions: [],
     financialStatuses: [],
+    countries: [],
+    states: [],
   });
-  
 
   useEffect(() => {
     const fetchOptions = async () => {
@@ -48,7 +61,6 @@ function FilterOption({
         const [
           maritalsRes,
           religionsRes,
-          castesRes,
           physicalStatusRes,
           educationRes,
           professionRes,
@@ -56,33 +68,24 @@ function FilterOption({
         ] = await Promise.all([
           axiosInstance.get(requests.getMarital),
           axiosInstance.get(requests.getReligion),
-          axiosInstance.get(requests.getCast),
           axiosInstance.get(requests.fetchPhysicalStatus),
           axiosInstance.get(requests.Education),
           axiosInstance.get(requests.Employement),
           axiosInstance.get(requests.Income),
         ]);
-        console.log("API Endpoints:", requests);
-
-
-        console.log(maritalsRes);
-        console.log(religionsRes);
-        console.log(castesRes);
-        console.log(physicalStatusRes);
-        console.log(educationRes);
-        console.log(professionRes);
-        console.log(financialStatusRes);
 
         setOptions({
           maritals: maritalsRes.data || [],
           religions: religionsRes.data || [],
-          castes: castesRes.data || [],
           physicalStatuses: physicalStatusRes.data || [],
           educations: educationRes.data || [],
           professions: professionRes.data || [],
           financialStatuses: financialStatusRes.data || [],
+          countries: Country.getAllCountries().map((c) => ({
+            name: c.name,
+            isoCode: c.isoCode,
+          })),
         });
-        
       } catch (error) {
         console.error("Error fetching options:", error);
       }
@@ -105,7 +108,16 @@ function FilterOption({
     };
     fetchCastes();
   }, [selectedReligion]);
-  
+
+  useEffect(() => {
+    if (selectedCountry) {
+      const states = State.getStatesOfCountry(selectedCountry).map((s) => ({
+        name: s.name,
+        isoCode: s.isoCode,
+      }));
+      setOptions((prev) => ({ ...prev, states }));
+    }
+  }, [selectedCountry]);
 
   return (
     <>
@@ -115,7 +127,6 @@ function FilterOption({
             <FilterItem
               icon={<RiHeartsFill />}
               title="Marital Status"
-              value={maritalStatus}
               options={options.maritals}
               onChange={setMaritalStatus}
             />
@@ -123,7 +134,6 @@ function FilterOption({
             <FilterItem
               icon={<FaUsers />}
               title="Religion"
-              value={religionsPreference}
               options={options.religions}
               onChange={(value) => {
                 setReligionsPreference(value);
@@ -134,7 +144,6 @@ function FilterOption({
             <FilterItem
               icon={<FaUsers />}
               title="Caste"
-              value={castPreference}
               options={options.castes}
               onChange={setCastPreference}
             />
@@ -142,7 +151,6 @@ function FilterOption({
             <FilterItem
               icon={<BiBody />}
               title="Physical Status"
-              value={physicalStatus}
               options={options.physicalStatuses}
               onChange={setPhysicalStatus}
             />
@@ -150,7 +158,6 @@ function FilterOption({
             <FilterItem
               icon={<FaGraduationCap />}
               title="Education"
-              value={educationPreference}
               options={options.educations}
               onChange={setEducationPreference}
             />
@@ -158,7 +165,6 @@ function FilterOption({
             <FilterItem
               icon={<FaBriefcase />}
               title="Profession"
-              value={professionPreference}
               options={options.professions}
               onChange={setProfessionPreference}
             />
@@ -166,42 +172,49 @@ function FilterOption({
             <FilterItem
               icon={<FaMoneyBillWave />}
               title="Financial Status"
-              value={incomePreference}
               options={options.financialStatuses}
               onChange={setIncomePreference}
             />
           </div>
 
-          {/* Range Sliders */}
           <div className="space-y-6 mt-4">
-            <div className="flex gap-6 mt-4">
-              <div className="flex-1">
-                <RangeSlider
-                  title="Weight"
-                  range={filters.weight}
-                  unit="Kg"
-                  icon={<FaDumbbell />}
-                />
-              </div>
-              <div className="flex-1">
-                <RangeSlider
-                  title="Age"
-                  range={filters.age}
-                  unit="yrs"
-                  icon={<BiWorld />}
-                />
-              </div>
-            </div>
+            <RangeSlider
+              title="Weight"
+              range={rangeFilters.weight}
+              unit="Kg"
+              icon={<FaDumbbell />}
+              minValue={40}
+              maxValue={100}
+              onChange={(value) =>
+                setRangeFilters((prev) => ({ ...prev, weight: value }))
+              }
+            />
+
+            <RangeSlider
+              title="Age"
+              range={rangeFilters.age}
+              unit="yrs"
+              icon={<BiWorld />}
+              minValue={18}
+              maxValue={50}
+              onChange={(value) =>
+                setRangeFilters((prev) => ({ ...prev, age: value }))
+              }
+            />
 
             <RangeSlider
               title="Height"
-              range={filters.height}
+              range={rangeFilters.height}
               unit="cm"
               icon={<BiBody />}
+              minValue={140}
+              maxValue={200}
+              onChange={(value) =>
+                setRangeFilters((prev) => ({ ...prev, height: value }))
+              }
             />
           </div>
 
-          {/* Location & Distance Buttons */}
           <div className="grid grid-cols-2 gap-4 my-6">
             <button
               className={`py-3 rounded-md shadow-md ${
@@ -225,11 +238,20 @@ function FilterOption({
             </button>
           </div>
 
-          {/* Location Filters */}
           {activeLocation === "location" && (
             <div className="space-y-4">
-              <FilterItem icon={<MdLocationOn />} title="Home District" />
-              <FilterItem icon={<MdLocationOn />} title="Present Country" />
+              <FilterItem
+                icon={<MdLocationOn />}
+                title="Home District"
+                options={options.states}
+                onChange={setSelectedState}
+              />
+              <FilterItem
+                icon={<MdLocationOn />}
+                title="Present Country"
+                options={options.countries}
+                onChange={setSelectedCountry}
+              />
             </div>
           )}
 

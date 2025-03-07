@@ -20,6 +20,7 @@ import { Toaster } from "react-hot-toast";
 import AadharOtp from "./Pages/AadharOtp";
 import ForgotPassword from "./Components/Section/RegisterSec/ForgotPassword";
 import ResetPassword from "./Components/Section/RegisterSec/ResetPassword";
+import NotFoundPage from "./Pages/404";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<NotFoundPage />} />
 
         <Route path="/" element={<Layout />}>
           <Route

@@ -13,8 +13,8 @@ function ProfileDetailImg({ slide }) {
             className="w-full h-full bg-gray mb-4"
             alt="Profile"
           />
-          <h1 className="text-xl font-bold">John Doe</h1>
-          <p className="text-gray-700">Software Developer</p>
+          <h1 className="text-xl font-bold">{slide?.user_profile?.name}</h1>
+          <p className="text-gray-700">{slide?.groom_bride_info?.occupation}</p>
         </div>
         <hr className="my-6 border-t border-gray-300" />
 

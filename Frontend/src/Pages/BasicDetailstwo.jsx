@@ -22,6 +22,8 @@ function BasicDetailstwo({ basicdetails }) {
     annualIncome: "",
   });
 
+
+
   const [options, setOptions] = useState({
     country: [],
     states: [],
@@ -73,6 +75,14 @@ function BasicDetailstwo({ basicdetails }) {
     }
   };
 
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
   useEffect(() => {
     const countryData = Country.getAllCountries();
     setOptions((prevOptions) => ({
@@ -84,26 +94,48 @@ function BasicDetailstwo({ basicdetails }) {
   useEffect(() => {
     if (formData.country) {
       const selectedCountry = Country.getAllCountries().find(
-        (country) => country.isoCode === formData.country
+        (country) => country.name === formData.country
       );
-      const states = State.getStatesOfCountry(selectedCountry?.isoCode);
-      setOptions((prevOptions) => ({
-        ...prevOptions,
-        states: states || [],
-        cities: [], // Reset cities
-      }));
+
+      if (selectedCountry) {
+        const states = State.getStatesOfCountry(selectedCountry.isoCode);
+        setOptions((prevOptions) => ({
+          ...prevOptions,
+          states,
+          cities: [], // Reset cities when country changes
+        }));
+      }
     }
   }, [formData.country]);
 
+  console.log(formData.country);
+  console.log(formData.state);
+  console.log(formData.city);
+
   useEffect(() => {
-    if (formData.state) {
-      const cities = City.getCitiesOfState(formData.country, formData.state);
-      setOptions((prevOptions) => ({
-        ...prevOptions,
-        cities: cities || [],
-      }));
+    if (formData.country && formData.state) {
+      const selectedCountry = Country.getAllCountries().find(
+        (country) => country.name === formData.country
+      );
+
+      const selectedState = State.getStatesOfCountry(selectedCountry?.isoCode).find(
+        (state) => state.name === formData.state
+      );
+
+      if (selectedCountry && selectedState) {
+        const cities = City.getCitiesOfState(
+          selectedCountry.isoCode,
+          selectedState.isoCode
+        );
+        setOptions((prevOptions) => ({
+          ...prevOptions,
+          cities: cities || [],
+        }));
+      }
     }
-  }, [formData.state]);
+  }, [formData.country, formData.state]);
+
+
 
   useEffect(() => {
     const fetchOptions = async () => {
@@ -131,13 +163,7 @@ function BasicDetailstwo({ basicdetails }) {
     fetchOptions();
   }, []);
 
-  const handleInputChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
-  };
+
 
   return (
     <div>
@@ -176,7 +202,7 @@ function BasicDetailstwo({ basicdetails }) {
                 >
                   <option value="">Choose Country</option>
                   {options.country.map((country) => (
-                    <option key={country.isoCode} value={country.isoCode}>
+                    <option key={country.isoCode} value={country.name}>
                       {country.name}
                     </option>
                   ))}
@@ -211,7 +237,7 @@ function BasicDetailstwo({ basicdetails }) {
                 >
                   <option value="">Choose State</option>
                   {options.states.map((state) => (
-                    <option key={state.isoCode} value={state.isoCode}>
+                    <option key={state.isoCode} value={state.name}>
                       {state.name}
                     </option>
                   ))}
@@ -253,7 +279,6 @@ function BasicDetailstwo({ basicdetails }) {
               </div>
             </div>
 
-            {/* Family and Income Fields */}
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full px-3">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
