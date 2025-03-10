@@ -4,11 +4,13 @@ import { MobileProfileCards } from "../Components/Section/HomeSec/MobileProfileC
 import axiosInstance from "../axios";
 import Loader from "../Components/Loading/Loader";
 import requests from "../lib/urls";
+import { useNotification } from "../context/NotificationProvider";
 
 function Home() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -22,12 +24,12 @@ function Home() {
     };
 
     fetchUsers();
+
   }, []);
 
   if (loading) return <div>
     <Loader/>
   </div>;
-
 
 
   return (

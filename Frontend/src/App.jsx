@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Home from "./Pages/Home";
 import { Register } from "./Pages/Register";
 import BasicDetails from "./Pages/BasicDetails";
@@ -21,10 +21,72 @@ import AadharOtp from "./Pages/AadharOtp";
 import ForgotPassword from "./Components/Section/RegisterSec/ForgotPassword";
 import ResetPassword from "./Components/Section/RegisterSec/ResetPassword";
 import NotFoundPage from "./Pages/404";
+import { useNotification } from "./context/NotificationProvider";
+import { MessageNotificationContext } from "./context/MessageNotificationContext";
+import { useSelector } from "react-redux";
+import { w3cwebsocket } from "websocket";
 
 function App() {
+  const { fetchUnreadNotifications,setMessageUnreadCount } = useNotification();
+  const location = useLocation(); // Get the current location
+  const { addNotification } = useContext(MessageNotificationContext);
+  const { userId, token: accessToken } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (userId && accessToken) {
+      const notificationSocket = new w3cwebsocket(
+        `ws://localhost:8000/ws/messagenotifications/${userId}/?token=${accessToken}`
+      );
+
+      notificationSocket.onopen = () => {
+        console.log("WebSocket notification connected");
+      };
+
+      notificationSocket.onerror = (error) => {
+        console.error("WebSocket error:", error.message);
+      };
+
+      notificationSocket.onclose = () => {
+        console.log("WebSocket notification disconnected");
+      };
+
+      notificationSocket.onmessage = (event) => {
+        try {
+          const dataFromServer = JSON.parse(event.data);
+          if (dataFromServer.type === "notification") {
+            addNotification({
+              user: dataFromServer.user,
+              message: dataFromServer.message,
+            });
+            setMessageUnreadCount((prev) => prev + 1)
+          }
+        } catch (error) {
+          console.log("Error handling notification:", error);
+        }
+      };
+
+      return () => {
+        notificationSocket.close();
+      };
+    }
+  }, [userId, accessToken, addNotification]);
+
+
+
+
+
+
+
+  useEffect(() => {
+    fetchUnreadNotifications();
+  }, [location.pathname]); // Trigger on every route change
+
+
+
+
+
   return (
-    <Router>
+    <>
       <Toaster position="top-right" />
       <Routes>
         <Route path="/register" element={<Register />} />
@@ -128,8 +190,16 @@ function App() {
           }
         />
       </Routes>
+    </>
+  );
+}
+
+function AppWrapper() {
+  return (
+    <Router>
+      <App />
     </Router>
   );
 }
 
-export default App;
+export default AppWrapper;

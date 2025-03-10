@@ -5,6 +5,7 @@ import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { FloatingDockDemo } from "../../Layout/FloatingDockDemo";
 import axiosInstance from "../../../axios";
 import requests from "../../../lib/urls";
+import { useNotification } from "../../../context/NotificationProvider";
 
 export function MessageSec() {
   const [filter, setFilter] = useState("All Messages");
@@ -16,10 +17,11 @@ export function MessageSec() {
 
   useEffect(() => {
     setLoading(true);
+
+    // Fetch messages
     axiosInstance
       .get(`${requests.Messages}`)
       .then((response) => {
-        console.log(response, "this are response");
 
         const { users, latest_messages, profiles } = response.data;
 
@@ -53,6 +55,15 @@ export function MessageSec() {
       .catch((err) => {
         setError("Failed to load messages");
         setLoading(false);
+      });
+
+    axiosInstance
+      .post(`${requests.readNotification}`)
+      .then((response) => {
+        console.log("All message notifications marked as read");
+      })
+      .catch((err) => {
+        console.error("Failed to mark notifications as read", err);
       });
   }, []);
 

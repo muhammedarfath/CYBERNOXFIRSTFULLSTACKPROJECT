@@ -5,10 +5,8 @@ import { useNotification } from "../../context/NotificationProvider";
 import Logo from "../../assets/logo.png";
 
 export function FloatingDockDemo() {
-  const { unreadCount, messageUnreadCount } = useNotification();
+  const { interestUnreadCount, messageUnreadCount } = useNotification(); 
   const [activeItem, setActiveItem] = useState("MATRYMONY");
-
-  console.log(messageUnreadCount,"how muchhhhhhhhhhhhh");
 
   const handleClick = (item) => {
     setActiveItem(item);
@@ -40,9 +38,9 @@ export function FloatingDockDemo() {
       title: "Like",
       icon: (
         <>
-          {unreadCount > 0 && (
+          {interestUnreadCount > 0 && ( // Use interestUnreadCount here
             <span className="absolute top-0 right-0 bg-button text-white text-xs rounded-full px-2">
-              {unreadCount}
+              {interestUnreadCount}
             </span>
           )}
           <div className="relative">
@@ -56,7 +54,7 @@ export function FloatingDockDemo() {
       title: "Message",
       icon: (
         <>
-          {messageUnreadCount > 0 && (
+          {messageUnreadCount > 0 && ( 
             <span className="absolute top-0 right-0 bg-button text-white text-xs rounded-full px-2">
               {messageUnreadCount}
             </span>

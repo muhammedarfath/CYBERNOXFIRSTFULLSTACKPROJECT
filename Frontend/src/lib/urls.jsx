@@ -71,6 +71,8 @@ const requests = {
     Messages:`${backendUrl}/socketconnection/messages/`,
     getMessage:`${backendUrl}/socketconnection/getmessage/`,
     UnreadNotification:`${backendUrl}/socketconnection/unread-notifications/`,
+    readNotification:`${backendUrl}/socketconnection/mark-all-as-read/`,
+    UnreadMessageCount:`${backendUrl}/socketconnection/message-unread-counts/`,
 
     Search:`${backendUrl}/auth/search/`,
     savePost:`${backendUrl}/auth/save-profile/`

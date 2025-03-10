@@ -18,29 +18,30 @@ function InterestRecievedSec() {
     hasActiveSubscription,
     fetchUnreadNotifications,
   } = useNotification();
+  
   const [filter, setFilter] = useState("received");
   const [showFilterOptions, setShowFilterOptions] = useState(false);
+
 
   useEffect(() => {
     fetchUnreadNotifications();
   }, []);
 
-  console.log(receivedNotifications, "check rec");
-
   const mapNotificationData = (notifications, isReceived) => {
-    return notifications.map((item) => {
-      const notification = item.notification;
-      const userProfile = item.sender_details;
-      const sender = isReceived ? notification.sender : notification.user;
+    return notifications
+      .filter((item) => item.notification.notification_type === "interest") 
+      .map((item) => {
+        const notification = item.notification;
+        const userProfile = item.sender_details;
+        const sender = isReceived ? notification.sender : notification.user;
 
-      return {
-        notification,
-        userProfile,
-        sender
-      };
-    });
+        return {
+          notification,
+          userProfile,
+          sender,
+        };
+      });
   };
-
   const receivedLikes = mapNotificationData(receivedNotifications, true);
   const sentLikes = mapNotificationData(sentNotifications, false);
 
@@ -70,8 +71,6 @@ function InterestRecievedSec() {
   };
 
   const bestMatches = filter === "received" ? receivedLikes : sentLikes;
-
-  console.log(bestMatches,"adflasdsfa;kfksafks;");
 
   return (
     <div className="w-full h-full">
@@ -140,16 +139,33 @@ function InterestRecievedSec() {
                 }
               >
                 <p className="absolute top-2 left-2 bg-gray-800 bg-opacity-70 text-white px-3 py-1 rounded-lg text-sm font-medium">
-                  {match.userProfile.user_profile.name} 
+                  {match.userProfile.user_profile.name}
                 </p>
                 <img
                   src={`${backendUrl}${match.userProfile.user_profile.user.profile_picture}`}
                   alt={match.name}
                   className={`h-[30rem] w-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-105 ${
-                    !hasActiveSubscription ? "brightness-75" : ""
+                    !hasActiveSubscription ? "filter blur-md" : ""
                   }`}
                 />
-
+                {!hasActiveSubscription && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-12 w-12 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                      />
+                    </svg>
+                  </div>
+                )}
                 <div className="absolute inset-x-0 bottom-4 flex justify-center">
                   <button className="bg-gradient-to-r from-primary to-white text-white font-bold px-5 py-2 rounded-full flex items-center gap-2 text-sm transition-transform transform hover:scale-110">
                     <FaHeartCirclePlus className="text-xl" />
