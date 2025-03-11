@@ -194,10 +194,9 @@ export const Card = ({ card, index, layout = false }) => {
         onMouseEnter={handleHover}
         onMouseLeave={handleLeave}
         layoutId={layout ? `card-${card.name}` : undefined}
-        className="relative rounded-3xl bg-gray-100 dark:bg-neutral-900 h-80 w-56 md:h-[30rem] md:w-96 overflow-hidden flex flex-col items-start justify-start"
+        className="relative rounded-3xl cursor-pointer bg-gray-100 dark:bg-neutral-900 h-80 w-56 md:h-[30rem] md:w-96 overflow-hidden flex flex-col items-start justify-start"
         onClick={handleChatNavigation}
       >
-        {/* Display unread message count */}
         {unreadCount > 0 && (
           <div className="absolute top-4 right-4 z-50 bg-button text-white rounded-full px-2 py-1 text-xs">
             {unreadCount}

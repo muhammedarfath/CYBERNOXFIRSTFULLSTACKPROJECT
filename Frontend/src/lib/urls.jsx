@@ -64,6 +64,7 @@ const requests = {
     getMessageUser :`${backendUrl}/auth/message-user/`,
     UpdateHobbies :`${backendUrl}/partner/update_hobbies/`,
     MarkAsRead :`${backendUrl}/auth/mark-as-read/`,
+    BlockUser:`${backendUrl}/auth/block-user/`,
     
     SendOtp :`${backendUrl}/aadhaarotp/send-otp/`,
     VerifyOtp:`${backendUrl}/aadhaarotp/verify-otp/`,
@@ -76,5 +77,7 @@ const requests = {
 
     Search:`${backendUrl}/auth/search/`,
     savePost:`${backendUrl}/auth/save-profile/`
+
+
 }
 export default requests  

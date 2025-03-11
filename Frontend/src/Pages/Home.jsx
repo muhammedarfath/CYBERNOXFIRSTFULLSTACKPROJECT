@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import ProfileCards from "../Components/Section/HomeSec/ProfileCards";
 import { MobileProfileCards } from "../Components/Section/HomeSec/MobileProfileCards";
 import axiosInstance from "../axios";
-import Loader from "../Components/Loading/Loader";
+import CardSkeleton from "../Components/Loading/CardSkeleton"; // Import the CardSkeleton
 import requests from "../lib/urls";
 import { useNotification } from "../context/NotificationProvider";
 
 function Home() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -24,20 +23,16 @@ function Home() {
     };
 
     fetchUsers();
-
   }, []);
 
-  if (loading) return <div>
-    <Loader/>
-  </div>;
-
+  if (loading) return <CardSkeleton />; 
 
   return (
     <>
       <div className="hidden md:block">
-        <ProfileCards slides={users}/>
+        <ProfileCards slides={users} />
       </div>
-      <div className="md:hidden ">
+      <div className="md:hidden">
         <MobileProfileCards slides={users} />
       </div>
     </>

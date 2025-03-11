@@ -7,14 +7,19 @@ import {
   AiOutlineDelete,
   AiOutlineClose,
 } from "react-icons/ai";
+import { RiEmojiStickerLine } from "react-icons/ri";
+import EmojiPicker from 'emoji-picker-react';
 
-import EmojiPicker from "emoji-picker-react";
-
-function MessageInput({ message, setMessage, handleSend }) {
+function MessageInput({
+  message,
+  setMessage,
+  handleSend,
+  audioBlob,
+  setAudioBlob,
+}) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [recordingDuration, setRecordingDuration] = useState(0);
-  const [audioBlob, setAudioBlob] = useState(null);
   const [audioVisualization, setAudioVisualization] = useState([]);
 
   const mediaRecorderRef = useRef(null);
@@ -133,7 +138,6 @@ function MessageInput({ message, setMessage, handleSend }) {
     setAudioVisualization([]);
   };
 
-  // Clean up on unmount
   useEffect(() => {
     return () => {
       if (timerRef.current) {
@@ -166,6 +170,8 @@ function MessageInput({ message, setMessage, handleSend }) {
     setMessage((prevMessage) => prevMessage + emojiObject.emoji);
     setShowEmojiPicker(false);
   };
+  
+
 
   return (
     <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
@@ -174,9 +180,9 @@ function MessageInput({ message, setMessage, handleSend }) {
           <div className="relative">
             <button
               onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-              className="flex items-center justify-center text-gray-400 hover:text-gray-600"
+              className="flex items-center justify-center text-gray-400  hover:text-gray-600"
             >
-              😀
+              <RiEmojiStickerLine className="w-6 h-6 text-primary hover:text-black" />
             </button>
             {showEmojiPicker && (
               <div className="absolute bottom-12 left-0 z-50">
@@ -253,7 +259,7 @@ function MessageInput({ message, setMessage, handleSend }) {
 
           <button
             onClick={stopRecording}
-            className="flex items-center justify-center bg-button hover:bg-red-600 rounded-full text-white p-2 ml-4"
+            className="flex items-center justify-center bg-button hover:bg-red rounded-full text-white p-2 ml-4"
           >
             <AiOutlineStop className="w-6 h-6" />
           </button>

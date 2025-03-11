@@ -6,6 +6,7 @@ import { FloatingDockDemo } from "../../Layout/FloatingDockDemo";
 import axiosInstance from "../../../axios";
 import requests from "../../../lib/urls";
 import { useNotification } from "../../../context/NotificationProvider";
+import CarouselSkeleton from "../../Loading/CarouselSkeleton";
 
 export function MessageSec() {
   const [filter, setFilter] = useState("All Messages");
@@ -18,7 +19,6 @@ export function MessageSec() {
   useEffect(() => {
     setLoading(true);
 
-    // Fetch messages
     axiosInstance
       .get(`${requests.Messages}`)
       .then((response) => {
@@ -26,12 +26,11 @@ export function MessageSec() {
         const { users, latest_messages, profiles } = response.data;
 
         const formattedData = latest_messages.map((msg) => {
-          // Find the corresponding user (either author or sender)
+        
           const user = users.find(
             (u) => u.id === msg.sender.id || u.id === msg.receiver.id
           );
 
-          // Find the corresponding profile based on the user id
           const profile = profiles.find((p) => p.user === user?.id);
 
           return {
@@ -147,7 +146,7 @@ export function MessageSec() {
       </div>
 
       {loading ? (
-        <p className="text-center text-gray-500">Loading messages...</p>
+        <CarouselSkeleton/>
       ) : error ? (
         <p className="text-center text-red-500">{error}</p>
       ) : filteredData.length === 0 ? (

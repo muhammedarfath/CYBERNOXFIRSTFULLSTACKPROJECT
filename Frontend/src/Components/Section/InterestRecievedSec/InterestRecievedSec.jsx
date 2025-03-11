@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { FloatingDockDemo } from "../../Layout/FloatingDockDemo";
-import slide_img_1 from "../../../assets/Screenshot 2024-12-27 at 11.53.55 AM.png";
 import { FaHeartCirclePlus } from "react-icons/fa6";
 import { MdFilterList } from "react-icons/md";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
@@ -9,6 +8,11 @@ import { backendUrl } from "../../../Constants/Constants";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../axios";
 import requests from "../../../lib/urls";
+import userphoto from "../../../assets/default.jpg";
+import { useSelector } from "react-redux";
+import InterestCardSkeleton from "../../Loading/InterestCardSkeleton";
+
+const socketBaseUrl = "ws://127.0.0.1:8000/ws/notifications/";
 
 function InterestRecievedSec() {
   const navigate = useNavigate();
@@ -18,21 +22,51 @@ function InterestRecievedSec() {
     hasActiveSubscription,
     fetchUnreadNotifications,
   } = useNotification();
-  
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("received");
   const [showFilterOptions, setShowFilterOptions] = useState(false);
-
+  const [socket, setSocket] = useState(null);
+  const accessToken = useSelector((state) => state.auth.token);
 
   useEffect(() => {
-    fetchUnreadNotifications();
-  }, []);
+    if (!accessToken) {
+      console.error("No access token found");
+      return;
+    }
+
+    const socketUrl = `${socketBaseUrl}?token=${accessToken}`;
+    const newSocket = new WebSocket(socketUrl);
+
+    newSocket.onopen = () => {
+      console.log("WebSocket Connected");
+    };
+
+    newSocket.onclose = (event) => {
+      console.log("WebSocket Closed:", event.code, event.reason);
+    };
+
+    newSocket.onerror = (error) => {
+      console.error("WebSocket Error:", error);
+    };
+
+    setSocket(newSocket);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => {
+      newSocket.close();
+    };
+  }, [accessToken]);
 
   const mapNotificationData = (notifications, isReceived) => {
     return notifications
-      .filter((item) => item.notification.notification_type === "interest") 
+      .filter((item) => item.notification.notification_type === "interest")
       .map((item) => {
         const notification = item.notification;
-        const userProfile = item.sender_details;
+        const userProfile = isReceived
+          ? item.sender_details
+          : item.receiver_details;
         const sender = isReceived ? notification.sender : notification.user;
 
         return {
@@ -42,6 +76,7 @@ function InterestRecievedSec() {
         };
       });
   };
+
   const receivedLikes = mapNotificationData(receivedNotifications, true);
   const sentLikes = mapNotificationData(sentNotifications, false);
 
@@ -60,13 +95,44 @@ function InterestRecievedSec() {
   };
 
   const handleCardClick = async (slide, notificationId, isRead) => {
-    if (hasActiveSubscription) {
+    if (hasActiveSubscription || filter === "sent") {
       if (!isRead) {
         await markNotificationAsRead(notificationId);
       }
       navigate("/profiledetails", { state: { slide } });
     } else {
       navigate("/pricing");
+    }
+  };
+
+  const handleLikeClick = async (e, userProfile) => {
+    e.stopPropagation();
+
+    if (!hasActiveSubscription) {
+      navigate("/pricing");
+      return;
+    }
+
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+      console.error("WebSocket is not open. Cannot send message.");
+      return;
+    }
+
+    try {
+      socket.send(
+        JSON.stringify({
+          option: "interest_sent",
+          userId: userProfile.user.id,
+        })
+      );
+
+      const response = await axiosInstance.post(`${requests.savePost}`, {
+        saved_user_id: userProfile.user.id,
+      });
+
+      console.log("Like sent successfully:", response.data);
+    } catch (error) {
+      console.error("Error sending like:", error);
     }
   };
 
@@ -124,62 +190,83 @@ function InterestRecievedSec() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-4">
-          {bestMatches.length > 0 ? (
-            bestMatches.map((match, index) => (
-              <div
-                key={index}
-                className="relative group overflow-hidden rounded-lg shadow-lg bg-white hover:shadow-xl transition-shadow cursor-pointer"
-                onClick={() =>
-                  handleCardClick(
-                    match.userProfile,
-                    match.notification.id,
-                    match.notification.isRead
-                  )
-                }
-              >
-                <p className="absolute top-2 left-2 bg-gray-800 bg-opacity-70 text-white px-3 py-1 rounded-lg text-sm font-medium">
-                  {match.userProfile.user_profile.name}
-                </p>
-                <img
-                  src={`${backendUrl}${match.userProfile.user_profile.user.profile_picture}`}
-                  alt={match.name}
-                  className={`h-[30rem] w-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-105 ${
-                    !hasActiveSubscription ? "filter blur-md" : ""
-                  }`}
-                />
-                {!hasActiveSubscription && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-12 w-12 text-white"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+        {loading ? (
+          <InterestCardSkeleton />
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-4">
+            {bestMatches.length > 0 ? (
+              bestMatches.map((match, index) => (
+                <div
+                  key={index}
+                  className="relative group overflow-hidden rounded-lg shadow-lg bg-white hover:shadow-xl transition-shadow cursor-pointer"
+                  onClick={() =>
+                    handleCardClick(
+                      match.userProfile,
+                      match.notification.id,
+                      match.notification.isRead
+                    )
+                  }
+                >
+                  {match.userProfile && match.userProfile.user_profile && (
+                    <p className="absolute top-2 left-2 bg-gray-800 bg-opacity-70 text-white px-3 py-1 rounded-lg text-sm font-medium">
+                      {match.userProfile.user_profile.name}
+                    </p>
+                  )}
+                  {match.userProfile &&
+                    match.userProfile.user_profile &&
+                    match.userProfile.user_profile.user && (
+                      <img
+                        src={
+                          match.userProfile?.user_profile?.user?.profile_picture
+                            ? `${backendUrl}${match.userProfile.user_profile.user.profile_picture}`
+                            : userphoto
+                        }
+                        alt={match.userProfile?.user_profile?.name || "User"}
+                        className={`h-[30rem] w-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-105 ${
+                          !hasActiveSubscription && filter === "received"
+                            ? "filter blur-md"
+                            : ""
+                        }`}
                       />
-                    </svg>
-                  </div>
-                )}
-                <div className="absolute inset-x-0 bottom-4 flex justify-center">
-                  <button className="bg-gradient-to-r from-primary to-white text-white font-bold px-5 py-2 rounded-full flex items-center gap-2 text-sm transition-transform transform hover:scale-110">
-                    <FaHeartCirclePlus className="text-xl" />
-                    Like
-                  </button>
+                    )}
+                  {!hasActiveSubscription && filter === "received" && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-12 w-12 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                  {filter === "received" && (
+                    <div className="absolute inset-x-0 bottom-4 flex justify-center">
+                      <button
+                        onClick={(e) => handleLikeClick(e, match.userProfile)}
+                        className="bg-gradient-to-r from-primary to-white text-white font-bold px-5 py-2 rounded-full flex items-center gap-2 text-sm transition-transform transform hover:scale-110"
+                      >
+                        <FaHeartCirclePlus className="text-xl" />
+                        Interested
+                      </button>
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))
-          ) : (
-            <p className="col-span-full text-center text-gray-500">
-              No interests found.
-            </p>
-          )}
-        </div>
+              ))
+            ) : (
+              <p className="col-span-full text-center text-gray-500">
+                No interests found.
+              </p>
+            )}
+          </div>
+        )}
 
         <div className="mt-6">
           <FloatingDockDemo />

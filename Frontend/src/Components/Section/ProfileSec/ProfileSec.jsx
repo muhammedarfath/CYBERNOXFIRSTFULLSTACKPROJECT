@@ -23,6 +23,7 @@ import Swal from "sweetalert2";
 import AuthContext from "../../../context/AuthContext";
 import Loader from "../../Loading/Loader";
 import { useNavigate } from "react-router-dom";
+import userphoto from "../../../assets/default.jpg"
 
 function ProfileSec() {
   const navigate = useNavigate();
@@ -107,7 +108,8 @@ function ProfileSec() {
 
   return (
     <div className="w-full overflow-scroll h-full mb-9">
-      <div className="flex md:flex-row w-full p-4">
+      <div className="flex md:flex-row flex-col w-full p-4">
+
         <div className="flex flex-col md:w-1/2 w-full flex-wrap gap-4 md:p-4 mb-28">
           <div className="w-full flex items-center justify-between bg-white rounded-lg shadow-md p-5">
             <MainProfileCard
@@ -197,7 +199,8 @@ function ProfileSec() {
             </div>
           ))}
         </div>
-        <div className="hidden md:flex flex-col md:w-1/2">
+
+        <div className="flex flex-col md:w-1/2">
           <AddProfileImages />
           <div className="columns-2 xl:columns-3 p-4 gap-4 space-y-4">
             {posts.map((post) => (
@@ -217,10 +220,10 @@ function ProfileSec() {
             ))}
           </div>
 
-          <div className="columns-1 xl:columns-1 p-4 gap-4 space-y-4 w-full">
-            <div className="w-full p-4 mt-4">
+          <div className="columns-1 xl:columns-1 p-4 gap-4 space-y-4 w-full mb-40">
+            <div className="w-full md:p-4 md:mt-4">
               <div className="flex justify-between items-center gap-3 bg-white p-6 rounded-lg shadow-lg">
-                <h1 className="font-extrabold text-4xl text-gray-800">
+                <h1 className="font-extrabold md:text-4xl text-xl text-gray-800">
                   Saved Profiles
                 </h1>
               </div>
@@ -235,15 +238,21 @@ function ProfileSec() {
                         className="relative"
                         onClick={() => handleCardClick(savedUser)}
                       >
-                        <img
+                        {savedUser?.user_profile?.user?.profile_picture ? (<img
                           className="h-auto max-w-full rounded-lg"
                           src={`${backendUrl}${savedUser?.user_profile?.user?.profile_picture}`}
                           alt={savedUser?.user_profile?.name || "Profile"}
+                        />) : (
+                          <img
+                          className="h-auto max-w-full rounded-lg"
+                          src={userphoto}
+                          alt="Profile"
                         />
+                        )}
 
                         <button
                           onClick={(e) => {
-                            e.stopPropagation(); // Prevent parent onClick
+                            e.stopPropagation(); 
                             handleSavedDelete(savedUser?.user_profile?.user?.id);
                           }}
                           className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2"

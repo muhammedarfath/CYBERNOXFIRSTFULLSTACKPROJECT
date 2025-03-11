@@ -338,3 +338,56 @@ body {
 .input-range__label {
   display: block;
 }
+
+
+
+
+
+
+
+
+
+
+/* Add these styles to your global CSS file */
+
+@keyframes swipeLeft {
+  from {
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-150%) rotate(-20deg);
+    opacity: 0;
+  }
+}
+
+@keyframes swipeRight {
+  from {
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(150%) rotate(20deg);
+    opacity: 0;
+  }
+}
+
+.swipe-left {
+  animation: swipeLeft 0.3s forwards;
+}
+
+.swipe-right {
+  animation: swipeRight 0.3s forwards;
+}
+
+.card-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.card-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+

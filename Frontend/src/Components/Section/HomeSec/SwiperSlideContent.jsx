@@ -1,11 +1,11 @@
 import React, {  useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { MdOutlineStarBorder } from "react-icons/md";
-import { FaRegUserCircle, FaHeart } from "react-icons/fa";
+import {  FaHeart } from "react-icons/fa";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import { LuGraduationCap } from "react-icons/lu";
 import { backendUrl } from "../../../Constants/Constants";
-import userphoto from "../../../assets/User Male Profile.svg";
+import userphoto from "../../../assets/logo PNG M.png";
 import { useSelector } from "react-redux";
 import requests from "../../../lib/urls";
 import axiosInstance from "../../../axios";
@@ -96,7 +96,7 @@ function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
 
   return (
     <div
-      className="relative h-full w-full container cursor-pointer"
+      className="relative h-full w-full container cursor-pointer bg-[#e0e0e0] rounded-[2rem]"
       onClick={() => handleProfileClick(slide)}
     >
       {slide.user_profile &&
@@ -111,7 +111,7 @@ function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
         <img
           src={userphoto}
           alt="image"
-          className="object-cover object-left-top absolute h-full w-full inset-0"
+          className="object-contain object-center-top absolute h-full w-full inset-0"
         />
       )}
 
