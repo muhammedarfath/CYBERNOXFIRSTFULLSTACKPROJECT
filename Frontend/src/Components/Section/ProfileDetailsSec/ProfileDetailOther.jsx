@@ -51,13 +51,6 @@ function ProfileDetailOther({ slide }) {
         <DetailItem label="Address" value={groom_bride_info?.addres} />
       </div>
 
-      <h3 className="font-semibold mb-3">Contact Information</h3>
-      <div className="space-y-4 mb-6">
-        <DetailItem label="Email" value={user_profile?.user?.email} />
-        <DetailItem label="Phone" value={user_profile?.user?.mobileno} />
-        <DetailItem label="Secondary Phone" value={groom_bride_info?.secondary_mobileno} />
-        <DetailItem label="Time to Call" value={groom_bride_info?.time_to_call} />
-      </div>
     </>
   );
 }

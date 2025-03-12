@@ -39,15 +39,28 @@ function MobileFooterMenu() {
             </Link>
           </div>
 
-          <div className="text-center relative">
+          <div
+            className="text-center relative"
+            onClick={() => handleClick("home")}
+          >
             <Link to="/">
-              <img
-                src={Logo}
-                width={40}
-                height={40}
-                alt="Aceternity Logo"
-                className="relative -top-1 scale-150"
-              />
+              {activeIcon === "home" ? (
+                <img
+                  src={Logo}
+                  width={40}
+                  height={40}
+                  alt="Aceternity Logo"
+                  className="relative -top-1 scale-150"
+                />
+              ) : (
+                <img
+                  src={Logo}
+                  width={40}
+                  height={40}
+                  alt="Aceternity Logo"
+                  className="relative -top-1 scale-150"
+                />
+              )}
             </Link>
           </div>
 

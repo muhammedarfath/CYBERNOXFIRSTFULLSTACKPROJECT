@@ -167,7 +167,6 @@ function BasicDetailSec() {
     );
   }
 
-  console.log(formData);
 
   const CustomInput = React.forwardRef(({ value, onClick }, ref) => (
     <div className="relative">

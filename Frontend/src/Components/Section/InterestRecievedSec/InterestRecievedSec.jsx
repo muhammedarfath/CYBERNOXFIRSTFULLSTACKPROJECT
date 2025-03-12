@@ -126,10 +126,6 @@ function InterestRecievedSec() {
         })
       );
 
-      const response = await axiosInstance.post(`${requests.savePost}`, {
-        saved_user_id: userProfile.user.id,
-      });
-
       console.log("Like sent successfully:", response.data);
     } catch (error) {
       console.error("Error sending like:", error);

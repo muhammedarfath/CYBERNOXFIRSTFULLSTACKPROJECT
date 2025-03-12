@@ -1,18 +1,26 @@
 import React from "react";
 import BottomIcons from "./BottomIcons";
 import { backendUrl } from "../../../Constants/Constants";
+import userphoto from "../../../assets/logo PNG M.png";
 
 function ProfileDetailImg({ slide }) {
-
   return (
     <div className="">
       <div className="bg-white shadow rounded-lg p-6">
         <div className="flex flex-col items-center">
-          <img
-            src={`${backendUrl}${slide.user_profile.user.profile_picture}`}
-            className="w-full h-full bg-gray mb-4"
-            alt="Profile"
-          />
+          {slide.user_profile.user.profile_picture ? (
+            <img
+              src={`${backendUrl}${slide.user_profile.user.profile_picture}`}
+              className="w-full h-full bg-gray mb-4"
+              alt="Profile"
+            />
+          ) : (
+            <img
+              src={userphoto}
+              className="w-full h-full mb-4"
+              alt="Profile"
+            />
+          )}
           <h1 className="text-xl font-bold">{slide?.user_profile?.name}</h1>
           <p className="text-gray-700">{slide?.groom_bride_info?.occupation}</p>
         </div>
@@ -43,7 +51,7 @@ function ProfileDetailImg({ slide }) {
           )}
         </div>
       </div>
-      <BottomIcons />
+      <BottomIcons slide={slide}/>
     </div>
   );
 }

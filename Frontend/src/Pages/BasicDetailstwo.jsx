@@ -108,9 +108,7 @@ function BasicDetailstwo({ basicdetails }) {
     }
   }, [formData.country]);
 
-  console.log(formData.country);
-  console.log(formData.state);
-  console.log(formData.city);
+
 
   useEffect(() => {
     if (formData.country && formData.state) {

@@ -8,7 +8,7 @@ import {
   AiOutlineClose,
 } from "react-icons/ai";
 import { RiEmojiStickerLine } from "react-icons/ri";
-import EmojiPicker from 'emoji-picker-react';
+import EmojiPicker from "emoji-picker-react";
 
 function MessageInput({
   message,
@@ -16,6 +16,7 @@ function MessageInput({
   handleSend,
   audioBlob,
   setAudioBlob,
+  isBlocked,
 }) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -170,8 +171,6 @@ function MessageInput({
     setMessage((prevMessage) => prevMessage + emojiObject.emoji);
     setShowEmojiPicker(false);
   };
-  
-
 
   return (
     <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
@@ -193,18 +192,26 @@ function MessageInput({
 
           <div className="flex-grow ml-4">
             <div className="relative w-full">
-              <input
-                type="text"
-                className="flex w-full border border-gray rounded-xl focus:outline-none focus:border-gray pl-4 h-10"
-                placeholder="Type your message..."
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSend()}
-              />
+              {isBlocked ? (
+                <div className="text-red-500">
+                  You have been blocked by this user.
+                </div>
+              ) : (
+                <input
+                  type="text"
+                  className="flex w-full border border-gray rounded-xl focus:outline-none focus:border-gray pl-4 h-10"
+                  placeholder="Type your message..."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && handleSend()}
+                  disabled={isBlocked}
+
+                />
+              )}
             </div>
           </div>
 
-          <div className="ml-4">
+          {!isBlocked && <div className="ml-4">
             {message.trim() ? (
               <button
                 onClick={handleSend}
@@ -220,7 +227,7 @@ function MessageInput({
                 <AiOutlineAudio className="w-6 h-6" />
               </button>
             )}
-          </div>
+          </div>}
         </>
       )}
 

@@ -16,7 +16,6 @@ export function MobileProfileCards({ slides }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const navigate = useNavigate()
   const [showHeart, setShowHeart] = useState(false)
-  const [showClose, setShowClose] = useState(false)
   const [showSave, setShowSave] = useState(false)
   const [socket, setSocket] = useState(null)
   const accessToken = useSelector((state) => state.auth.token)
@@ -83,11 +82,7 @@ export function MobileProfileCards({ slides }) {
 
   const handleCloseClick = (e) => {
     e.stopPropagation()
-    setShowClose(true)
-    setTimeout(() => {
-      setShowClose(false)
-      nextSlide("left")
-    }, 1000)
+    nextSlide("left")
   }
 
   const handleSaveClick = async (e) => {
@@ -179,9 +174,7 @@ export function MobileProfileCards({ slides }) {
       }, 300)
     } else if (offsetX < -100) {
       // Swipe left - reject
-      setShowClose(true)
       setTimeout(() => {
-        setShowClose(false)
         nextSlide("left")
       }, 300)
     } else {
@@ -299,11 +292,6 @@ export function MobileProfileCards({ slides }) {
           {showHeart && (
             <div className="w-16 h-16 items-center absolute text-center inset-0 m-auto animate-heart z-30">
               <FaHeart className="text-button text-5xl " />
-            </div>
-          )}
-          {showClose && (
-            <div className="w-16 h-16 items-center absolute text-center inset-0 m-auto animate-heart z-30">
-              <CgClose className="text-button text-5xl " />
             </div>
           )}
           {showSave && (

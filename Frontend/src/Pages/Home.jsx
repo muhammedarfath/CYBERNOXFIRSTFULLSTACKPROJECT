@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import ProfileCards from "../Components/Section/HomeSec/ProfileCards";
 import { MobileProfileCards } from "../Components/Section/HomeSec/MobileProfileCards";
 import axiosInstance from "../axios";
-import CardSkeleton from "../Components/Loading/CardSkeleton"; // Import the CardSkeleton
+import CardSkeleton from "../Components/Loading/CardSkeleton"; 
 import requests from "../lib/urls";
-import { useNotification } from "../context/NotificationProvider";
 
 function Home() {
   const [users, setUsers] = useState([]);

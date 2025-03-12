@@ -31,8 +31,6 @@ function ProfileSec() {
     useContext(AuthContext);
   const [openSection, setOpenSection] = useState(null);
 
-  console.log(profileDetails, "just details");
-
   const toggleSection = (section) => {
     setOpenSection((prevSection) => (prevSection === section ? null : section));
   };

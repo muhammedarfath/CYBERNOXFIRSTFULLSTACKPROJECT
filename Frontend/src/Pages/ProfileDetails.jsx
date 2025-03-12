@@ -1,36 +1,64 @@
-import React, { useState } from "react";
-import { CiPhone } from "react-icons/ci";
-import ProfileDetailImg from "../Components/Section/ProfileDetailsSec/ProfileDetailImg";
-import ProfileDetailsHobbies from "../Components/Section/ProfileDetailsSec/ProfileDetailsHobbies";
-import ProfileDetailOther from "../Components/Section/ProfileDetailsSec/ProfileDetailOther";
-import { FaLeftLong } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import { MdMessage } from "react-icons/md";
 
+import { useState, useEffect } from "react"
+import { CiPhone } from "react-icons/ci"
+import ProfileDetailImg from "../Components/Section/ProfileDetailsSec/ProfileDetailImg"
+import ProfileDetailsHobbies from "../Components/Section/ProfileDetailsSec/ProfileDetailsHobbies"
+import ProfileDetailOther from "../Components/Section/ProfileDetailsSec/ProfileDetailOther"
+import { FaLeftLong } from "react-icons/fa6"
+import { Link, useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom"
+import { MdMessage } from "react-icons/md"
+import ProfileDetailsSkeleton from "../Components/Loading/ProfileDetailsSkeleton"
+import ContactDetailsModal from "../Components/Modal/ContactDetailsModal"
 
 function ProfileDetails() {
-  const location = useLocation();
-  const { slide } = location.state || {};
+  const location = useLocation()
+  const { slide } = location.state || {}
+  const [loading, setLoading] = useState(true)
+  const [isPaid, setIsPaid] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const navigate = useNavigate()
 
+
+  const contactDetails = {
+    email: slide?.user_profile?.user?.email || "Email not available",
+    phoneNumber: slide?.user_profile?.user?.mobileno || "Phone number not available",
+    secondaryNumber: slide?.groom_bride_info?.secondary_mobileno || "Secondary number not available",
+    timeToCall: slide?.groom_bride_info?.time_to_call || "Preferred call time not specified",
+  }
   
-  const [isPaid, setIsPaid] = useState(false);
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   const handlePayment = () => {
-    setIsPaid(true);
-  };
+    setIsPaid(true)
+  }
 
   const handleChatNavigation = () => {
     if (slide?.user_profile?.user.id && slide?.user_profile?.name) {
       navigate(`/chatarea/${encodeURIComponent(slide.user_profile.name)}`, {
         state: { userId: slide.user_profile.user.id },
-      });
+      })
     }
-  };
-  
-  
-  
+  }
+
+  const openContactModal = () => {
+    setIsModalOpen(true)
+  }
+
+  const closeContactModal = () => {
+    setIsModalOpen(false)
+  }
+
+  if (loading) {
+    return <ProfileDetailsSkeleton />
+  }
 
   return (
     <div className="h-screen bg-gray-100 overflow-scroll">
@@ -48,7 +76,7 @@ function ProfileDetails() {
               <ProfileDetailImg slide={slide} />
             </div>
 
-            <div className="col-span-1 sm:col-span-8 lg:col-span-9">
+            <div className="col-span-1 sm:col-span-8 lg:col-span-9 mb-9">
               <div className="bg-white shadow rounded-lg p-6">
                 <h2 className="text-xl font-bold mb-4">Profile Description</h2>
                 <p className="text-gray-700 text-sm md:text-base leading-relaxed">
@@ -59,10 +87,11 @@ function ProfileDetails() {
                     isPaid ? "blur-0" : "blur-sm opacity-50 pointer-events-none"
                   }`}
                 >
-                  <h1 className="text-black text-sm md:text-lg">
-                    Contact Number: +97*******5
-                  </h1>
-                  <button className="bg-button flex w-full text-center justify-center p-3 rounded-lg hover:bg-button-hover transition">
+                  <h1 className="text-black text-sm md:text-lg">Contact Number: +97*******5</h1>
+                  <button
+                    onClick={openContactModal}
+                    className="bg-button flex w-full text-center justify-center p-3 rounded-lg hover:bg-button-hover transition"
+                  >
                     <CiPhone className="text-2xl" />
                     View Contact Details
                   </button>
@@ -84,9 +113,9 @@ function ProfileDetails() {
                   </button>
                 )}
 
-                <div className="mt-6">
-                  <ProfileDetailsHobbies hobbies={slide.hobbies}/>
-                  <ProfileDetailOther slide={slide}/>
+                <div className="mt-6 ">
+                  <ProfileDetailsHobbies hobbies={slide.hobbies} />
+                  <ProfileDetailOther slide={slide} />
                 </div>
               </div>
             </div>
@@ -95,8 +124,11 @@ function ProfileDetails() {
           <p>No profile data available</p>
         )}
       </div>
+
+      <ContactDetailsModal isOpen={isModalOpen} onClose={closeContactModal} contactDetails={contactDetails} />
     </div>
-  );
+  )
 }
 
-export default ProfileDetails;
+export default ProfileDetails
+

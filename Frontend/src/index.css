@@ -391,3 +391,6 @@ body {
   transition: opacity 300ms, transform 300ms;
 }
 
+.input-range__label--value {
+  display: none;
+}

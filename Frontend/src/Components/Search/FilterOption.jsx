@@ -42,6 +42,8 @@ function FilterOption({
   setSelectedReligion,
   rangeFilters,
   setRangeFilters,
+  setSelectedCity,
+  selectedCity,
 }) {
   const [options, setOptions] = useState({
     maritals: [],
@@ -53,6 +55,7 @@ function FilterOption({
     financialStatuses: [],
     countries: [],
     states: [],
+    cities: [],
   });
 
   useEffect(() => {
@@ -111,13 +114,43 @@ function FilterOption({
 
   useEffect(() => {
     if (selectedCountry) {
-      const states = State.getStatesOfCountry(selectedCountry).map((s) => ({
-        name: s.name,
-        isoCode: s.isoCode,
-      }));
-      setOptions((prev) => ({ ...prev, states }));
+      const myCountry = Country.getAllCountries().find(
+        (country) => country.name === selectedCountry
+      );
+
+      if (myCountry) {
+        const states = State.getStatesOfCountry(myCountry.isoCode);
+        setOptions((prevOptions) => ({
+          ...prevOptions,
+          states,
+          cities: [],
+        }));
+      }
     }
   }, [selectedCountry]);
+
+  useEffect(() => {
+    if (selectedCountry && selectedState) {
+      const myCountry = Country.getAllCountries().find(
+        (country) => country.name === selectedCountry
+      );
+
+      const myState = State.getStatesOfCountry(selectedCountry?.isoCode).find(
+        (state) => state.name === selectedState
+      );
+
+      if (myCountry && myState) {
+        const cities = City.getCitiesOfState(
+          myCountry.isoCode,
+          myState.isoCode
+        );
+        setOptions((prevOptions) => ({
+          ...prevOptions,
+          cities: cities || [],
+        }));
+      }
+    }
+  }, [selectedCountry, selectedState]);
 
   return (
     <>
@@ -215,7 +248,7 @@ function FilterOption({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4 my-6">
+          <div className="grid grid-cols-1 gap-4 my-6">
             <button
               className={`py-3 rounded-md shadow-md ${
                 activeLocation === "location"
@@ -226,7 +259,7 @@ function FilterOption({
             >
               Search by Location
             </button>
-            <button
+            {/* <button
               className={`py-3 rounded-md shadow-md ${
                 activeLocation === "distance"
                   ? "bg-button text-white"
@@ -235,31 +268,36 @@ function FilterOption({
               onClick={() => setActiveLocation("distance")}
             >
               Search by Distance
-            </button>
+            </button> */}
           </div>
 
           {activeLocation === "location" && (
             <div className="space-y-4">
               <FilterItem
                 icon={<MdLocationOn />}
-                title="Home District"
-                options={options.states}
-                onChange={setSelectedState}
-              />
-              <FilterItem
-                icon={<MdLocationOn />}
                 title="Present Country"
                 options={options.countries}
                 onChange={setSelectedCountry}
               />
+              <FilterItem
+                icon={<MdLocationOn />}
+                title="Home District"
+                options={options.states}
+                onChange={setSelectedState}
+              />
             </div>
           )}
 
-          {activeLocation === "distance" && (
+          {/* {activeLocation === "distance" && (
             <div className="space-y-4">
-              <FilterItem icon={<MdLocationOn />} title="Distance" />
+              <FilterItem
+                icon={<MdLocationOn />}
+                title="Distance"
+                options={options.cities}
+                onChange={setSelectedCity}
+              />
             </div>
-          )}
+          )} */}
         </>
       )}
     </>

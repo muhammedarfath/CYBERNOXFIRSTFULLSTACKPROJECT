@@ -25,17 +25,23 @@ export default function ChatArea() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const {
-    email,
     token: accessToken,
     userId,
   } = useSelector((state) => state.auth);
   const [messages, setMessages] = useState([]);
   const [audioBlob, setAudioBlob] = useState(null);
-
+  const [isBlocked, setIsBlocked] = useState(false);
   const sender = userId;
   const receiver = chatuserId;
+  const [buttonBlock,setButtonBlock] = useState(false)
 
-  // Handle scroll events to detect when user scrolls the chat
+useEffect(() => {
+  if (messageUser && messageUser.user_profile && messageUser.user_profile.user.blocked_users) {
+    const isUserBlocked = messageUser.user_profile.user.blocked_users.includes(userId);
+    setIsBlocked(isUserBlocked);
+  }
+}, [messageUser, userId]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (chatContainerRef.current) {
@@ -51,7 +57,6 @@ export default function ChatArea() {
     }
   }, []);
 
-  // Auto-scroll to the bottom of the chat when new messages are added
   const scrollToBottom = () => {
     if (messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -62,7 +67,6 @@ export default function ChatArea() {
     scrollToBottom();
   }, [messages]);
 
-  // Fetch the user details for the chat
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -80,7 +84,6 @@ export default function ChatArea() {
     if (chatuserId) fetchUser();
   }, [chatuserId]);
 
-  // Fetch messages between sender and receiver
   useEffect(() => {
     GetMessage();
   }, [sender, receiver]);
@@ -89,8 +92,8 @@ export default function ChatArea() {
     await axiosInstance
       .get(`${requests.getMessage}${sender}/${receiver}/`)
       .then((response) => {
-        console.log("Messages:", response.data); // Log the response
-        setMessages(response.data);
+        setButtonBlock(response.data.blocked)
+        setMessages(response.data.messages);
         setTimeout(scrollToBottom, 100);
       })
       .catch((error) => {
@@ -98,12 +101,13 @@ export default function ChatArea() {
       });
   };
 
-  // WebSocket connections
+
+  console.log(messages,"this is message");
+
   const chatuser = new W3CWebSocket(
     `ws://localhost:8000/ws/chat/${sender}_${receiver}/?token=${accessToken}`
   );
 
-  // Handle WebSocket connections and messages
   useEffect(() => {
     chatuser.onopen = () => {
       console.log("WebSocket chatuser connected");
@@ -199,6 +203,8 @@ export default function ChatArea() {
           messageUser={messageUser}
           isUserOnline={isUserOnline}
           isScrolled={isScrolled}
+          buttonBlock = {buttonBlock}
+          GetMessage = {GetMessage}
         />
 
         <div className="flex flex-col flex-auto h-auto">
@@ -298,6 +304,7 @@ export default function ChatArea() {
               setMessage={setMessage}
               handleSend={handleSend}
               audioBlob={audioBlob}
+              isBlocked={isBlocked}
               setAudioBlob={setAudioBlob}
             />
           </div>

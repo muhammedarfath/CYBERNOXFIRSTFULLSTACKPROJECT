@@ -65,7 +65,8 @@ const requests = {
     UpdateHobbies :`${backendUrl}/partner/update_hobbies/`,
     MarkAsRead :`${backendUrl}/auth/mark-as-read/`,
     BlockUser:`${backendUrl}/auth/block-user/`,
-    
+    UnBlockUser:`${backendUrl}/auth/unblock-user/`,
+    Expectation:`${backendUrl}/auth/expectation/`,
     SendOtp :`${backendUrl}/aadhaarotp/send-otp/`,
     VerifyOtp:`${backendUrl}/aadhaarotp/verify-otp/`,
 

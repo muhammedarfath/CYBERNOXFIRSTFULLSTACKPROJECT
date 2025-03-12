@@ -18,6 +18,7 @@ function SearchSec() {
 
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedState, setSelectedState] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
 
   const [maritalStatus, setMaritalStatus] = useState("");
   const [physicalStatus, setPhysicalStatus] = useState("");
@@ -29,7 +30,8 @@ function SearchSec() {
   const [selectedReligion, setSelectedReligion] = useState("");
 
 
-  console.log(maritalStatus,"this is marital status");
+  console.log(selectedState,"this is state");
+  console.log(selectedCountry,"this is country");
 
 
 
@@ -80,7 +82,6 @@ function SearchSec() {
         response = await axiosInstance.get(`${requests.Search}`, { params });
       }
 
-      console.log(response, "search");
       setUserData(response.data);
     } catch (err) {
       if (err.response) {
@@ -165,6 +166,8 @@ function SearchSec() {
           setSelectedReligion={setSelectedReligion}
           rangeFilters={rangeFilters}
           setRangeFilters={setRangeFilters}
+          selectedCity={selectedCity}
+          setSelectedCity={setSelectedCity}
         />
 
         <SearchFilter
@@ -181,7 +184,7 @@ function SearchSec() {
           Search
         </button>
 
-        <SearchRes loading={loading} userData={userData} />
+        <SearchRes isLoading={loading} userData={userData} />
       </div>
     </div>
   );
