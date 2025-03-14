@@ -4,11 +4,9 @@ import { MdClose, MdCheckBox, MdCheckBoxOutlineBlank, MdSearch } from 'react-ico
 import axiosInstance from '../../axios';
 import requests from '../../lib/urls';
 
-function CountryModal({ open, setOpen, setSelectedCountry }) {
+function CountryModal({ open, setOpen, setCountryStatus }) {
   const [search, setSearch] = useState('');
   const [selectedCountries, setSelectedCountries] = useState([]);
-
-  // Get all countries
   const countries = Country.getAllCountries();
 
   // Filter countries based on the search input
@@ -19,9 +17,9 @@ function CountryModal({ open, setOpen, setSelectedCountry }) {
   const handleCountrySelect = (country) => {
     setSelectedCountries((prevSelected) => {
       if (prevSelected.some((c) => c.name === country.name)) {
-        return prevSelected.filter((c) => c.name !== country.name); // Deselect if already selected
+        return prevSelected.filter((c) => c.name !== country.name); 
       } else {
-        return [...prevSelected, country]; // Add to selected if not already selected
+        return [...prevSelected, country];
       }
     });
   };
@@ -32,17 +30,13 @@ function CountryModal({ open, setOpen, setSelectedCountry }) {
 
   const onSave = async () => {
     try {
-      const selectedCountryIds = selectedCountries.map(country => country.name); 
+      const selectedCountryNames = selectedCountries.map(country => country.name);
 
       await axiosInstance.post(`${requests.UpdatePartner}`, {
-        partner_country: selectedCountryIds,  
+        partner_country: selectedCountryNames,  
       });
 
-      if (typeof setSelectedCountry === "function") {
-        setSelectedCountry(selectedCountries);
-      } else {
-        console.warn("setSelectedCountry is not a function");
-      }
+      setCountryStatus(selectedCountryNames.join(", "));
 
       onClose();
     } catch (error) {
@@ -77,7 +71,7 @@ function CountryModal({ open, setOpen, setSelectedCountry }) {
               >
                 {country.name}
                 <button
-                  onClick={() => handleRemoveSelectedCountry(country)}
+                  onClick={() => handleCountrySelect(country)}
                   className="ml-2 hover:opacity-75"
                 >
                   <MdClose className="h-4 w-4" />

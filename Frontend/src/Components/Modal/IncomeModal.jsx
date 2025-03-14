@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../../axios"; // Your axios instance
 import requests from "../../lib/urls"; // Your requests
 
-import { MdClose, MdCheckBox, MdCheckBoxOutlineBlank, MdSearch } from "react-icons/md";
+import {
+  MdClose,
+  MdCheckBox,
+  MdCheckBoxOutlineBlank,
+  MdSearch,
+} from "react-icons/md";
 
 function IncomeModal({ open, setOpen, setIncomePreference }) {
   const [search, setSearch] = useState("");
@@ -10,13 +15,12 @@ function IncomeModal({ open, setOpen, setIncomePreference }) {
   const [error, setError] = useState("");
   const [incomeOptions, setIncomeOptions] = useState([]);
 
-  // Fetch income options from the backend when the modal is open
   useEffect(() => {
     if (open) {
       const fetchIncomeOptions = async () => {
-        setError(""); // Reset the error state
+        setError("");
         try {
-          const response = await axiosInstance.get(requests.Income); // API call to fetch income options
+          const response = await axiosInstance.get(requests.Income);
           if (response.status === 200) {
             setIncomeOptions(response.data || []);
           } else {
@@ -53,18 +57,14 @@ function IncomeModal({ open, setOpen, setIncomePreference }) {
   const onSave = async () => {
     try {
       const selectedIds = incomeOptions
-        .filter(option => selectedPreferences.includes(option.annual_income))
-        .map(option => option.id); // Get the IDs of selected preferences
+        .filter((option) => selectedPreferences.includes(option.annual_income))
+        .map((option) => option.id); // Get the IDs of selected preferences
 
       await axiosInstance.post(`${requests.UpdatePartner}`, {
-        annual_income: selectedIds,  // Send the selected income IDs to the backend
+        annual_income: selectedIds, // Send the selected income IDs to the backend
       });
 
-      if (typeof setIncomePreference === "function") {
-        setIncomePreference(selectedPreferences.join(", "));
-      } else {
-        console.warn("setIncomePreference is not a function");
-      }
+      setIncomePreference(selectedPreferences.join(", "));
 
       onClose();
     } catch (error) {

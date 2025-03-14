@@ -394,3 +394,18 @@ body {
 .input-range__label--value {
   display: none;
 }
+
+.details-grid-profile {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Grid layout for mobile devices */
+@media (max-width: 640px) {
+  .details-grid-profile {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0.5rem;
+  }
+}

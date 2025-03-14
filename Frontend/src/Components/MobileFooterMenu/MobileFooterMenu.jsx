@@ -7,9 +7,11 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { BiMessageSquare } from "react-icons/bi";
 import { PiChatFill } from "react-icons/pi";
 import Logo from "../../assets/logo PNG M 2.png";
+import { useNotification } from "../../context/NotificationProvider";
 
 function MobileFooterMenu() {
   const [activeIcon, setActiveIcon] = useState(null);
+  const { interestUnreadCount, messageUnreadCount } = useNotification();
 
   const handleClick = (icon) => {
     setActiveIcon(icon);
@@ -64,8 +66,16 @@ function MobileFooterMenu() {
             </Link>
           </div>
 
-          <div className="text-center" onClick={() => handleClick("interest")}>
+          <div
+            className="text-center relative"
+            onClick={() => handleClick("interest")}
+          >
             <Link to="/interest">
+              {interestUnreadCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-button text-white text-xs rounded-full px-1.5">
+                  {interestUnreadCount}
+                </span>
+              )}
               {activeIcon === "interest" ? (
                 <FaHeart className="text-2xl text-button" />
               ) : (
@@ -74,8 +84,13 @@ function MobileFooterMenu() {
             </Link>
           </div>
 
-          <div className="text-center" onClick={() => handleClick("message")}>
+          <div className="text-center relative" onClick={() => handleClick("message")}>
             <Link to="/message">
+              {messageUnreadCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-button text-white text-xs rounded-full px-1.5">
+                  {messageUnreadCount}
+                </span>
+              )}
               {activeIcon === "message" ? (
                 <PiChatFill className="text-2xl text-button" />
               ) : (

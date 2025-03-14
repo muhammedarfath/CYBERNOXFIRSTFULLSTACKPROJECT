@@ -13,7 +13,6 @@ import IncomeModal from "../../Modal/IncomeModal";
 import CountryModal from "../../Modal/CountryModal";
 
 function PartnerPreferences({ preferences }) {
-
   const [agePreference, setAgePreference] = useState(
     preferences.partner_preferences?.age_preference || ""
   );
@@ -72,9 +71,6 @@ function PartnerPreferences({ preferences }) {
   const handleOpenIncomeModal = () => setIsIncomeModalOpen(true);
   const handleOpenCountryModal = () => setIsCountryModalOpen(true);
 
-  console.log(agePreference);
-  console.log(heightPreference);
-
   const details = [
     {
       label: "Age Preference",
@@ -132,7 +128,7 @@ function PartnerPreferences({ preferences }) {
       onClick: handleOpenCountryModal,
     },
   ];
-
+  
   return (
     <div className="w-full mx-auto p-3">
       <div className="space-y-1">
@@ -146,7 +142,7 @@ function PartnerPreferences({ preferences }) {
             <div className="flex items-center">
               {detail.value ? (
                 Array.isArray(detail.value) ? (
-                  <div className="flex gap-2">
+                  <div className="details-grid">
                     {detail.value.map((part, idx) => (
                       <div
                         key={idx}
@@ -157,7 +153,7 @@ function PartnerPreferences({ preferences }) {
                     ))}
                   </div>
                 ) : (
-                  <div className="flex gap-2">
+                  <div className="details-grid-profile">
                     {detail.value.split(",").map((part, idx) => (
                       <div
                         key={idx}
@@ -210,14 +206,14 @@ function PartnerPreferences({ preferences }) {
         <DrinkingModal
           open={isDrinkingModalOpen}
           setOpen={setIsDrinkingModalOpen}
-          setDrinkingStatus={setDrinkingStatus}
+          setDrinkingPreference={setDrinkingStatus}
         />
       )}
       {isSmokingModalOpen && (
         <SmokingModal
           open={isSmokingModalOpen}
           setOpen={setIsSmokingModalOpen}
-          setSmokingStatus={setSmokingStatus}
+          setSmokingPreference={setSmokingStatus}
         />
       )}
       {isMotherTongueModalOpen && (
@@ -231,28 +227,29 @@ function PartnerPreferences({ preferences }) {
         <EducationModal
           open={isEducationModalOpen}
           setOpen={setIsEducationModalOpen}
-          setEducationStatus={setEducationStatus}
+          setEducationPreference={setEducationStatus}
         />
       )}
       {isProfessionModalOpen && (
         <ProfessionModal
           open={isProfessionModalOpen}
           setOpen={setIsProfessionModalOpen}
-          setProfessionfStatus={setProfessionfStatus}
+          setProfessionPreference={setProfessionfStatus}
         />
       )}
       {isIncomeModalOpen && (
         <IncomeModal
           open={isIncomeModalOpen}
           setOpen={setIsIncomeModalOpen}
-          setIncomeStatus={setIncomeStatus}
+          setIncomePreference={setIncomeStatus}
         />
       )}
       {isCountryModalOpen && (
         <CountryModal
           open={isCountryModalOpen}
           setOpen={setIsCountryModalOpen}
-          setIncomeStatus={setCountryStatus}
+          setCountryStatus={setCountryStatus}
+          
         />
       )}
     </div>

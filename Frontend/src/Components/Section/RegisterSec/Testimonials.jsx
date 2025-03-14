@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaStar, FaChevronRight, FaChevronLeft } from "react-icons/fa";
-import mycom from '../../../assets/arfath.jpg'
+import mycom from "../../../assets/logo PNG M.png";
 
 export default function Testimonials() {
   const testimonials = [

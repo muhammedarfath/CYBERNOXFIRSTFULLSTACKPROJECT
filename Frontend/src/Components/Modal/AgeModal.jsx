@@ -56,22 +56,22 @@ function AgeModal({ open, setOpen, setAgePreference }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
-      <div className="bg-white rounded-2xl w-full max-w-lg relative">
+      <div className="bg-white rounded-2xl w-full max-w-lg relative md:max-h-[90vh] max-h-[70vh] overflow-y-auto">
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 w-8 h-8 flex items-center justify-center bg-button text-white rounded-full "
+          className="absolute right-4 top-4 w-8 h-8 flex items-center justify-center bg-button text-white rounded-full"
         >
           <MdClose className="h-5 w-5" />
         </button>
 
         {/* Header */}
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           <h2 className="text-xl font-semibold">Select Age Range</h2>
         </div>
 
         {/* Selected Options Display */}
         {selectedValues.length > 0 && (
-          <div className="px-6 flex flex-wrap gap-2">
+          <div className="px-4 md:px-6 flex flex-wrap gap-2">
             {selectedValues.map((value) => (
               <div
                 key={value}
@@ -90,7 +90,7 @@ function AgeModal({ open, setOpen, setAgePreference }) {
         )}
 
         {/* Search */}
-        <div className="p-6">
+        <div className="p-4 md:p-6">
           <div className="relative">
             <MdSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
             <input
@@ -130,13 +130,13 @@ function AgeModal({ open, setOpen, setAgePreference }) {
           </div>
         </div>
 
-        <div className="p-6 flex justify-between items-center border-t">
-          <button onClick={onClose} className="px-6 py-2 text-button">
+        <div className="p-4 md:p-6 flex justify-between items-center border-t">
+          <button onClick={onClose} className="px-4 py-2 text-button md:px-6">
             Back
           </button>
           <button
             onClick={onSave}
-            className="px-8 py-2 bg-button text-white rounded-full hover:bg-gray-800"
+            className="px-6 py-2 bg-button text-white rounded-full hover:bg-gray-800 md:px-8"
           >
             Done
           </button>

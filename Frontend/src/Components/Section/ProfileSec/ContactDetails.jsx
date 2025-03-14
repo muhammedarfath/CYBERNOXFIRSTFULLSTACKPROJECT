@@ -2,22 +2,37 @@ import { useState } from "react";
 import { MdChevronRight } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 import LocationModal from "../../Modal/LocationModal";
-import SecondaryNumberModal from "../../Modal/SecondaryNumberModal"; 
-import TimeToCallModal from "../../Modal/TimeToCallModal"; 
+import SecondaryNumberModal from "../../Modal/SecondaryNumberModal";
+import TimeToCallModal from "../../Modal/TimeToCallModal";
 import FullAddressModal from "../../Modal/FullAddressModal";
 
-export default function ContactDetails({ profileDetails,fetchDetails }) {
+export default function ContactDetails({ profileDetails, fetchDetails }) {
   const { user_profile, groom_bride_info } = profileDetails || {};
   const [openLocationModal, setOpenLocationModal] = useState(false);
   const [openSecondaryNumberModal, setOpenSecondaryNumberModal] =
-    useState(false); 
-  const [location, setLocation] = useState(`${groom_bride_info?.present_city}, ${groom_bride_info?.present_state}, ${groom_bride_info?.present_country}` || "Add Present Location");
-  const [secondaryNumber, setSecondaryNumber] = useState(`${groom_bride_info?.secondary_mobileno}` || "Add Secondary Number"); 
+    useState(false);
+  const [location, setLocation] = useState(
+    groom_bride_info?.present_city &&
+      groom_bride_info?.present_state &&
+      groom_bride_info?.present_country
+      ? `${groom_bride_info.present_city}, ${groom_bride_info.present_state}, ${groom_bride_info.present_country}`
+      : "Add Present Location"
+  );
+  const [secondaryNumber, setSecondaryNumber] = useState(
+    groom_bride_info?.secondary_mobileno
+      ? groom_bride_info.secondary_mobileno
+      : "Add Secondary Number"
+  );
   const [openTimeToCallModal, setOpenTimeToCallModal] = useState(false);
   const [openFullAddressModal, setOpenFullAddressModal] = useState(false);
-  const [timeToCall, setTimeToCall] = useState(`${groom_bride_info?.time_to_call}` || "Add convenient Time to call");
-  const [fullAddress, setFullAddress] = useState(`${groom_bride_info?.addres}`);
-
+  const [timeToCall, setTimeToCall] = useState(
+    groom_bride_info?.time_to_call
+      ? groom_bride_info.time_to_call
+      : "Add convenient Time to call"
+  );
+  const [fullAddress, setFullAddress] = useState(
+    groom_bride_info?.address ? groom_bride_info.address : "Add Address"
+  );
   return (
     <>
       <div className="flex items-center justify-between">
@@ -49,13 +64,13 @@ export default function ContactDetails({ profileDetails,fetchDetails }) {
           <DetailSection
             title="Primary Number"
             value={user_profile?.user?.mobileno || "N/A"}
-            isAdd={false} 
+            isAdd={false}
           />
           <DetailSection
             title="Secondary Number"
             value={secondaryNumber}
             isAdd={true}
-            onClick={() => setOpenSecondaryNumberModal(true)} 
+            onClick={() => setOpenSecondaryNumberModal(true)}
           />
           <DetailSection
             title="Email"

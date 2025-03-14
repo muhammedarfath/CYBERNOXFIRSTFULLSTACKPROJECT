@@ -1,7 +1,7 @@
-import React, {  useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import { MdOutlineStarBorder } from "react-icons/md";
-import {  FaHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import { LuGraduationCap } from "react-icons/lu";
 import { backendUrl } from "../../../Constants/Constants";
@@ -9,44 +9,19 @@ import userphoto from "../../../assets/logo PNG M.png";
 import { useSelector } from "react-redux";
 import requests from "../../../lib/urls";
 import axiosInstance from "../../../axios";
+import AuthContext from "../../../context/AuthContext";
+import { useNotifyWebSocket } from "../../hooks/useNotifyWebSocket";
 
-const socketBaseUrl = "ws://127.0.0.1:8000/ws/notifications/";
 
 function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
   const [showHeart, setShowHeart] = useState(false);
   const [showClose, setShowClose] = useState(false);
   const [showSave, setShowSave] = useState(false);
-  const [socket, setSocket] = useState(null);
   const accessToken = useSelector((state) => state.auth.token);
+  const { fetchDetails } = useContext(AuthContext);
+  const socket = useNotifyWebSocket(accessToken);
 
 
-  useEffect(() => {
-    if (!accessToken) {
-      console.error("No access token found");
-      return;
-    }
-
-    const socketUrl = `${socketBaseUrl}?token=${accessToken}`;
-    const newSocket = new WebSocket(socketUrl);
-
-    newSocket.onopen = () => {
-      console.log("WebSocket Connected");
-    };
-
-    newSocket.onclose = (event) => {
-      console.log("WebSocket Closed:", event.code, event.reason);
-    };
-
-    newSocket.onerror = (error) => {
-      console.error("WebSocket Error:", error);
-    };
-
-    setSocket(newSocket);
-
-    return () => {
-      newSocket.close();
-    };
-  }, []);
 
   const handleHeartClick = (e) => {
     if (!socket || socket.readyState !== WebSocket.OPEN) {
@@ -82,12 +57,11 @@ function SwiperSlideContent({ slide, index, swiperRef, handleProfileClick }) {
     e.stopPropagation();
     setShowSave(true);
 
-
-    const response = await axiosInstance.post(`${requests.savePost}`, {
+    await axiosInstance.post(`${requests.savePost}`, {
       saved_user_id: slide.user_profile.user.id,
     });
 
-
+    fetchDetails();
     setTimeout(() => {
       swiperRef.current.swiper.slideNext();
       setShowSave(false);

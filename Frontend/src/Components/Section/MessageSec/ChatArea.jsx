@@ -102,8 +102,6 @@ useEffect(() => {
   };
 
 
-  console.log(messages,"this is message");
-
   const chatuser = new W3CWebSocket(
     `ws://localhost:8000/ws/chat/${sender}_${receiver}/?token=${accessToken}`
   );
@@ -195,6 +193,7 @@ useEffect(() => {
       }
     }
   };
+
 
   return (
     <div className="flex h-full text-black p-5">

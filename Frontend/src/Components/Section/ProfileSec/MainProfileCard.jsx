@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { TbCamera } from "react-icons/tb";
-import userphoto from "../../../assets/User Male Profile.svg";
+import userphoto from "../../../assets/default.jpg";
 import indian from "../../../assets/Indian Flag Icon.png";
 import axiosInstance from "../../../axios";
 import requests from "../../../lib/urls";

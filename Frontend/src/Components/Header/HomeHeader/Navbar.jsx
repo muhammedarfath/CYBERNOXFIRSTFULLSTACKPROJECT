@@ -1,16 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import user from "../../../assets/arfath.jpg";
 import verifiedIcon from "../../../assets/Verified Icon.png";
 import AuthContext from "../../../context/AuthContext";
-import userphoto from "../../../assets/User Male Profile.svg";
+import userphoto from "../../../assets/default.jpg";
 import Logo from "../../../assets/logo PNG M.png";
 import { backendUrl } from "../../../Constants/Constants";
 
 function Navbar({ toggleMenu }) {
   const [isHovered, setIsHovered] = useState(false);
-  const { profileDetails, posts, setPosts, loading } = useContext(AuthContext);
+  const { profileDetails} = useContext(AuthContext);
   const [preview, setPreview] = useState(null);
 
   useEffect(() => {
@@ -28,7 +27,7 @@ function Navbar({ toggleMenu }) {
       <div className="flex lg:flex-1 items-center">
         <Link to="/">
           <img
-            className="w-auto md:max-h-20 max-h-9 object-contain scale-150"
+            className="w-auto md:max-h-20 max-h-9 object-contain md:scale-150 scale-[2]"
             src={Logo}
             alt="Company Logo"
           />
@@ -41,7 +40,7 @@ function Navbar({ toggleMenu }) {
             <span className="hidden md:block">Search</span>
           </button>
         </Link>
-        <div className="flex lg:hidden">
+        <div className="flex md:hidden">
           <button
             type="button"
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
@@ -82,7 +81,7 @@ function Navbar({ toggleMenu }) {
             className="absolute bottom-0 -right-1 transform -translate-x-1/2 w-5 h-5"
           />
           {isHovered && (
-            <div className="absolute top-14 left-0 bg-green-500 text-white px-3 py-1 text-sm rounded-lg shadow-lg">
+            <div className="absolute top-14 left-0 bg-button text-white px-3 py-1 text-sm rounded-lg shadow-lg">
               Verified
             </div>
           )}

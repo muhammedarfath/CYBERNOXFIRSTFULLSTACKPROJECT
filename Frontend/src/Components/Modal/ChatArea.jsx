@@ -8,7 +8,7 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-import slide_img_4 from "../../assets/Screenshot 2024-12-27 at 11.49.50 AM.png";
+import slide_img_4 from "../../assets/default.jpg";
 import { AiOutlineAudio } from "react-icons/ai";
 import { MdReport } from "react-icons/md";
 export default function ChatArea({ onOpenChange, isOpen }) {

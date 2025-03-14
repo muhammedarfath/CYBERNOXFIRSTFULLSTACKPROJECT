@@ -12,6 +12,8 @@ import { toast } from "react-hot-toast";
 import Swal from "sweetalert2";
 import AuthContext from "../../context/AuthContext";
 import ForgotPassword from "./ForgotPassword";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import {Spinner} from "@heroui/react";
 
 export default function Login({ onOpenChange, isOpen }) {
   const dispatch = useDispatch();
@@ -21,9 +23,12 @@ export default function Login({ onOpenChange, isOpen }) {
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     dispatch(startLoading());
 
     try {
@@ -40,7 +45,7 @@ export default function Login({ onOpenChange, isOpen }) {
         navigate("/");
         fetchDetails();
         Swal.fire({
-          width: "800px", 
+          width: "800px",
           html: `
             <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
               <img src="https://www.waytonikah.com/images/keralanikah/side-img.png" alt="Custom image" style="max-width: 150px; height: auto; border-radius: 5px;">
@@ -51,7 +56,7 @@ export default function Login({ onOpenChange, isOpen }) {
             </div>
           `,
           showConfirmButton: true,
-          confirmButtonColor: "#CC2B52", 
+          confirmButtonColor: "#CC2B52",
           customClass: {
             popup: "custom-swal",
           },
@@ -62,6 +67,8 @@ export default function Login({ onOpenChange, isOpen }) {
     } catch (error) {
       dispatch(loginFailure());
       toast.error("Invalid credentials. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -121,15 +128,24 @@ export default function Login({ onOpenChange, isOpen }) {
                     >
                       Password
                     </label>
-                    <input
-                      type="password"
-                      placeholder="Password"
-                      className="bg-gray-50 border border-gray text-gray-900 rounded-lg block w-full p-2.5"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      style={{ outline: "none" }}
-                    />
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"} // Toggle input type
+                        placeholder="Password"
+                        className="bg-gray-50 border border-gray text-gray-900 rounded-lg block w-full p-2.5 pr-10"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        style={{ outline: "none" }}
+                      />
+                      <button
+                        type="button"
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                        onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
+                      >
+                        {showPassword ? <FaEye /> : <FaEyeSlash />}
+                      </button>
+                    </div>
                   </div>
 
                   <div className="flex justify-end">
@@ -147,8 +163,13 @@ export default function Login({ onOpenChange, isOpen }) {
                   <button
                     type="submit"
                     className="w-full text-white bg-button  font-medium rounded-lg text-sm px-5 py-3 text-center transition-colors"
+                    disabled={loading}
                   >
-                    Login
+                    {loading ? (
+                      <Spinner size="sm" color="white"/> 
+                    ) : (
+                      "Login" 
+                    )}
                   </button>
                   <div className="flex items-center justify-center my-6">
                     <div className="flex-grow h-px bg-gray"></div>

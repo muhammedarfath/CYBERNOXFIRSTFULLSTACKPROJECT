@@ -6,7 +6,7 @@ import Login from "../../Modal/Login";
 import axiosInstance from "../../../axios";
 import requests from "../../../lib/urls";
 import { backendUrl } from "../../../Constants/Constants";
-import userphoto from "../../../assets/User Male Profile.svg";
+import userphoto from "../../../assets/default.jpg";
 
 function BasicFilter() {
   const [maritalStatus, setMaritalStatus] = useState("");

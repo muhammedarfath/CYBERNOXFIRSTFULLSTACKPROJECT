@@ -23,7 +23,8 @@ import Swal from "sweetalert2";
 import AuthContext from "../../../context/AuthContext";
 import Loader from "../../Loading/Loader";
 import { useNavigate } from "react-router-dom";
-import userphoto from "../../../assets/default.jpg"
+import userphoto from "../../../assets/default.jpg";
+import ProfileSkeleton from "../../Loading/ProfileSkeleton";
 
 function ProfileSec() {
   const navigate = useNavigate();
@@ -36,11 +37,7 @@ function ProfileSec() {
   };
 
   if (loading) {
-    return (
-      <div className="w-full h-full flex justify-center items-center">
-        <Loader />
-      </div>
-    );
+    return <ProfileSkeleton />;
   }
 
   const handleDelete = async (postId) => {
@@ -100,14 +97,12 @@ function ProfileSec() {
   };
 
   const handleCardClick = (slide) => {
-    console.log(slide, "ther is a slide");
     navigate("/profiledetails", { state: { slide } });
   };
 
   return (
     <div className="w-full overflow-scroll h-full mb-9">
       <div className="flex md:flex-row flex-col w-full p-4">
-
         <div className="flex flex-col md:w-1/2 w-full flex-wrap gap-4 md:p-4 mb-28">
           <div className="w-full flex items-center justify-between bg-white rounded-lg shadow-md p-5">
             <MainProfileCard
@@ -236,22 +231,26 @@ function ProfileSec() {
                         className="relative"
                         onClick={() => handleCardClick(savedUser)}
                       >
-                        {savedUser?.user_profile?.user?.profile_picture ? (<img
-                          className="h-auto max-w-full rounded-lg"
-                          src={`${backendUrl}${savedUser?.user_profile?.user?.profile_picture}`}
-                          alt={savedUser?.user_profile?.name || "Profile"}
-                        />) : (
+                        {savedUser?.user_profile?.user?.profile_picture ? (
                           <img
-                          className="h-auto max-w-full rounded-lg"
-                          src={userphoto}
-                          alt="Profile"
-                        />
+                            className="h-auto max-w-full rounded-lg"
+                            src={`${backendUrl}${savedUser?.user_profile?.user?.profile_picture}`}
+                            alt={savedUser?.user_profile?.name || "Profile"}
+                          />
+                        ) : (
+                          <img
+                            className="h-auto max-w-full rounded-lg"
+                            src={userphoto}
+                            alt="Profile"
+                          />
                         )}
 
                         <button
                           onClick={(e) => {
-                            e.stopPropagation(); 
-                            handleSavedDelete(savedUser?.user_profile?.user?.id);
+                            e.stopPropagation();
+                            handleSavedDelete(
+                              savedUser?.user_profile?.user?.id
+                            );
                           }}
                           className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2"
                         >

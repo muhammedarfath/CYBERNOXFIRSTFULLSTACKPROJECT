@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../axios";
 import requests from "../../lib/urls";
-import { MdClose, MdCheckBox, MdCheckBoxOutlineBlank, MdSearch } from "react-icons/md";
+import {
+  MdClose,
+  MdCheckBox,
+  MdCheckBoxOutlineBlank,
+  MdSearch,
+} from "react-icons/md";
 
 function DrinkingModal({ open, setOpen, setDrinkingPreference }) {
   const [search, setSearch] = useState("");
@@ -14,7 +19,9 @@ function DrinkingModal({ open, setOpen, setDrinkingPreference }) {
       const fetchDrinkingOptions = async () => {
         setError("");
         try {
-          const response = await axiosInstance.get(requests.fetchDrinkingStatus);
+          const response = await axiosInstance.get(
+            requests.fetchDrinkingStatus
+          );
           if (response.status === 200) {
             setDrinkingOptions(response.data || []);
           } else {
@@ -48,25 +55,21 @@ function DrinkingModal({ open, setOpen, setDrinkingPreference }) {
   const onSave = async () => {
     try {
       const selectedIds = drinkingOptions
-        .filter(option => selectedPreferences.includes(option.status))
-        .map(option => option.id); 
-  
+        .filter((option) => selectedPreferences.includes(option.status))
+        .map((option) => option.id);
+
       await axiosInstance.post(`${requests.UpdatePartner}`, {
-        drinking_preference: selectedIds, 
+        drinking_preference: selectedIds,
       });
-  
-      if (typeof setDrinkingPreference === "function") {
-        setDrinkingPreference(selectedPreferences.join(", "));
-      } else {
-        console.warn("setDrinkingPreference is not a function");
-      }
-      
+
+      setDrinkingPreference(selectedPreferences.join(", "));
       onClose();
+      
     } catch (error) {
       console.error("Error saving drinking preferences:", error);
     }
   };
-  
+
   if (!open) return null;
 
   return (
