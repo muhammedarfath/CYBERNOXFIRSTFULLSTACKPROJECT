@@ -5,54 +5,92 @@ import OtpField from "../Components/Section/BasicDetailsSec/OtpField";
 import requests from "../lib/urls";
 import axiosInstance from "../axios";
 import Aadhaar from "../Components/Aadhaar/Aadhaar";
+import Swal from "sweetalert2";
 
 function AadharOtp() {
   const [aadharNumber, setAadharNumber] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState([]);
   const [preview, setPreview] = useState(null);
   const [referenceId, setReferenceId] = useState(null);
   const [aadhaarData, setAadhaarData] = useState(null);
-  const navigate = useNavigate(); // Initialize navigate function
+  const navigate = useNavigate();
+
 
   const handleAadharChange = (e) => setAadharNumber(e.target.value);
   const handleOtpChange = (e) => setOtp(e.target.value);
 
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setFile(selectedFile);
+    const selectedFiles = Array.from(e.target.files);
+    setFile(selectedFiles);
 
-    if (selectedFile) {
+    const previews = selectedFiles.map((file) => {
       const reader = new FileReader();
-      reader.onload = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(selectedFile);
-    }
+      reader.readAsDataURL(file);
+      return new Promise((resolve) => {
+        reader.onload = () => resolve(reader.result);
+      });
+    });
+
+    Promise.all(previews).then((images) => setPreview(images));
   };
 
   const handleSendOtp = async () => {
-    if (aadharNumber.trim().length !== 12) {
-      alert("Please enter a valid 12-digit Aadhaar number.");
+    if (!aadharNumber.trim() && file?.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "Required",
+        text: "Please enter Aadhaar number or upload an identity proof.",
+      });
       return;
     }
+  
 
-    try {
-      const response = await axiosInstance.post(`${requests.SendOtp}`, {
-        aadhaar_number: aadharNumber,
+    const formData = new FormData();
+    if (aadharNumber.trim().length === 12) {
+      formData.append("aadhaar_number", aadharNumber);
+    } else if (file?.length > 0) {
+      file.forEach((f, index) => {
+        formData.append(`file_1`, f); 
       });
+    }
+  
+    try {
+      const response = await axiosInstance.post(`${requests.SendOtp}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+  
       if (response.status === 200) {
-        setReferenceId(response.data.result.data.reference_id);
-        setOtpSent(true);
+        if (aadharNumber.trim().length === 12) {
+          setReferenceId(response.data.result.data.reference_id);
+          setOtpSent(true);
+        } else {
+          Swal.fire({
+            icon: "info",
+            title: "Verification in Progress",
+            text: "Your verification details have been submitted. It will be completed in 2 working days.",
+            confirmButtonText: "OK",
+          }).then(() => {
+            navigate("/pricing"); 
+          });
+        }
       } else {
-        alert(response.data);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: response.data.message || "Something went wrong. Please try again.",
+        });
       }
     } catch (error) {
-      console.error("Error sending OTP:", error);
-      alert("Failed to send OTP. Please try again.");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.response?.data?.message || "Failed to send OTP. Please try again.",
+      });
     }
   };
+  
 
   return (
     <div>
@@ -91,18 +129,10 @@ function AadharOtp() {
         <ProofFile
           otpSent={otpSent}
           aadharNumber={aadharNumber}
+          preview={preview}
           handleFileChange={handleFileChange}
         />
-
-        {preview && (
-          <div className="flex justify-center mb-6">
-            <img
-              src={preview}
-              alt="Preview"
-              className="w-64 h-64 object-cover rounded-lg"
-            />
-          </div>
-        )}
+        
 
         <OtpField
           otpSent={otpSent}
@@ -114,17 +144,21 @@ function AadharOtp() {
         />
       </form>
 
-      <div className="mt-9">{aadhaarData && <Aadhaar data={aadhaarData} />}</div>
+      <div className="mt-9">
+        {aadhaarData && <Aadhaar data={aadhaarData} />}
+      </div>
 
       {/* Centered Button */}
-      {aadhaarData && <div className="flex justify-center mt-6">
-        <button
-          className="bg-button px-6 py-3 text-white rounded-md shadow-md hover:bg-blue-600 transition"
-          onClick={() => navigate("/pricing")} 
-        >
-          Go To Home
-        </button>
-      </div>}
+      {aadhaarData && (
+        <div className="flex justify-center mt-6">
+          <button
+            className="bg-button px-6 py-3 text-white rounded-md shadow-md hover:bg-blue-600 transition"
+            onClick={() => navigate("/pricing")}
+          >
+            Go To Home
+          </button>
+        </div>
+      )}
     </div>
   );
 }

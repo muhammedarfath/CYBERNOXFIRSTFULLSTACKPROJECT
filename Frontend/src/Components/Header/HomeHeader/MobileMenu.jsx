@@ -32,7 +32,7 @@ function MobileMenu({ toggleMenu, isOpen }) {
       ></div>
 
       <div
-        className={`fixed inset-y-0 right-0 z-20 w-1/2 overflow-y-auto bg-white px-6 py-6 shadow-xl rounded-l-2xl transform transition-all duration-300 ease-in-out ${
+        className={`fixed inset-y-0 right-0 z-50 w-1/2 overflow-y-auto bg-white px-6 py-6 shadow-xl rounded-l-2xl transform transition-all duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

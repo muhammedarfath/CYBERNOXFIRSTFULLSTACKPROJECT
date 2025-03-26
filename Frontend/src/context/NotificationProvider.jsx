@@ -3,6 +3,7 @@ import axiosInstance from "../axios";
 import requests from "../lib/urls";
 import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
+import Logo from "../assets/logo PNG M.png";
 
 const NotificationContext = createContext();
 
@@ -81,8 +82,8 @@ export const NotificationProvider = ({ children }) => {
               <div className="flex items-start">
                 <div className="flex-shrink-0 pt-0.5">
                   <img
-                    className="h-10 w-10 rounded-full"
-                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixqx=6GHAjsWpt9&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.2&w=160&h=160&q=80"
+                    className="h-16 w-16 rounded-full scale-150"
+                    src={data.notification.user?.profile_picture || Logo}
                     alt=""
                   />
                 </div>

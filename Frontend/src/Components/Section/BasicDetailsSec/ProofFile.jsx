@@ -1,6 +1,6 @@
 import React from "react";
 
-function ProofFile({otpSent,aadharNumber,handleFileChange}) {
+function ProofFile({ otpSent, aadharNumber, handleFileChange, preview }) {
   return (
     <>
       {!otpSent && !aadharNumber && (
@@ -40,11 +40,25 @@ function ProofFile({otpSent,aadharNumber,handleFileChange}) {
               <input
                 id="dropzone-file"
                 type="file"
+                multiple
                 className="hidden"
                 onChange={handleFileChange}
               />
             </label>
           </div>
+
+          {preview && preview.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-4 mb-6">
+              {preview.map((imgSrc, index) => (
+                <img
+                  key={index}
+                  src={imgSrc}
+                  alt="image"
+                  className="w-32 h-32 object-cover rounded-lg"
+                />
+              ))}
+            </div>
+          )}
         </>
       )}
     </>

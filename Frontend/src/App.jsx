@@ -1,5 +1,10 @@
 import React, { useContext, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Home from "./Pages/Home";
 import { Register } from "./Pages/Register";
 import BasicDetails from "./Pages/BasicDetails";
@@ -27,7 +32,7 @@ import { useSelector } from "react-redux";
 import { w3cwebsocket } from "websocket";
 
 function App() {
-  const { fetchUnreadNotifications,setMessageUnreadCount } = useNotification();
+  const { fetchUnreadNotifications, setMessageUnreadCount } = useNotification();
   const location = useLocation(); // Get the current location
   const { addNotification } = useContext(MessageNotificationContext);
   const { userId, token: accessToken } = useSelector((state) => state.auth);
@@ -58,7 +63,7 @@ function App() {
               user: dataFromServer.user,
               message: dataFromServer.message,
             });
-            setMessageUnreadCount((prev) => prev + 1)
+            setMessageUnreadCount((prev) => prev + 1);
           }
         } catch (error) {
           console.log("Error handling notification:", error);
@@ -71,19 +76,9 @@ function App() {
     }
   }, [userId, accessToken, addNotification]);
 
-
-
-
-
-
-
   useEffect(() => {
     fetchUnreadNotifications();
   }, [location.pathname]); // Trigger on every route change
-
-
-
-
 
   return (
     <>
@@ -149,6 +144,12 @@ function App() {
               <PrivateRoute>
                 <SearchSec />
               </PrivateRoute>
+            }
+          />
+          <Route
+            path="/otp"
+            element={
+                <AadharOtp />
             }
           />
           <Route

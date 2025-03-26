@@ -39,7 +39,7 @@ const PrivateRoute = ({ children }) => {
 
   if (!isLoggedIn && !token) {
     return <Navigate to="/register" />;
-  }
+  } 
 
   return children;
 };
