@@ -22,8 +22,6 @@ function BasicDetailstwo({ basicdetails }) {
     annualIncome: "",
   });
 
-
-
   const [options, setOptions] = useState({
     country: [],
     states: [],
@@ -108,17 +106,15 @@ function BasicDetailstwo({ basicdetails }) {
     }
   }, [formData.country]);
 
-
-
   useEffect(() => {
     if (formData.country && formData.state) {
       const selectedCountry = Country.getAllCountries().find(
         (country) => country.name === formData.country
       );
 
-      const selectedState = State.getStatesOfCountry(selectedCountry?.isoCode).find(
-        (state) => state.name === formData.state
-      );
+      const selectedState = State.getStatesOfCountry(
+        selectedCountry?.isoCode
+      ).find((state) => state.name === formData.state);
 
       if (selectedCountry && selectedState) {
         const cities = City.getCitiesOfState(
@@ -133,8 +129,6 @@ function BasicDetailstwo({ basicdetails }) {
     }
   }, [formData.country, formData.state]);
 
-
-
   useEffect(() => {
     const fetchOptions = async () => {
       try {
@@ -146,11 +140,17 @@ function BasicDetailstwo({ basicdetails }) {
             axiosInstance.get(requests.Income),
           ]);
 
+        // Add "Other" option if not present
+        let occupations = OccupationRes.data || [];
+        if (!occupations.some((occ) => occ.name === "Other")) {
+          occupations = [...occupations, { id: "other", name: "Other" }];
+        }
+
         setOptions((prevOptions) => ({
           ...prevOptions,
           educations: EducationRes.data || [],
           employements: EmployementRes.data || [],
-          occupations: OccupationRes.data || [],
+          occupations,
           income: IncomeRes.data || [],
         }));
       } catch (error) {
@@ -160,8 +160,6 @@ function BasicDetailstwo({ basicdetails }) {
 
     fetchOptions();
   }, []);
-
-
 
   return (
     <div>
@@ -415,7 +413,10 @@ function BasicDetailstwo({ basicdetails }) {
                   value={formData.occupation}
                   onChange={(e) => {
                     handleInputChange(e);
-                    setOther(e.target.value === "Other");
+                    // Check if the selected option's text is "Other"
+                    const selectedOption =
+                      e.target.options[e.target.selectedIndex].text;
+                    setOther(selectedOption === "Other");
                   }}
                   className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${
                     errors.occupation ? "border-red" : "border-gray"
@@ -427,7 +428,6 @@ function BasicDetailstwo({ basicdetails }) {
                       {type.name}
                     </option>
                   ))}
-                  <option value="Other">Other</option>
                 </select>
                 {errors.occupation && (
                   <p className="text-red text-xs mt-1">

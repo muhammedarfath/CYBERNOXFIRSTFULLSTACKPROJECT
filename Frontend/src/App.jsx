@@ -146,12 +146,12 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route
+          {/* <Route
             path="/otp"
             element={
                 <AadharOtp />
             }
-          />
+          /> */}
           <Route
             path="/chatarea/:name"
             element={

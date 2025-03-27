@@ -206,7 +206,6 @@ function BasicDetailsthree({ basicdetails, groomBrideDetails }) {
                       {type.name}
                     </option>
                   ))}
-                  <option>Other</option>
                 </select>
                 {errors.fatherOccupation && (
                   <p className="text-red text-xs mt-1">
@@ -236,7 +235,6 @@ function BasicDetailsthree({ basicdetails, groomBrideDetails }) {
                       {type.name}
                     </option>
                   ))}
-                  <option>Other</option>
                 </select>
                 {errors.motherOccupation && (
                   <p className="text-red text-xs mt-1">
